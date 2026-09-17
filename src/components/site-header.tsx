@@ -5,6 +5,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 export function SiteHeader() {
   const location = useLocation()
   const navigate = useNavigate()
+  const isHome = location.pathname === "/"
 
   function handleHowItWorksClick(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault()
@@ -23,6 +24,16 @@ export function SiteHeader() {
           Tavynq Automation
         </Link>
         <nav className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300 md:gap-5">
+          <Link
+            to="/"
+            aria-hidden={isHome}
+            tabIndex={isHome ? -1 : 0}
+            className={`hidden transition-opacity duration-300 hover:text-blue-600 sm:inline dark:hover:text-blue-400 ${
+              isHome ? "pointer-events-none opacity-0" : "opacity-100"
+            }`}
+          >
+            Home
+          </Link>
           <a
             href="/#how-it-works"
             onClick={handleHowItWorksClick}
