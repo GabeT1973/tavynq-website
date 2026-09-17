@@ -89,6 +89,17 @@ export function Privacy() {
             Lutz, FL
           </p>
         </section>
+
+        <section>
+          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
+            Legal Notices
+          </h2>
+          <p className="mt-3 leading-relaxed">
+            &copy; {new Date().getFullYear()} Tavynq Automation. All rights reserved. This
+            Privacy Policy and the Tavynq service are provided by Tavynq Automation "as
+            is," without warranty of any kind, express or implied.
+          </p>
+        </section>
       </div>
     </div>
   )

@@ -33,7 +33,7 @@ type Status = "idle" | "submitting" | "success" | "error"
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const inputClasses =
-  "mt-2 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
+  "mt-2 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
 
 export function Contact() {
   const [form, setForm] = useState<FormState>(initialState)
@@ -227,7 +227,7 @@ export function Contact() {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="inline-flex items-center gap-2 rounded-full border border-input bg-gradient-to-tr from-zinc-300/20 via-purple-400/30 to-transparent px-6 py-3 text-sm font-medium text-gray-900 transition-all hover:from-zinc-300/30 hover:via-purple-400/40 disabled:cursor-not-allowed disabled:opacity-60 dark:from-zinc-300/5 dark:via-purple-400/20 dark:text-white dark:hover:via-purple-400/30"
+          className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {status === "submitting" ? "Sending..." : "Send Message"}
         </button>

@@ -1,8 +1,19 @@
+import { useEffect } from "react"
+import { useLocation } from "react-router-dom"
 import { ContactSection } from "@/components/contact-section"
 import { HeroSection } from "@/components/ui/hero-section-dark"
 import { HowItWorks } from "@/components/how-it-works"
 
 export function Home() {
+  const location = useLocation()
+
+  useEffect(() => {
+    if (!location.hash) return
+
+    const target = document.querySelector(location.hash)
+    target?.scrollIntoView({ behavior: "smooth" })
+  }, [location.hash])
+
   return (
     <>
       <HeroSection
@@ -12,8 +23,6 @@ export function Home() {
           gradient: "missed call again",
         }}
         description="Tavynq builds AI-powered systems for HVAC, plumbing, and roofing companies. When you miss a call, our system instantly texts the caller back so you don't lose the job to a competitor."
-        ctaText="Get in Touch"
-        ctaHref="#contact"
         gridOptions={{
           angle: 65,
           opacity: 0.4,

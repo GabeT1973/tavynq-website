@@ -38,7 +38,7 @@ export function HowItWorks() {
             key={step.title}
             className="relative rounded-2xl border border-black/5 bg-white p-6 shadow-sm dark:border-white/5 dark:bg-gray-900"
           >
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 text-white">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 to-blue-400 text-white">
               <step.icon className="h-5 w-5" />
             </div>
             <span className="absolute right-6 top-6 text-4xl font-semibold text-gray-100 dark:text-gray-800">
