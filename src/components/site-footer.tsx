@@ -5,7 +5,7 @@ export function SiteFooter() {
     <footer className="border-t border-black/5 dark:border-white/5">
       <div className="mx-auto flex max-w-screen-xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-gray-500 dark:text-gray-400 md:flex-row md:px-8">
         <p>&copy; {new Date().getFullYear()} Tavynq Automation. All rights reserved.</p>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           <Link to="/contact" className="hover:text-blue-600 dark:hover:text-blue-400">
             Contact
           </Link>
@@ -14,6 +14,12 @@ export function SiteFooter() {
           </Link>
           <Link to="/terms" className="hover:text-blue-600 dark:hover:text-blue-400">
             Terms and Conditions
+          </Link>
+          <Link
+            to="/cancellation-policy"
+            className="hover:text-blue-600 dark:hover:text-blue-400"
+          >
+            Cancellation Policy
           </Link>
         </div>
       </div>

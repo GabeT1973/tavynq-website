@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom"
 import { ContactSection } from "@/components/contact-section"
 import { HeroSection } from "@/components/ui/hero-section-dark"
 import { HowItWorks } from "@/components/how-it-works"
+import { Faq } from "@/components/faq"
+import { ExampleSection } from "@/components/example-section"
 
 export function Home() {
   const location = useLocation()
@@ -32,6 +34,8 @@ export function Home() {
         }}
       />
       <HowItWorks />
+      <ExampleSection />
+      <Faq />
       <ContactSection />
     </>
   )
