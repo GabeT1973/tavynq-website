@@ -4,7 +4,7 @@ import { PhoneMissed, PhoneOutgoing } from "lucide-react"
 type Party = "business" | "customer"
 
 const FINAL_STEP = 8
-const STEP_DELAYS = [800, 2000, 1400, 2200, 1400, 2000, 1400, 1800]
+const STEP_DELAYS = [500, 1300, 900, 1400, 900, 1300, 900, 1200]
 const HOLD_MS = 5000
 const FADE_MS = 600
 
@@ -37,7 +37,8 @@ const messages: {
   },
 ]
 
-const enter = "animate-in fade-in slide-in-from-bottom-2 duration-500"
+const enter =
+  "animate-in fade-in slide-in-from-bottom-2 motion-reduce:slide-in-from-bottom-0 duration-500"
 
 function TypingBubble() {
   return (
@@ -47,7 +48,7 @@ function TypingBubble() {
       {[0, 150, 300].map((delay) => (
         <span
           key={delay}
-          className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400"
+          className="h-1.5 w-1.5 animate-bounce motion-reduce:animate-pulse rounded-full bg-gray-400"
           style={{ animationDelay: `${delay}ms` }}
         />
       ))}
@@ -181,10 +182,6 @@ export function ExampleSection() {
   const [inView, setInView] = useState(false)
   const [step, setStep] = useState(0)
   const [fading, setFading] = useState(false)
-  const [reducedMotion] = useState(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  )
-  const shownStep = reducedMotion ? FINAL_STEP : step
 
   useEffect(() => {
     const node = phonesRef.current
@@ -205,7 +202,7 @@ export function ExampleSection() {
   }, [])
 
   useEffect(() => {
-    if (!inView || reducedMotion) return
+    if (!inView) return
 
     const timers: number[] = []
 
@@ -227,7 +224,7 @@ export function ExampleSection() {
 
     playOnce()
     return () => timers.forEach((timer) => window.clearTimeout(timer))
-  }, [inView, reducedMotion])
+  }, [inView])
 
   return (
     <section id="example" className="mx-auto max-w-screen-xl px-4 py-20 md:px-8">
@@ -258,7 +255,7 @@ export function ExampleSection() {
           initials="MJ"
           fading={fading}
         >
-          <Thread viewer="business" step={shownStep} />
+          <Thread viewer="business" step={step} />
         </Phone>
         <Phone
           label="Customer"
@@ -268,7 +265,7 @@ export function ExampleSection() {
           initials="JD"
           fading={fading}
         >
-          <Thread viewer="customer" step={shownStep} />
+          <Thread viewer="customer" step={step} />
         </Phone>
       </div>
     </section>
