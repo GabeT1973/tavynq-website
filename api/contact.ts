@@ -23,7 +23,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body ?? {}
-  const { name, email, phone, organizationType, organizationName, message } = body
+  const { name, email, phone, organizationType, organizationName, message, smsConsent, consentTimestamp } =
+    body
 
   if (
     !isNonEmptyString(name) ||
@@ -66,6 +67,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       replyTo: email,
       subject: `New contact form submission from ${name}`,
       text: [
+        `SMS consent: ${smsConsent === true ? "Yes" : "No"}`,
+        `Consent timestamp: ${isNonEmptyString(consentTimestamp) ? consentTimestamp : "N/A"}`,
+        "",
         `Name: ${name}`,
         `Email: ${email}`,
         `Phone: ${isNonEmptyString(phone) ? phone : "N/A"}`,

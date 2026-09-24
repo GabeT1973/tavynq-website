@@ -1,4 +1,7 @@
 import { useState, type FormEvent } from "react"
+import { Link } from "react-router-dom"
+import { Check } from "lucide-react"
+import { usePageMeta } from "@/lib/use-page-meta"
 
 const ORGANIZATION_TYPES = [
   "HVAC",
@@ -16,6 +19,7 @@ type FormState = {
   organizationType: string
   organizationName: string
   message: string
+  smsConsent: boolean
 }
 
 const initialState: FormState = {
@@ -25,6 +29,7 @@ const initialState: FormState = {
   organizationType: "",
   organizationName: "",
   message: "",
+  smsConsent: false,
 }
 
 type FormErrors = Partial<Record<keyof FormState, string>>
@@ -36,6 +41,11 @@ const inputClasses =
   "mt-2 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
 
 export function Contact() {
+  usePageMeta(
+    "Contact — Tavynq",
+    "Get in touch with Tavynq to set up missed-call text-back automation for your HVAC, plumbing, or roofing business.",
+  )
+
   const [form, setForm] = useState<FormState>(initialState)
   const [errors, setErrors] = useState<FormErrors>({})
   const [status, setStatus] = useState<Status>("idle")
@@ -61,6 +71,10 @@ export function Contact() {
       nextErrors.organizationName = "Please enter your organization name."
     }
     if (!form.message.trim()) nextErrors.message = "Please tell us how we can help."
+    if (!form.smsConsent) {
+      nextErrors.smsConsent =
+        "Please agree to receive text messages so we can confirm your appointment."
+    }
 
     setErrors(nextErrors)
     return Object.keys(nextErrors).length === 0
@@ -74,10 +88,15 @@ export function Contact() {
     setErrorMessage("")
 
     try {
+      const payload = {
+        ...form,
+        consentTimestamp: new Date().toISOString(),
+      }
+
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       })
 
       if (!response.ok) {
@@ -218,6 +237,62 @@ export function Contact() {
             className={inputClasses}
           />
           {errors.message && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.message}</p>}
+        </div>
+
+        <div>
+          <div className="flex items-start gap-3">
+            <div className="flex h-6 shrink-0 items-center">
+              <div className="relative flex h-5 w-5 items-center justify-center">
+                <input
+                  id="smsConsent"
+                  type="checkbox"
+                  checked={form.smsConsent}
+                  onChange={(e) => update("smsConsent", e.target.checked)}
+                  aria-invalid={!!errors.smsConsent}
+                  aria-describedby={errors.smsConsent ? "smsConsent-error" : undefined}
+                  className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-black/10 bg-white transition-colors hover:border-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white checked:border-blue-600 checked:bg-blue-600 aria-invalid:border-red-600 dark:border-white/10 dark:bg-gray-900 dark:hover:border-blue-500 dark:focus-visible:ring-offset-gray-950 dark:checked:border-blue-600 dark:checked:bg-blue-600 dark:aria-invalid:border-red-400"
+                />
+                <Check
+                  aria-hidden="true"
+                  strokeWidth={3}
+                  className="pointer-events-none absolute h-3.5 w-3.5 text-white opacity-0 peer-checked:opacity-100"
+                />
+              </div>
+            </div>
+            <label
+              htmlFor="smsConsent"
+              className="cursor-pointer select-none text-base leading-relaxed text-gray-600 dark:text-gray-300"
+            >
+              I agree to receive text messages from Tavynq Automation about my inquiry and
+              scheduled appointments. Message frequency varies. Message and data rates may
+              apply. Reply STOP to opt out or HELP for help.
+            </label>
+          </div>
+          <p className="mt-2 pl-8 text-sm text-gray-600 dark:text-gray-300">
+            See our{" "}
+            <Link
+              to="/privacy"
+              className="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
+            >
+              Privacy Policy
+            </Link>{" "}
+            and{" "}
+            <Link
+              to="/terms"
+              className="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
+            >
+              Terms of Service
+            </Link>
+            .
+          </p>
+          {errors.smsConsent && (
+            <p
+              id="smsConsent-error"
+              className="mt-2 pl-8 text-sm text-red-600 dark:text-red-400"
+            >
+              {errors.smsConsent}
+            </p>
+          )}
         </div>
 
         {status === "error" && (
