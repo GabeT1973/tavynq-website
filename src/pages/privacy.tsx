@@ -5,7 +5,7 @@ export function Privacy() {
         Privacy Policy
       </h1>
       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-        Last updated: September 16, 2026
+        Last updated: September 24, 2026
       </p>
 
       <div className="mt-10 space-y-8 text-gray-700 dark:text-gray-300">
@@ -14,12 +14,10 @@ export function Privacy() {
             Overview
           </h2>
           <p className="mt-3 leading-relaxed">
-            Tavynq ("Tavynq," "we," "us," or "our") provides AI-powered SMS automation for
-            home service businesses, such as HVAC, plumbing, and roofing companies
-            ("client businesses"). When a client business misses an incoming call, Tavynq
-            automatically sends a text message to the caller on that business's behalf so
-            the inquiry doesn't go unanswered. This Privacy Policy explains what
-            information we collect in connection with that service and how we use it.
+            Tavynq Automation provides automation software to home service businesses. This
+            policy explains what information Tavynq collects through tavynq.com, our
+            contact form, and our own communications with prospects and customers, and how
+            we use it.
           </p>
         </section>
 
@@ -28,9 +26,10 @@ export function Privacy() {
             Information We Collect
           </h2>
           <p className="mt-3 leading-relaxed">
-            In order to provide this service, we collect the phone numbers of callers who
-            miss a call to a client business, and the content of any SMS messages
-            exchanged between the caller and the client business's automated number.
+            When you submit our contact form at tavynq.com/contact, we collect the
+            information you provide: your name, email address, phone number, company name,
+            and message. If you check the SMS consent box, we also record your consent and
+            the date and time it was given.
           </p>
         </section>
 
@@ -39,10 +38,41 @@ export function Privacy() {
             How We Use This Information
           </h2>
           <p className="mt-3 leading-relaxed">
-            Caller phone numbers and SMS message content are used solely to send automated
-            SMS replies related to missed calls for the client business the caller
-            contacted, and to maintain a record of that conversation so the business can
-            follow up appropriately.
+            We use the information we collect to respond to your inquiry, schedule
+            consultations, and send product demonstrations you request.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
+            SMS / Text Messaging
+          </h2>
+          <p className="mt-3 leading-relaxed">
+            Tavynq Automation sends text messages only to individuals who request them,
+            either by checking the SMS consent box on our contact form at
+            tavynq.com/contact or by texting START to our number. These messages relate to
+            your inquiry, scheduled appointments, and product demonstrations you request.
+            Message frequency varies. Message and data rates may apply. Reply STOP at any
+            time to opt out, or HELP for help.
+          </p>
+          <p className="mt-3 leading-relaxed">
+            No mobile information will be shared with third parties or affiliates for
+            marketing or promotional purposes. Text messaging originator opt-in data and
+            consent will not be shared with any third parties, except service providers
+            that deliver messages on our behalf, such as our messaging carrier.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
+            Services We Provide to Businesses
+          </h2>
+          <p className="mt-3 leading-relaxed">
+            Businesses that use Tavynq's services send messages from phone numbers
+            registered separately to those businesses, under their own brand and consent
+            practices. When we provide these services, we process information on that
+            business's behalf as a service provider, and that business's own privacy
+            policy governs how its customers' information is used.
           </p>
         </section>
 
@@ -51,31 +81,21 @@ export function Privacy() {
             We Do Not Sell or Share Your Data
           </h2>
           <p className="mt-3 leading-relaxed">
-            We do not sell or share phone numbers or message data with third parties for
-            marketing purposes. Information is shared only with the specific client
-            business the caller contacted, and with service providers (such as SMS
-            carriers and hosting infrastructure) strictly as needed to operate the
-            service.
+            We do not sell or share your personal information with third parties for
+            marketing purposes. Information is shared only with service providers (such as
+            our SMS carrier and hosting infrastructure) strictly as needed to operate our
+            contact form, email, and text messaging systems.
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-            Opting Out
+            Opting Out &amp; Contact
           </h2>
           <p className="mt-3 leading-relaxed">
-            Customers can reply STOP at any time to stop receiving automated text
-            messages from a client business.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-            Contact Us
-          </h2>
-          <p className="mt-3 leading-relaxed">
-            If you have questions about this Privacy Policy or how your information is
-            handled, please contact us at{" "}
+            Reply STOP at any time to stop receiving text messages from us, or HELP for
+            help. If you have questions about this Privacy Policy or how we handle your
+            information, please contact us at{" "}
             <a href="mailto:gabe@tavynq.com" className="underline underline-offset-2">
               gabe@tavynq.com
             </a>
