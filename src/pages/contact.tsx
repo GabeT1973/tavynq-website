@@ -71,10 +71,6 @@ export function Contact() {
       nextErrors.organizationName = "Please enter your organization name."
     }
     if (!form.message.trim()) nextErrors.message = "Please tell us how we can help."
-    if (!form.smsConsent) {
-      nextErrors.smsConsent =
-        "Please agree to receive text messages so we can confirm your appointment."
-    }
 
     setErrors(nextErrors)
     return Object.keys(nextErrors).length === 0
@@ -90,7 +86,7 @@ export function Contact() {
     try {
       const payload = {
         ...form,
-        consentTimestamp: new Date().toISOString(),
+        ...(form.smsConsent ? { consentTimestamp: new Date().toISOString() } : {}),
       }
 
       const response = await fetch("/api/contact", {
@@ -248,9 +244,7 @@ export function Contact() {
                   type="checkbox"
                   checked={form.smsConsent}
                   onChange={(e) => update("smsConsent", e.target.checked)}
-                  aria-invalid={!!errors.smsConsent}
-                  aria-describedby={errors.smsConsent ? "smsConsent-error" : undefined}
-                  className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-black/10 bg-white transition-colors hover:border-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white checked:border-blue-600 checked:bg-blue-600 aria-invalid:border-red-600 dark:border-white/10 dark:bg-gray-900 dark:hover:border-blue-500 dark:focus-visible:ring-offset-gray-950 dark:checked:border-blue-600 dark:checked:bg-blue-600 dark:aria-invalid:border-red-400"
+                  className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-black/10 bg-white transition-colors hover:border-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white checked:border-blue-600 checked:bg-blue-600 dark:border-white/10 dark:bg-gray-900 dark:hover:border-blue-500 dark:focus-visible:ring-offset-gray-950 dark:checked:border-blue-600 dark:checked:bg-blue-600"
                 />
                 <Check
                   aria-hidden="true"
@@ -285,14 +279,9 @@ export function Contact() {
             </Link>
             .
           </p>
-          {errors.smsConsent && (
-            <p
-              id="smsConsent-error"
-              className="mt-2 pl-8 text-sm text-red-600 dark:text-red-400"
-            >
-              {errors.smsConsent}
-            </p>
-          )}
+          <p className="mt-2 pl-8 text-sm text-gray-600 dark:text-gray-300">
+            Checking this box is optional and not required to submit this form.
+          </p>
         </div>
 
         {status === "error" && (

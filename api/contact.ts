@@ -67,8 +67,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       replyTo: email,
       subject: `New contact form submission from ${name}`,
       text: [
-        `SMS consent: ${smsConsent === true ? "Yes" : "No"}`,
-        `Consent timestamp: ${isNonEmptyString(consentTimestamp) ? consentTimestamp : "N/A"}`,
+        ...(smsConsent === true
+          ? [
+              "SMS consent: Yes",
+              `Consent timestamp: ${isNonEmptyString(consentTimestamp) ? consentTimestamp : "N/A"}`,
+            ]
+          : ["SMS consent: No"]),
         "",
         `Name: ${name}`,
         `Email: ${email}`,
