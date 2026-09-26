@@ -42,7 +42,7 @@ const inputClasses =
 
 function formatPhoneDisplay(digits: string): string {
   if (digits.length === 0) return ""
-  if (digits.length <= 3) return `(${digits}`
+  if (digits.length <= 3) return digits
   if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`
   return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`
 }
@@ -257,21 +257,31 @@ export function Contact() {
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-gray-900 dark:text-white">
             Phone Number
+            <span className="sr-only"> (US phone number with +1 country code)</span>
           </label>
-          <input
-            id="phone"
-            type="tel"
-            inputMode="numeric"
-            autoComplete="tel-national"
-            placeholder="(813) 555-1234"
-            value={formatPhoneDisplay(form.phone)}
-            onChange={handlePhoneChange}
-            onPaste={handlePhonePaste}
-            onBlur={handlePhoneBlur}
-            aria-invalid={!!errors.phone}
-            aria-describedby={errors.phone ? "phone-error" : undefined}
-            className={inputClasses}
-          />
+          <div className="relative mt-2">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-y-0 left-0 flex items-center gap-2 pl-3 text-sm text-gray-400 dark:text-gray-500"
+            >
+              <span>+1</span>
+              <span className="h-4 w-px bg-black/10 dark:bg-white/10" />
+            </span>
+            <input
+              id="phone"
+              type="tel"
+              inputMode="numeric"
+              autoComplete="tel-national"
+              placeholder="(813) 555-1234"
+              value={formatPhoneDisplay(form.phone)}
+              onChange={handlePhoneChange}
+              onPaste={handlePhonePaste}
+              onBlur={handlePhoneBlur}
+              aria-invalid={!!errors.phone}
+              aria-describedby={errors.phone ? "phone-error" : undefined}
+              className="w-full rounded-lg border border-black/10 bg-white py-2 pl-14 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
+            />
+          </div>
           {errors.phone && (
             <p id="phone-error" className="mt-1 text-sm text-red-600 dark:text-red-400">
               {errors.phone}
