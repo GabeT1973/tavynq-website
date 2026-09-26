@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react"
+import { useState, type ChangeEvent, type ClipboardEvent, type FormEvent } from "react"
 import { Link } from "react-router-dom"
 import { Check } from "lucide-react"
 import { usePageMeta } from "@/lib/use-page-meta"
@@ -40,6 +40,48 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const inputClasses =
   "mt-2 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
 
+function formatPhoneDisplay(digits: string): string {
+  if (digits.length === 0) return ""
+  if (digits.length <= 3) return `(${digits}`
+  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`
+}
+
+function caretIndexForDigitCount(display: string, digitCount: number): number {
+  if (digitCount <= 0) return 0
+  let seen = 0
+  for (let i = 0; i < display.length; i++) {
+    if (/\d/.test(display[i])) {
+      seen++
+      if (seen === digitCount) return i + 1
+    }
+  }
+  return display.length
+}
+
+function validatePhone(digits: string): string | undefined {
+  if (!digits) return undefined
+  if (digits.length < 10) return "Please enter a 10-digit US phone number."
+
+  const areaCode = digits.slice(0, 3)
+  const exchange = digits.slice(3, 6)
+
+  if (areaCode[0] === "0" || areaCode[0] === "1") {
+    return "Please enter a valid US phone number."
+  }
+  if (exchange[0] === "0" || exchange[0] === "1") {
+    return "Please enter a valid US phone number."
+  }
+  if (areaCode === "555") return "Please enter a valid US phone number."
+  if (/^(\d)\1{9}$/.test(digits)) return "Please enter a valid US phone number."
+
+  return undefined
+}
+
+function toE164(digits: string): string {
+  return `+1${digits}`
+}
+
 export function Contact() {
   usePageMeta(
     "Contact — Tavynq",
@@ -55,6 +97,53 @@ export function Contact() {
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
+  function clearPhoneErrorIfNowValid(digits: string) {
+    setErrors((prev) => (prev.phone && !validatePhone(digits) ? { ...prev, phone: undefined } : prev))
+  }
+
+  function handlePhoneChange(event: ChangeEvent<HTMLInputElement>) {
+    const input = event.target
+    const raw = input.value
+    const caretRaw = input.selectionStart ?? raw.length
+    const digitsBeforeCaret = raw.slice(0, caretRaw).replace(/\D/g, "").length
+
+    const previousFormatted = formatPhoneDisplay(form.phone)
+    const rawDigits = raw.replace(/\D/g, "").slice(0, 10)
+
+    let nextDigits = rawDigits
+    let nextDigitsBeforeCaret = digitsBeforeCaret
+
+    const deleted = raw.length < previousFormatted.length
+    if (deleted && rawDigits === form.phone) {
+      nextDigits = form.phone.slice(0, -1)
+      nextDigitsBeforeCaret = Math.min(digitsBeforeCaret, nextDigits.length)
+    }
+
+    const nextDisplay = formatPhoneDisplay(nextDigits)
+    input.value = nextDisplay
+    const caretIndex = caretIndexForDigitCount(nextDisplay, nextDigitsBeforeCaret)
+    input.setSelectionRange(caretIndex, caretIndex)
+
+    update("phone", nextDigits)
+    clearPhoneErrorIfNowValid(nextDigits)
+  }
+
+  function handlePhonePaste(event: ClipboardEvent<HTMLInputElement>) {
+    event.preventDefault()
+    let digits = event.clipboardData.getData("text").replace(/\D/g, "")
+    if (digits.length === 11 && digits.startsWith("1")) {
+      digits = digits.slice(1)
+    }
+    digits = digits.slice(0, 10)
+
+    update("phone", digits)
+    clearPhoneErrorIfNowValid(digits)
+  }
+
+  function handlePhoneBlur() {
+    setErrors((prev) => ({ ...prev, phone: validatePhone(form.phone) }))
+  }
+
   function validate(): boolean {
     const nextErrors: FormErrors = {}
 
@@ -64,6 +153,8 @@ export function Contact() {
     } else if (!EMAIL_PATTERN.test(form.email)) {
       nextErrors.email = "Please enter a valid email address."
     }
+    const phoneError = validatePhone(form.phone)
+    if (phoneError) nextErrors.phone = phoneError
     if (!form.organizationType) {
       nextErrors.organizationType = "Please select an organization type."
     }
@@ -86,6 +177,7 @@ export function Contact() {
     try {
       const payload = {
         ...form,
+        phone: form.phone ? toE164(form.phone) : "",
         ...(form.smsConsent ? { consentTimestamp: new Date().toISOString() } : {}),
       }
 
@@ -169,10 +261,22 @@ export function Contact() {
           <input
             id="phone"
             type="tel"
-            value={form.phone}
-            onChange={(e) => update("phone", e.target.value)}
+            inputMode="numeric"
+            autoComplete="tel-national"
+            placeholder="(813) 555-1234"
+            value={formatPhoneDisplay(form.phone)}
+            onChange={handlePhoneChange}
+            onPaste={handlePhonePaste}
+            onBlur={handlePhoneBlur}
+            aria-invalid={!!errors.phone}
+            aria-describedby={errors.phone ? "phone-error" : undefined}
             className={inputClasses}
           />
+          {errors.phone && (
+            <p id="phone-error" className="mt-1 text-sm text-red-600 dark:text-red-400">
+              {errors.phone}
+            </p>
+          )}
         </div>
 
         <div>
