@@ -6,27 +6,27 @@ import { site } from "@/config/site"
 const steps = [
   {
     icon: Search,
-    title: "We learn your business",
+    title: "We learn your MSP",
     description:
-      "A kickoff call to pin down your ideal client, your offer, and exactly what a qualified call means for you, in writing.",
+      "A kickoff call to pin down your metro, the businesses you serve best, your services, and exactly what a qualified call means for you, in writing.",
   },
   {
     icon: ListChecks,
-    title: "We build your lists and emails",
+    title: "We find businesses with a reason to talk",
     description:
-      "We find and verify the right decision-makers and write short, plain-text emails. Everything sends from separate domains we set up, never your own.",
+      "We build lists of local businesses showing public signals, verify every contact, and write short plain-text emails. You approve every message before it goes out.",
   },
   {
     icon: Rocket,
     title: "Campaigns go live",
     description:
-      "After a 14-day inbox warmup, emails go out in small daily batches. Every interested reply gets a response within minutes.",
+      "After a 14-day inbox warmup on separate sending domains, emails go out in small daily batches. Every interested reply gets a response within minutes.",
   },
   {
     icon: CalendarCheck,
     title: "Qualified calls land on your calendar",
     description:
-      "Interested prospects book a time that suits them. You show up and do what you do best: close.",
+      "Prospects book a time that suits them, and you get a one-page Meeting Brief before every call. You show up and close.",
   },
 ]
 
@@ -41,7 +41,7 @@ export function HowItWorks() {
         id="how-it-works-heading"
         eyebrow="How it works"
         title={site.offer.systemName}
-        description="Four steps from kickoff to qualified sales calls on your calendar. No cold calling, ever."
+        description="Four steps from kickoff to qualified sales calls on your calendar. Email only, no cold callers."
       />
       <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, index) => (

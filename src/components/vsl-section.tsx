@@ -54,18 +54,8 @@ function PlayBadge() {
   )
 }
 
-function VideoPlaceholder() {
-  return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-gray-100 to-gray-200 text-center dark:from-gray-900 dark:to-gray-950">
-      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-600/10 text-blue-600 ring-8 ring-blue-600/5 dark:text-blue-400">
-        <Play aria-hidden="true" className="ml-1 h-6 w-6" />
-      </span>
-      <p className="px-6 text-sm text-gray-600 dark:text-gray-300">Video coming soon.</p>
-    </div>
-  )
-}
-
-export function VslSection() {
+// Only rendered when a YouTube ID is set in src/config/site.ts (see pages/home.tsx).
+export function VslSection({ videoId }: { videoId: string }) {
   return (
     <section
       id="breakdown"
@@ -76,11 +66,11 @@ export function VslSection() {
         id="breakdown-heading"
         eyebrow="Watch first"
         title="The 10-minute breakdown"
-        description="Exactly how the system finds your ideal clients, emails them, and puts qualified calls on your calendar."
+        description="How we find local businesses with a reason to talk, email them, and put qualified calls on your calendar."
       />
       <Reveal className="mx-auto mt-10 max-w-4xl">
         <div className="relative aspect-video overflow-hidden rounded-2xl border border-black/5 bg-gray-100 shadow-xl dark:border-white/10 dark:bg-gray-900">
-          {site.youtubeId ? <VideoEmbed videoId={site.youtubeId} /> : <VideoPlaceholder />}
+          <VideoEmbed videoId={videoId} />
         </div>
       </Reveal>
     </section>

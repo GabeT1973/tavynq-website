@@ -35,7 +35,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-screen-xl px-4 text-sm text-gray-600 dark:text-gray-400 md:px-8">
         <div className="flex items-center justify-center gap-2 border-b border-black/5 py-4 dark:border-white/5 md:justify-start">
           <UsaFlag />
-          <p>Proudly built and operated in the USA. Serving B2B companies nationwide.</p>
+          <p>Proudly built and operated in the USA. Working with MSPs nationwide, one per metro.</p>
         </div>
         <div className="flex flex-col items-center justify-between gap-6 py-8 text-center md:flex-row md:items-start md:text-left">
           <div className="space-y-1">

@@ -4,8 +4,8 @@ import { SectionHeading } from "@/components/section-heading"
 // Add an entry once a client has agreed to be featured, then un-comment
 // <ResultsSection /> in src/pages/home.tsx.
 type Result = {
-  client: string // e.g. "Acme Recruiting" (with permission) or "A 12-person recruitment agency"
-  outcome: string // e.g. "9 qualified calls in the first 60 days"
+  client: string // e.g. "Acme IT" (with permission) or "A 15-person MSP in Ohio"
+  outcome: string // a real, verifiable result in plain words
   detail?: string // optional one- or two-sentence summary
 }
 

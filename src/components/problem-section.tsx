@@ -1,25 +1,25 @@
-import { CalendarClock, TrendingDown, Users } from "lucide-react"
+import { CalendarClock, ShieldAlert, Wrench } from "lucide-react"
 import { Reveal } from "@/components/reveal"
 import { SectionHeading } from "@/components/section-heading"
 
 const problems = [
   {
     icon: CalendarClock,
-    title: "You can't schedule word of mouth",
+    title: "Referrals don't run on a schedule",
     description:
-      "Referrals arrive when they arrive. When the pipeline runs dry, there's no switch to turn them back on.",
+      "A happy client mentions you to a friend, and a deal shows up. Great when it happens, impossible to plan a hire or a quarter around.",
   },
   {
-    icon: TrendingDown,
-    title: "Feast, then famine",
+    icon: Wrench,
+    title: "The owner is the sales team",
     description:
-      "Busy months leave no time to sell, so the quiet months that follow hit twice as hard.",
+      "When you're closing deals, managing techs, and handling escalations, prospecting is the first thing that slips.",
   },
   {
-    icon: Users,
-    title: "Your growth depends on other people",
+    icon: ShieldAlert,
+    title: "Outbound feels like a risk to your name",
     description:
-      "If a few happy clients stop talking about you, new business stops too. That's not a plan.",
+      "Spammy blasts and pushy cold callers can damage a reputation you spent years building. So most MSPs never start.",
   },
 ]
 
@@ -33,8 +33,8 @@ export function ProblemSection() {
       <SectionHeading
         id="problem-heading"
         eyebrow="The problem"
-        title="Referrals are great. Until they stop."
-        description="Most firms grow on word of mouth. It works, right up until it doesn't."
+        title="Referrals built your MSP. They can't be scheduled."
+        description="Most MSPs grow on word of mouth. It works, right up until the pipeline goes quiet."
       />
       <div className="mt-12 grid gap-6 md:grid-cols-3">
         {problems.map((problem, index) => (

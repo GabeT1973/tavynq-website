@@ -3,11 +3,47 @@ import { ChevronDown } from "lucide-react"
 import { SectionHeading } from "@/components/section-heading"
 import { site } from "@/config/site"
 
+const linkClasses =
+  "text-blue-600 underline underline-offset-2 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+
 const faqs: { question: string; answer: ReactNode }[] = [
+  {
+    question: "How do you find businesses with a reason to talk?",
+    answer:
+      "Public records and public signals only: things like published email security records, job postings for in-house IT roles, new office announcements, and visible headcount growth. We never scan, probe, or test anyone's systems.",
+  },
   {
     question: "Do you email from my domain?",
     answer:
-      "No. We send from separate domains and inboxes we set up and warm up for you. Your main domain and its reputation are never at risk.",
+      "No. We send from separate domains and inboxes we set up and warm up for you, so your main domain's reputation is never at risk. You approve every message before it's sent, and if you leave, the domains are yours.",
+  },
+  {
+    question: "What's in the Meeting Brief?",
+    answer:
+      "A one-page summary you get before every call: company size, email provider, any gaps in their public email security records, the signal that triggered our outreach, their exact reply, and suggested opening questions.",
+  },
+  {
+    question: "What counts as a qualified call?",
+    answer: (
+      <>
+        A business that fits the ideal client profile we agree on in writing, a
+        decision-maker on the call (or one they bring), a call they booked themselves, and
+        they actually show up. See the{" "}
+        <a href="#qualified-call" className={linkClasses}>
+          full checklist
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    question: "What happens if a call is a bad fit?",
+    answer: `You have ${site.badFitWindowHours} hours after the call to flag it as a bad fit against our written criteria. Flagged calls aren't billed, and neither are no-shows. We also use the feedback to tighten targeting.`,
+  },
+  {
+    question: "Do you work with other MSPs in my area?",
+    answer:
+      "No. We work with one MSP per metro and never with your local competitor.",
   },
   {
     question: "How long until calls start?",
@@ -15,35 +51,14 @@ const faqs: { question: string; answer: ReactNode }[] = [
       "Usually about 3–4 weeks. Most of that is the 14-day inbox warmup, which protects deliverability. Once campaigns go live, calls start booking as replies come in.",
   },
   {
-    question: "What counts as a qualified call?",
-    answer: (
-      <>
-        A prospect who fits the ideal client profile we agree on in writing, is a
-        decision-maker (or brings one), booked the call themselves, and actually shows up.
-        No-shows are never billed. See the{" "}
-        <a
-          href="#qualified-call"
-          className="text-blue-600 underline underline-offset-2 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
-        >
-          full definition
-        </a>
-        .
-      </>
-    ),
-  },
-  {
     question: "Is there a contract?",
     answer:
-      "No long-term contract. Setup is a one-time fee, then you're billed per qualified call that shows up. Either side can stop with 14 days' notice.",
+      "No long-term contract. Setup is a one-time fee, then you're billed per qualified call. Either side can stop with 14 days' notice, and you keep the domains, lists, and copy.",
   },
   {
-    question: "Who do you work with?",
-    answer: `B2B companies that sell to other businesses. Right now we focus on ${site.niche}, so our lists, emails, and replies are built for your market.`,
-  },
-  {
-    question: "Will I have to make cold calls?",
+    question: "Will anyone cold call prospects in my name?",
     answer:
-      "Never. The only calls on your calendar are ones prospects booked themselves after replying to an email.",
+      "Never. It's email only, no cold callers. The only calls on your calendar are ones prospects booked themselves after replying.",
   },
 ]
 
@@ -60,7 +75,7 @@ export function Faq() {
         id="faq-heading"
         eyebrow="FAQ"
         title="Questions, answered"
-        description="The things people ask most before booking a call."
+        description="What MSP owners usually ask before booking a call."
       />
       <div className="mx-auto mt-12 max-w-3xl space-y-3">
         {faqs.map((faq, index) => {

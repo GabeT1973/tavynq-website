@@ -18,11 +18,11 @@ export function FinalCta() {
           id="book-heading"
           className="text-3xl font-semibold tracking-tight text-balance text-gray-900 dark:text-white md:text-4xl"
         >
-          Ready to stop waiting on referrals?
+          Is your metro still open?
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-gray-600 dark:text-gray-300">
-          Book a call. We'll look at your market, show you who we'd target, and tell you
-          honestly whether the system is a fit.
+          We work with one MSP per metro. Book a call and we'll check yours, show you the
+          kinds of signals we'd target, and tell you honestly whether it's a fit.
         </p>
         <BookCallLink className="mt-8" />
         <p className="mt-6 text-sm text-gray-600 dark:text-gray-400">

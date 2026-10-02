@@ -2,6 +2,7 @@ import { useEffect, type MouseEvent } from "react"
 import { useLocation } from "react-router-dom"
 import { PlayCircle } from "lucide-react"
 import { BookCallLink, pillSecondary } from "@/components/book-call-link"
+import { DifferentSection } from "@/components/different-section"
 import { Faq } from "@/components/faq"
 import { FinalCta } from "@/components/final-cta"
 import { HowItWorks } from "@/components/how-it-works"
@@ -15,6 +16,9 @@ import { VslSection } from "@/components/vsl-section"
 import { site } from "@/config/site"
 import { scrollToId } from "@/lib/scroll"
 import { usePageMeta } from "@/lib/use-page-meta"
+
+// The video section and its "Watch" button only show once a YouTube ID is set in the config.
+const hasVideo = site.youtubeId.length > 0
 
 export function Home() {
   const location = useLocation()
@@ -35,9 +39,9 @@ export function Home() {
       <HeroSection
         eyebrow={site.offer.systemName}
         title={{
-          regular: `${site.offer.headlineStart} ${site.niche}`,
-          gradient: site.offer.headlineResult,
-          end: site.offer.headlineEnd,
+          regular: site.offer.headline.start,
+          gradient: site.offer.headline.highlight,
+          end: site.offer.headline.end,
         }}
         description={site.offer.subhead}
         gridOptions={{
@@ -50,22 +54,25 @@ export function Home() {
       >
         <div className="flex flex-col items-center justify-center gap-3 pt-2 sm:flex-row">
           <BookCallLink className="w-full sm:w-auto" />
-          <a
-            href="#breakdown"
-            onClick={handleWatchClick}
-            className={`${pillSecondary} w-full px-6 py-3 text-sm sm:w-auto`}
-          >
-            <PlayCircle aria-hidden="true" className="h-4 w-4" />
-            Watch the 10-minute breakdown
-          </a>
+          {hasVideo && (
+            <a
+              href="#breakdown"
+              onClick={handleWatchClick}
+              className={`${pillSecondary} w-full px-6 py-3 text-sm sm:w-auto`}
+            >
+              <PlayCircle aria-hidden="true" className="h-4 w-4" />
+              Watch the 10-minute breakdown
+            </a>
+          )}
         </div>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          No cold calling. No retainer. No-shows are never billed.
+          Email only, no cold callers. No-shows and bad-fit calls are never billed.
         </p>
       </HeroSection>
-      <VslSection />
+      {hasVideo && <VslSection videoId={site.youtubeId} />}
       <ProblemSection />
       <HowItWorks />
+      <DifferentSection />
       <IncludedSection />
       <PricingSection />
       <ProofSection />
