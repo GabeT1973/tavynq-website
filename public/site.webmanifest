@@ -1,7 +1,7 @@
 {
   "name": "Tavynq",
   "short_name": "Tavynq",
-  "description": "B2B lead generation: qualified sales calls booked with done-for-you cold email.",
+  "description": "Qualified sales calls for MSPs, booked with signal-based cold email.",
   "start_url": "/",
   "icons": [
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },

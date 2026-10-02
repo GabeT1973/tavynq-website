@@ -13,8 +13,9 @@ export function Privacy() {
     <LegalPage title="Privacy Policy" lastUpdated="October 1, 2026">
       <LegalSection title="Overview">
         <p>
-          {site.legalName} ("{site.name}," "we," "us") is a B2B lead generation agency. We
-          use email outreach to book sales calls for our own business and for our clients.
+          {site.legalName} ("{site.name}," "we," "us") is a lead generation agency for managed
+          IT service providers (MSPs). We use email outreach to book sales calls for our own
+          business and for our clients.
           This policy explains what information we collect through tavynq.com, our
           outreach, and our client work, and how we use it.
         </p>
@@ -33,6 +34,15 @@ export function Privacy() {
           To run outreach, we collect professional contact details (such as name, job title,
           company, work email, and company website) from business data providers and
           publicly available sources. We verify email addresses before sending.
+        </p>
+        <p>
+          <strong className="font-medium text-gray-900 dark:text-white">
+            Public business signals.
+          </strong>{" "}
+          We also review publicly available information about businesses, such as published
+          DNS and email security records, job postings, office announcements, and company
+          size. We only look at public information. We never scan, probe, or test anyone's
+          systems.
         </p>
         <p>
           <strong className="font-medium text-gray-900 dark:text-white">
@@ -65,7 +75,9 @@ export function Privacy() {
         <p>
           When we run campaigns for a client, we process prospect information on that
           client's behalf and under our agreement with them. We use it only to run that
-          client's campaigns.
+          client's campaigns. If you book a call with one of our clients, we share a short
+          brief with them before the call, including your business details, the public
+          information that led to our outreach, and your reply.
         </p>
       </LegalSection>
 

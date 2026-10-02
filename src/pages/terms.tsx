@@ -21,9 +21,11 @@ export function Terms() {
 
       <LegalSection title="Our Services">
         <p>
-          {site.name} provides B2B lead generation: we build prospect lists, write and send
-          email outreach from sending domains we manage, handle replies, and book sales
-          calls on our clients' calendars.
+          {site.name} provides lead generation for managed IT service providers: we research
+          public business signals, build prospect lists, write and send email outreach from
+          sending domains we manage, handle replies, and book sales calls on our clients'
+          calendars. We use public information only and never scan or test anyone's
+          systems.
         </p>
         <p>
           Each client engagement is governed by a separate written agreement covering scope,
@@ -36,8 +38,9 @@ export function Terms() {
         <p>
           Prices shown on this site are a general guide. Your final pricing is set in your
           written agreement. Our standard model is a one-time setup fee plus a fee for each
-          qualified call that shows up. No-shows are not billed. Invoices are due as stated
-          in your agreement.
+          qualified call that takes place. No-shows are not billed, and neither are calls you
+          flag as a bad fit within {site.badFitWindowHours} hours under the written criteria
+          in your agreement. Invoices are due as stated in your agreement.
         </p>
       </LegalSection>
 

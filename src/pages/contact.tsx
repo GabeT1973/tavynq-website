@@ -72,7 +72,7 @@ function toE164(digits: string): string {
 export function Contact() {
   usePageMeta(
     `Contact | ${site.name}`,
-    `Questions about ${site.name}'s B2B lead generation? Send us a message and we'll get back to you.`,
+    `Questions about ${site.name}'s lead generation for ${site.niche.short}? Send us a message and we'll get back to you.`,
   )
 
   const [form, setForm] = useState<FormState>(initialState)
@@ -203,7 +203,7 @@ export function Contact() {
         Get in touch
       </h1>
       <p className="mt-3 text-gray-600 dark:text-gray-300">
-        Tell us what you sell and who you sell to, and we'll get back to you by email.
+        Tell us about your MSP and your metro, and we'll get back to you by email.
         Rather talk it through?{" "}
         <a
           href={site.calendlyUrl}
@@ -308,7 +308,7 @@ export function Contact() {
           <textarea
             id="message"
             rows={5}
-            placeholder="What you sell, who your ideal clients are, and where new business comes from today."
+            placeholder="Your metro, the businesses you serve best, and where new clients come from today."
             value={form.message}
             onChange={(e) => update("message", e.target.value)}
             className={inputClasses}

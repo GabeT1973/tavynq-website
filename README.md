@@ -1,17 +1,19 @@
 # Tavynq website
 
-Marketing site for **Tavynq**, a B2B lead generation agency. We use done-for-you cold email
-to book qualified sales calls for B2B companies. One-page site with a VSL, pricing, FAQ, and
-a "Book a call" (Calendly) call to action. Live at https://tavynq.com.
+Marketing site for **Tavynq**, a lead generation agency for managed IT service providers
+(MSPs). We use signal-based cold email to book qualified sales calls from local businesses.
+One-page site with pricing, FAQ, an optional VSL, and a "Book a call" (Calendly) call to
+action. Live at https://tavynq.com.
 
 ## Editing content
 
 Almost everything you'd want to change lives in **`src/config/site.ts`**:
 
 - niche, offer/headline, hero subhead
-- setup fee and per-call price ranges
+- pricing plans (Founding Partner and Standard) and the bad-fit window
 - the "qualified call" definition
-- Calendly URL, YouTube video ID (VSL), contact email, mailing address
+- Calendly URL, YouTube video ID (the video section stays hidden until it is set), contact
+  email, mailing address
 - page title, meta description, and social preview text
 
 `index.html`'s `<head>` (title, meta, Open Graph, JSON-LD) is filled from that file at build
