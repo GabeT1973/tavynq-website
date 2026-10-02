@@ -126,8 +126,19 @@
     @apply bg-background text-foreground;
     }
   html {
-    @apply font-sans scroll-smooth;
+    @apply font-sans scroll-smooth scroll-pt-20;
     }
+  /* Visible keyboard focus everywhere, in both themes. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 @keyframes grid {

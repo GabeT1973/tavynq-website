@@ -7,21 +7,55 @@ type ThemeContextValue = {
   toggleTheme: () => void
 }
 
+// Must match the key read by the inline script in index.html, which applies the theme
+// before first paint so there's no flash of the wrong theme.
+const STORAGE_KEY = "theme"
+
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined)
 
+function readStoredTheme(): Theme | null {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    return stored === "light" || stored === "dark" ? stored : null
+  } catch {
+    return null
+  }
+}
+
+function systemTheme(): Theme {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  // Always starts in dark mode on a fresh load, regardless of system preference.
-  // The user's manual choice lives only in this component's state, so it naturally
-  // resets to dark on the next full page load and persists across client-side
-  // route changes for the rest of the session.
-  const [theme, setTheme] = useState<Theme>("dark")
+  // Follows the system preference until the user picks a theme with the toggle;
+  // after that, their choice is remembered in localStorage.
+  const [theme, setTheme] = useState<Theme>(() => readStoredTheme() ?? systemTheme())
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark")
+    const root = document.documentElement
+    root.classList.toggle("dark", theme === "dark")
+    root.style.colorScheme = theme
   }, [theme])
 
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-color-scheme: dark)")
+    function handleChange(event: MediaQueryListEvent) {
+      if (!readStoredTheme()) setTheme(event.matches ? "dark" : "light")
+    }
+    query.addEventListener("change", handleChange)
+    return () => query.removeEventListener("change", handleChange)
+  }, [])
+
   function toggleTheme() {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+    setTheme((prev) => {
+      const next = prev === "dark" ? "light" : "dark"
+      try {
+        localStorage.setItem(STORAGE_KEY, next)
+      } catch {
+        // Storage can be blocked (private mode); the toggle still works for this visit.
+      }
+      return next
+    })
   }
 
   return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
