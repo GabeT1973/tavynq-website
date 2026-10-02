@@ -1,12 +1,92 @@
-# Tavynq website
+# Tavynq - Project Context
 
-Marketing site for Tavynq: missed-call text-back automation for HVAC, plumbing, and roofing
-companies in the Tampa Bay / Pasco area. Hosted on Vercel, repo on GitHub (GabeT1973).
+## Who I am
+Gabriel, solo founder. I work a 9-5 and want this
+business to replace it. Lean budget: about $300
+total startup. Keep tasks small and explain what
+you're doing in plain English.
 
-## Goal of this site
-- Convert local trade business owners into booked demo calls.
-- Audience: busy owners, often on their phone, not technical. Clear, plain, trustworthy copy.
-- Every page needs one obvious call to action (book a call / text us).
+## The business (revamped Oct 2026)
+- OLD: missed-call text-back automation for HVAC,
+  plumbing, and roofing. Now PARKED. Do not use it
+  in site copy, emails, or sales material unless
+  I ask.
+- NEW: B2B lead generation agency. We use cold
+  email to book qualified sales calls for B2B
+  businesses. We use the same system to win our
+  own clients, which proves it works.
+- Niche: TBD. Placeholder: "recruitment agencies".
+  Must be B2B, broad, and email-responsive. No
+  trades or homeowner-facing niches.
+- Offer: "We help [niche] land 3-5 new clients in
+  90 days without relying on referrals, using the
+  Tavynq Pipeline System."
+- Pricing: one-time setup fee ($1,500-$3,000) +
+  $200-$300 per qualified call that shows up.
+  "Qualified call" is defined in writing.
+  No-shows are not billed.
+- Edge: niche focus + every interested reply gets
+  a response within minutes.
+
+## How the business runs
+Funnel: cold email > reply > video (VSL) > book
+call (Calendly) > sales call > invoice (Stripe)
+> client onboarding > run the same system for
+the client.
+- NO cold calling. The only calls are ones
+  prospects book themselves.
+
+## Lean tech stack
+- Website: this repo (GitHub: GabeT1973),
+  deployed on Vercel
+- Sending: lookalike .com domains (Porkbun),
+  Microsoft 365 Business Basic month-to-month,
+  3 inboxes per domain, Smartlead Base,
+  20-30 emails per inbox per day, 14-day warmup
+- Leads: Apollo free account for filtering,
+  small batches (~2,000), verify before sending
+- Automation: n8n. Claude classifies replies.
+  Smartlead webhooks are Pro-only, so n8n watches
+  the Outlook inboxes directly instead.
+- Free tools: Calendly, Google Meet, unlisted
+  YouTube for the VSL
+
+## Rules
+- Never send cold email from tavynq.com. Burner
+  lookalike domains only.
+- No fake testimonials, stats, client logos,
+  reviews, or case studies. Real results only.
+  Use clearly marked placeholders until then.
+- Cold emails: short, plain text, readable in
+  20 seconds, include opt-out + business address
+  (CAN-SPAM).
+- Prefer free tools. Ask before adding any paid
+  service or heavy library.
+- Ask before big or destructive changes. Work on
+  branches. Never merge to main without my OK.
+
+## Website goal
+One page: nav, hero offer, VSL, problem, how it
+works (4 steps), what's included, pricing, proof
+line, FAQ, final CTA, footer. Keep the existing
+aesthetic and dark/light mode. All editable values
+(niche, prices, Calendly URL, YouTube ID, email,
+address) live in ONE config file.
+
+## Roadmap (what you'll help me build)
+1. Website revamp (now)
+2. Lead list scripts: clean, dedupe, filter, and
+   merge verification results for CSVs
+3. n8n reply agent: classify replies, draft
+   responses, text me hot leads, auto-send the
+   VSL + Calendly link to clear "yes" replies
+4. Client onboarding form + weekly client report
+   generator from Smartlead exports
+5. Optional: AI-written first lines per lead
+
+---
+
+# Codebase (technical notes)
 
 ## Stack
 - Framework: React 19 + TypeScript SPA, built with Vite 8. Routing via `react-router-dom` v7
@@ -39,5 +119,5 @@ companies in the Tampa Bay / Pasco area. Hosted on Vercel, repo on GitHub (GabeT
 - Keep pages fast: optimize images, avoid heavy libraries.
 - Forms / webhooks go to n8n. Webhook URLs live in env vars, never hardcoded.
 - Work on a branch, commit when a step is done. Ask before pushing to `main` (that deploys live).
-- Local SEO matters: include service area (Lutz, Land O' Lakes, Wesley Chapel, Tampa) in
-  titles/meta where natural.
+- Every page needs one obvious call to action (book a call).
+- Never commit `My workflow.json` (n8n export, may contain private webhook URLs). It's gitignored.
