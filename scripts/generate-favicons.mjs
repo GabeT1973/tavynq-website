@@ -14,30 +14,16 @@ const T = [
   "00100",
   "00100",
 ];
-const A = [
-  "01110",
-  "10001",
-  "10001",
-  "11111",
-  "10001",
-  "10001",
-  "10001",
-];
-
-const GAP = 1;
-const GLYPH_W = T[0].length + GAP + A[0].length; // 11
+// Single "T" monogram for Tavynq.
+const GLYPH_W = T[0].length; // 5
 const GLYPH_H = T.length; // 7
 
-function buildMask() {
-  const mask = [];
-  for (let row = 0; row < GLYPH_H; row++) {
-    let line = T[row] + "0".repeat(GAP) + A[row];
-    mask.push(line.split("").map((c) => c === "1"));
-  }
-  return mask;
-}
+const MASK = T.map((line) => line.split("").map((c) => c === "1"));
 
-const MASK = buildMask();
+// Glyph fills ~60% of the icon along its longest side, centered.
+function glyphScale(size) {
+  return Math.max(1, Math.floor((size * 0.6) / Math.max(GLYPH_W, GLYPH_H)));
+}
 
 function crc32(buf) {
   let c;
@@ -71,8 +57,7 @@ function chunk(type, data) {
 function renderPng(size) {
   const rgba = Buffer.alloc(size * size * 4);
 
-  // Scale factor: glyphs occupy ~62% of the icon's width, centered.
-  const scale = Math.max(1, Math.floor((size * 0.62) / GLYPH_W));
+  const scale = glyphScale(size);
   const glyphPxW = GLYPH_W * scale;
   const glyphPxH = GLYPH_H * scale;
   const offsetX = Math.floor((size - glyphPxW) / 2);
@@ -180,3 +165,30 @@ for (const size of sizes) {
 
 buildIco([16, 32, 48], `${outDir}/favicon.ico`);
 console.log("wrote favicon.ico");
+
+function buildSvg(outPath) {
+  const size = 512;
+  const cell = glyphScale(size);
+  const offsetX = Math.floor((size - GLYPH_W * cell) / 2);
+  const offsetY = Math.floor((size - GLYPH_H * cell) / 2);
+  const hex = (c) => "#" + c.slice(0, 3).map((v) => v.toString(16).padStart(2, "0")).join("");
+  const rects = [];
+  MASK.forEach((row, y) =>
+    row.forEach((on, x) => {
+      if (on) {
+        rects.push(`<rect x="${offsetX + x * cell}" y="${offsetY + y * cell}" width="${cell}" height="${cell}"/>`);
+      }
+    }),
+  );
+  const svg = [
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="Tavynq">`,
+    `  <rect width="${size}" height="${size}" rx="110" fill="${hex(BG)}"/>`,
+    `  <g fill="${hex(FG)}">${rects.join("")}</g>`,
+    "</svg>",
+    "",
+  ].join("\n");
+  writeFileSync(outPath, svg);
+}
+
+buildSvg(`${outDir}/favicon.svg`);
+console.log("wrote favicon.svg");
