@@ -15,18 +15,29 @@ you're doing in plain English.
   email to book qualified sales calls for B2B
   businesses. We use the same system to win our
   own clients, which proves it works.
-- Niche: TBD. Placeholder: "recruitment agencies".
-  Must be B2B, broad, and email-responsive. No
-  trades or homeowner-facing niches.
-- Offer: "We help [niche] land 3-5 new clients in
-  90 days without relying on referrals, using the
-  Tavynq Pipeline System."
-- Pricing: one-time setup fee ($1,500-$3,000) +
-  $200-$300 per qualified call that shows up.
-  "Qualified call" is defined in writing.
-  No-shows are not billed.
-- Edge: niche focus + every interested reply gets
-  a response within minutes.
+- Niche: managed IT service providers (MSPs).
+  We email local businesses on the MSP's behalf.
+  No trades or homeowner-facing niches.
+- Offer: "We fill MSP calendars with qualified
+  sales calls from local businesses with a real
+  reason to talk, without relying on referrals."
+  Delivered via the Tavynq Pipeline System.
+- Pricing: Founding Partner (first 3 MSPs only):
+  $750 setup + $250 per qualified call, in
+  exchange for permission to publish a case
+  study. Standard: $1,500 setup + $250 per
+  qualified call. "Qualified call" is defined in
+  writing. No-shows are never billed.
+- Edge: signal-based targeting (public signals
+  only, never scan anyone's systems), Bad-Fit Free
+  (24h to flag a call; flagged calls not billed),
+  a one-page Meeting Brief before every call,
+  email only with client approval of every
+  message, client owns domains/lists/copy, one
+  MSP per metro, replies within minutes.
+- Site copy: no statistics, reply rates, or
+  results claims until we have real data. No
+  compliance deadline claims (CMMC, HIPAA).
 
 ## How the business runs
 Funnel: cold email > reply > video (VSL) > book

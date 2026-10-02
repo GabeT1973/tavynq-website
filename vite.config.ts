@@ -28,12 +28,12 @@ function siteMetaPlugin(): Plugin {
       },
       {
         '@type': 'Service',
-        name: `${site.name} B2B lead generation`,
+        name: `${site.name} lead generation for ${site.niche.short}`,
         serviceType: 'B2B lead generation and appointment setting',
         description: site.seo.description,
         provider: { '@id': `${site.url}/#organization` },
         areaServed: { '@type': 'Country', name: 'United States' },
-        audience: { '@type': 'BusinessAudience', name: site.niche },
+        audience: { '@type': 'BusinessAudience', name: site.niche.full },
       },
     ],
   }
