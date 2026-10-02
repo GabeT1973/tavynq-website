@@ -18,10 +18,13 @@ you're doing in plain English.
 - Niche: managed IT service providers (MSPs).
   We email local businesses on the MSP's behalf.
   No trades or homeowner-facing niches.
-- Offer: "We fill MSP calendars with qualified
-  sales calls from local businesses with a real
-  reason to talk, without relying on referrals."
+- Offer: "Qualified sales calls for MSPs, without
+  relying on referrals." We email local
+  businesses with a real reason to talk.
   Delivered via the Tavynq Pipeline System.
+- Contract: month-to-month, 14 days' written
+  notice either side. Setup fee non-refundable
+  once campaigns launch. Calls billed monthly.
 - Pricing: Founding Partner (first 3 MSPs only):
   $750 setup + $250 per qualified call, in
   exchange for permission to publish a case
@@ -75,6 +78,10 @@ the client.
   service or heavy library.
 - Ask before big or destructive changes. Work on
   branches. Never merge to main without my OK.
+- Outreach that mentions security gaps (e.g.
+  public email security records) must be factual
+  and helpful, never alarming. No scare tactics
+  or threat-based urgency.
 
 ## Website goal
 One page: nav, hero offer, VSL, problem, how it

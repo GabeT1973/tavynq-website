@@ -40,7 +40,17 @@ export function Terms() {
           written agreement. Our standard model is a one-time setup fee plus a fee for each
           qualified call that takes place. No-shows are not billed, and neither are calls you
           flag as a bad fit within {site.badFitWindowHours} hours under the written criteria
-          in your agreement. Invoices are due as stated in your agreement.
+          in your agreement. Qualified calls are billed monthly, and invoices are due as
+          stated in your agreement.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="Term and Cancellation">
+        <p>
+          There is no long-term contract. Services are month-to-month, and either side can
+          cancel with {site.cancellationNoticeDays} days' written notice. The setup fee covers
+          domains, inboxes, and campaign setup, so it is non-refundable once campaigns
+          launch.
         </p>
       </LegalSection>
 

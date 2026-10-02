@@ -4,6 +4,8 @@
 
 // Hours a client has after each call to flag it as a bad fit (Bad-Fit Free).
 const badFitWindowHours = 24
+// Days of written notice either side gives to cancel (FAQ + Terms).
+const cancellationNoticeDays = 14
 
 export const site = {
   name: "Tavynq",
@@ -19,15 +21,18 @@ export const site = {
 
   offer: {
     systemName: "The Tavynq Pipeline System",
+    // Rendered as: start + highlighted part (blue gradient) + end. Any part can be empty.
     headline: {
-      start: "We fill MSP calendars with",
-      highlight: "qualified sales calls",
-      end: "from local businesses with a real reason to talk, without relying on referrals.",
+      start: "",
+      highlight: "Qualified sales calls",
+      end: "for MSPs, without relying on referrals.",
     },
-    subhead: "One setup fee, then you only pay for qualified calls that actually happen.",
+    subhead:
+      "We email local businesses with a real reason to talk. One setup fee, then you only pay for qualified calls that actually happen.",
   },
 
   badFitWindowHours,
+  cancellationNoticeDays,
 
   pricing: {
     plans: [

@@ -52,8 +52,7 @@ const faqs: { question: string; answer: ReactNode }[] = [
   },
   {
     question: "Is there a contract?",
-    answer:
-      "No long-term contract. Setup is a one-time fee, then you're billed per qualified call. Either side can stop with 14 days' notice, and you keep the domains, lists, and copy.",
+    answer: `No long-term contract. It's month-to-month, and either side can cancel with ${site.cancellationNoticeDays} days' written notice. The setup fee covers domains, inboxes, and campaign setup, so it's non-refundable once campaigns launch. Calls are billed monthly.`,
   },
   {
     question: "Will anyone cold call prospects in my name?",
