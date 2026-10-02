@@ -24,3 +24,6 @@ Thumbs.db
 
 # TypeScript build info
 *.tsbuildinfo
+
+# n8n workflow exports (may contain private webhook URLs)
+My workflow.json
