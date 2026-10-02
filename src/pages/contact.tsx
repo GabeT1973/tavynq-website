@@ -1,35 +1,22 @@
 import { useState, type ChangeEvent, type ClipboardEvent, type FormEvent } from "react"
 import { Link } from "react-router-dom"
-import { Check } from "lucide-react"
+import { site } from "@/config/site"
 import { usePageMeta } from "@/lib/use-page-meta"
-
-const ORGANIZATION_TYPES = [
-  "HVAC",
-  "Plumbing",
-  "Roofing",
-  "Electrical",
-  "Other Home Services",
-  "Other",
-] as const
 
 type FormState = {
   name: string
   email: string
   phone: string
-  organizationType: string
-  organizationName: string
+  company: string
   message: string
-  smsConsent: boolean
 }
 
 const initialState: FormState = {
   name: "",
   email: "",
   phone: "",
-  organizationType: "",
-  organizationName: "",
+  company: "",
   message: "",
-  smsConsent: false,
 }
 
 type FormErrors = Partial<Record<keyof FormState, string>>
@@ -38,7 +25,7 @@ type Status = "idle" | "submitting" | "success" | "error"
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const inputClasses =
-  "mt-2 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
+  "mt-2 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
 
 function formatPhoneDisplay(digits: string): string {
   if (digits.length === 0) return ""
@@ -84,8 +71,8 @@ function toE164(digits: string): string {
 
 export function Contact() {
   usePageMeta(
-    "Contact — Tavynq",
-    "Get in touch with Tavynq to set up missed-call text-back automation for your HVAC, plumbing, or roofing business.",
+    `Contact | ${site.name}`,
+    `Questions about ${site.name}'s B2B lead generation? Send us a message and we'll get back to you.`,
   )
 
   const [form, setForm] = useState<FormState>(initialState)
@@ -155,13 +142,8 @@ export function Contact() {
     }
     const phoneError = validatePhone(form.phone)
     if (phoneError) nextErrors.phone = phoneError
-    if (!form.organizationType) {
-      nextErrors.organizationType = "Please select an organization type."
-    }
-    if (!form.organizationName.trim()) {
-      nextErrors.organizationName = "Please enter your organization name."
-    }
-    if (!form.message.trim()) nextErrors.message = "Please tell us how we can help."
+    if (!form.company.trim()) nextErrors.company = "Please enter your company name."
+    if (!form.message.trim()) nextErrors.message = "Please tell us a little about your business."
 
     setErrors(nextErrors)
     return Object.keys(nextErrors).length === 0
@@ -178,7 +160,6 @@ export function Contact() {
       const payload = {
         ...form,
         phone: form.phone ? toE164(form.phone) : "",
-        ...(form.smsConsent ? { consentTimestamp: new Date().toISOString() } : {}),
       }
 
       const response = await fetch("/api/contact", {
@@ -210,7 +191,7 @@ export function Contact() {
           Message sent
         </h1>
         <p className="mt-4 text-gray-600 dark:text-gray-300">
-          Thanks for reaching out — we'll get back to you shortly.
+          Thanks for reaching out. We'll reply by email soon.
         </p>
       </div>
     )
@@ -219,10 +200,21 @@ export function Contact() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 md:px-8">
       <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white md:text-4xl">
-        Contact Us
+        Get in touch
       </h1>
       <p className="mt-3 text-gray-600 dark:text-gray-300">
-        Tell us about your business and we'll be in touch.
+        Tell us what you sell and who you sell to, and we'll get back to you by email.
+        Rather talk it through?{" "}
+        <a
+          href={site.calendlyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
+        >
+          Book a call
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a>
+        .
       </p>
 
       <form onSubmit={handleSubmit} noValidate className="mt-10 space-y-6">
@@ -272,14 +264,14 @@ export function Contact() {
               type="tel"
               inputMode="numeric"
               autoComplete="tel-national"
-              placeholder="(813) 555-1234"
+              placeholder="(555) 555-0123"
               value={formatPhoneDisplay(form.phone)}
               onChange={handlePhoneChange}
               onPaste={handlePhonePaste}
               onBlur={handlePhoneBlur}
               aria-invalid={!!errors.phone}
               aria-describedby={errors.phone ? "phone-error" : undefined}
-              className="w-full rounded-lg border border-black/10 bg-white py-2 pl-14 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
+              className="w-full rounded-lg border border-black/10 bg-white py-2 pl-14 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
             />
           </div>
           {errors.phone && (
@@ -291,47 +283,21 @@ export function Contact() {
 
         <div>
           <label
-            htmlFor="organizationType"
+            htmlFor="company"
             className="block text-sm font-medium text-gray-900 dark:text-white"
           >
-            Organization Type *
-          </label>
-          <select
-            id="organizationType"
-            value={form.organizationType}
-            onChange={(e) => update("organizationType", e.target.value)}
-            className={inputClasses}
-          >
-            <option value="" disabled>
-              Select an option
-            </option>
-            {ORGANIZATION_TYPES.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-          {errors.organizationType && (
-            <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.organizationType}</p>
-          )}
-        </div>
-
-        <div>
-          <label
-            htmlFor="organizationName"
-            className="block text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Organization Name *
+            Company Name *
           </label>
           <input
-            id="organizationName"
+            id="company"
             type="text"
-            value={form.organizationName}
-            onChange={(e) => update("organizationName", e.target.value)}
+            autoComplete="organization"
+            value={form.company}
+            onChange={(e) => update("company", e.target.value)}
             className={inputClasses}
           />
-          {errors.organizationName && (
-            <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.organizationName}</p>
+          {errors.company && (
+            <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.company}</p>
           )}
         </div>
 
@@ -342,6 +308,7 @@ export function Contact() {
           <textarea
             id="message"
             rows={5}
+            placeholder="What you sell, who your ideal clients are, and where new business comes from today."
             value={form.message}
             onChange={(e) => update("message", e.target.value)}
             className={inputClasses}
@@ -349,54 +316,16 @@ export function Contact() {
           {errors.message && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.message}</p>}
         </div>
 
-        <div>
-          <div className="flex items-start gap-3">
-            <div className="flex h-6 shrink-0 items-center">
-              <div className="relative flex h-5 w-5 items-center justify-center">
-                <input
-                  id="smsConsent"
-                  type="checkbox"
-                  checked={form.smsConsent}
-                  onChange={(e) => update("smsConsent", e.target.checked)}
-                  className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-black/10 bg-white transition-colors hover:border-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white checked:border-blue-600 checked:bg-blue-600 dark:border-white/10 dark:bg-gray-900 dark:hover:border-blue-500 dark:focus-visible:ring-offset-gray-950 dark:checked:border-blue-600 dark:checked:bg-blue-600"
-                />
-                <Check
-                  aria-hidden="true"
-                  strokeWidth={3}
-                  className="pointer-events-none absolute h-3.5 w-3.5 text-white opacity-0 peer-checked:opacity-100"
-                />
-              </div>
-            </div>
-            <label
-              htmlFor="smsConsent"
-              className="cursor-pointer select-none text-base leading-relaxed text-gray-600 dark:text-gray-300"
-            >
-              I agree to receive text messages from Tavynq Automation about my inquiry and
-              scheduled appointments. Message frequency varies. Message and data rates may
-              apply. Reply STOP to opt out or HELP for help.
-            </label>
-          </div>
-          <p className="mt-2 pl-8 text-sm text-gray-600 dark:text-gray-300">
-            See our{" "}
-            <Link
-              to="/privacy"
-              className="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
-            >
-              Privacy Policy
-            </Link>{" "}
-            and{" "}
-            <Link
-              to="/terms"
-              className="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
-            >
-              Terms of Service
-            </Link>
-            .
-          </p>
-          <p className="mt-2 pl-8 text-sm text-gray-600 dark:text-gray-300">
-            Checking this box is optional and not required to submit this form.
-          </p>
-        </div>
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          We only use your details to reply to your message. See our{" "}
+          <Link
+            to="/privacy"
+            className="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
+          >
+            Privacy Policy
+          </Link>
+          .
+        </p>
 
         {status === "error" && (
           <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>

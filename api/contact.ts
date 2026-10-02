@@ -1,19 +1,21 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node"
 import nodemailer from "nodemailer"
 
-const ORGANIZATION_TYPES = [
-  "HVAC",
-  "Plumbing",
-  "Roofing",
-  "Electrical",
-  "Other Home Services",
-  "Other",
-]
-
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0
+}
+
+function parseBody(body: unknown): Record<string, unknown> | null {
+  if (typeof body === "string") {
+    try {
+      return JSON.parse(body || "{}")
+    } catch {
+      return null
+    }
+  }
+  return body && typeof body === "object" ? (body as Record<string, unknown>) : {}
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -22,14 +24,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: "Method not allowed" })
   }
 
-  const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body ?? {}
-  const { name, email, phone, organizationType, organizationName, message, smsConsent, consentTimestamp } =
-    body
+  const body = parseBody(req.body)
+  if (!body) {
+    return res.status(400).json({ error: "Invalid request." })
+  }
+
+  const { name, email, phone, company, message } = body
 
   if (
     !isNonEmptyString(name) ||
     !isNonEmptyString(email) ||
-    !isNonEmptyString(organizationName) ||
+    !isNonEmptyString(company) ||
     !isNonEmptyString(message)
   ) {
     return res.status(400).json({ error: "Please fill in all required fields." })
@@ -37,10 +42,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (!EMAIL_PATTERN.test(email)) {
     return res.status(400).json({ error: "Please enter a valid email address." })
-  }
-
-  if (!isNonEmptyString(organizationType) || !ORGANIZATION_TYPES.includes(organizationType)) {
-    return res.status(400).json({ error: "Please select a valid organization type." })
   }
 
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL } =
@@ -65,23 +66,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       from: CONTACT_FROM_EMAIL || SMTP_USER,
       to: CONTACT_TO_EMAIL || "gabe@tavynq.com",
       replyTo: email,
-      subject: `New contact form submission from ${name}`,
+      subject: `New lead-gen inquiry: ${name} (${company})`,
       text: [
-        ...(smsConsent === true
-          ? [
-              "SMS consent: Yes",
-              `Consent timestamp: ${isNonEmptyString(consentTimestamp) ? consentTimestamp : "N/A"}`,
-            ]
-          : ["SMS consent: No"]),
+        "New inquiry from the tavynq.com contact form.",
         "",
         `Name: ${name}`,
         `Email: ${email}`,
         `Phone: ${isNonEmptyString(phone) ? phone : "N/A"}`,
-        `Organization Type: ${organizationType}`,
-        `Organization Name: ${organizationName}`,
+        `Company: ${company}`,
         "",
         "Message:",
         message,
+        "",
+        "Reply to this email to respond directly.",
       ].join("\n"),
     })
 
