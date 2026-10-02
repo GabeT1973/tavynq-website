@@ -1,62 +1,49 @@
 import { useState, type ReactNode } from "react"
 import { ChevronDown } from "lucide-react"
-import { Link } from "react-router-dom"
-
-function CancellationLink() {
-  return (
-    <Link
-      to="/cancellation-policy"
-      className="text-blue-600 underline underline-offset-2 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
-    >
-      Cancellation Policy
-    </Link>
-  )
-}
+import { SectionHeading } from "@/components/section-heading"
+import { site } from "@/config/site"
 
 const faqs: { question: string; answer: ReactNode }[] = [
   {
-    question: "Do I need a new phone number?",
+    question: "Do you email from my domain?",
     answer:
-      "Yes, we set up a dedicated number that forwards from your existing business line. Customers never see a difference — they call your regular number like always.",
+      "No. We send from separate domains and inboxes we set up and warm up for you. Your main domain and its reputation are never at risk.",
   },
   {
-    question: "Will the texts sound like a robot?",
+    question: "How long until calls start?",
     answer:
-      "No. The messages are written to sound like they're coming from a real person at your business, not an automated bot.",
+      "Usually about 3–4 weeks. Most of that is the 14-day inbox warmup, which protects deliverability. Once campaigns go live, calls start booking as replies come in.",
   },
   {
-    question: "What if a customer texts back with a real question, not just 'yes'?",
-    answer:
-      "You'll get notified right away so you or your team can jump in and respond personally. The automation just makes sure nobody gets ignored while you're on a job.",
-  },
-  {
-    question: "Does this book the job automatically, or just get me the lead?",
-    answer:
-      "Right now, Tavynq captures the lead and details automatically, then notifies you right away so you can follow up and close the job yourself. Auto-booking directly into your calendar is something we can build for you down the road if you want it.",
-  },
-  {
-    question: "How much does this cost?",
+    question: "What counts as a qualified call?",
     answer: (
       <>
-        $500 one-time setup, then $199/month. No long-term contract — see our{" "}
-        <CancellationLink />. Most businesses cover the cost with a single job they
-        would've otherwise lost to a missed call.
+        A prospect who fits the ideal client profile we agree on in writing, is a
+        decision-maker (or brings one), booked the call themselves, and actually shows up.
+        No-shows are never billed. See the{" "}
+        <a
+          href="#qualified-call"
+          className="text-blue-600 underline underline-offset-2 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+        >
+          full definition
+        </a>
+        .
       </>
     ),
   },
   {
-    question: "How long does setup take?",
+    question: "Is there a contract?",
     answer:
-      "Most businesses are up and running within a day or two. We handle the technical setup — you don't need to do anything on your end besides forwarding your calls.",
+      "No long-term contract. Setup is a one-time fee, then you're billed per qualified call that shows up. Either side can stop with 14 days' notice.",
   },
   {
-    question: "Can I cancel anytime?",
-    answer: (
-      <>
-        Yes, anytime — no contracts and no penalty. See our full <CancellationLink />{" "}
-        for details.
-      </>
-    ),
+    question: "Who do you work with?",
+    answer: `B2B companies that sell to other businesses. Right now we focus on ${site.niche}, so our lists, emails, and replies are built for your market.`,
+  },
+  {
+    question: "Will I have to make cold calls?",
+    answer:
+      "Never. The only calls on your calendar are ones prospects booked themselves after replying to an email.",
   },
 ]
 
@@ -64,15 +51,17 @@ export function Faq() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <section id="faq" className="mx-auto max-w-screen-xl px-4 py-20 md:px-8">
-      <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white md:text-4xl">
-          FAQ
-        </h2>
-        <p className="mt-3 text-gray-600 dark:text-gray-300">
-          Quick answers to what business owners ask us most.
-        </p>
-      </div>
+    <section
+      id="faq"
+      aria-labelledby="faq-heading"
+      className="mx-auto max-w-screen-xl px-4 py-20 md:px-8"
+    >
+      <SectionHeading
+        id="faq-heading"
+        eyebrow="FAQ"
+        title="Questions, answered"
+        description="The things people ask most before booking a call."
+      />
       <div className="mx-auto mt-12 max-w-3xl space-y-3">
         {faqs.map((faq, index) => {
           const isOpen = openIndex === index
@@ -82,27 +71,29 @@ export function Faq() {
               key={faq.question}
               className="rounded-2xl border border-black/5 bg-white shadow-sm dark:border-white/5 dark:bg-gray-900"
             >
-              <button
-                type="button"
-                id={`faq-question-${index}`}
-                aria-expanded={isOpen}
-                aria-controls={`faq-answer-${index}`}
-                onClick={() => setOpenIndex(isOpen ? null : index)}
-                className="flex w-full items-center justify-between gap-4 rounded-2xl px-6 py-5 text-left text-base font-medium text-gray-900 transition-colors hover:text-blue-600 focus-visible:outline-2 focus-visible:outline-blue-600 dark:text-white dark:hover:text-blue-400"
-              >
-                {faq.question}
-                <ChevronDown
-                  aria-hidden="true"
-                  className={`h-5 w-5 shrink-0 text-blue-600 transition-transform duration-300 dark:text-blue-400 ${
-                    isOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
+              <h3>
+                <button
+                  type="button"
+                  id={`faq-question-${index}`}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  className="flex w-full items-center justify-between gap-4 rounded-2xl px-6 py-5 text-left text-base font-medium text-gray-900 transition-colors hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
+                >
+                  {faq.question}
+                  <ChevronDown
+                    aria-hidden="true"
+                    className={`h-5 w-5 shrink-0 text-blue-600 transition-transform duration-300 motion-reduce:transition-none dark:text-blue-400 ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+              </h3>
               <div
                 id={`faq-answer-${index}`}
                 role="region"
                 aria-labelledby={`faq-question-${index}`}
-                className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                className={`grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none ${
                   isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                 }`}
               >
