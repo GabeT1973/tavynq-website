@@ -141,7 +141,7 @@ address) live in ONE config file.
 - Never commit `My workflow.json` (n8n export, may contain private webhook URLs). It's gitignored.
   Stage files by name; don't use `git add -A`.
 
-# Where we left off (2026-10-01)
+# Where we left off (2026-10-03)
 
 **Branch `revamp-leadgen`**: pushed, NOT merged. Holds the full site revamp for MSPs.
 Vercel builds a preview per push; find its URL in the GitHub commit status (no `gh` or
@@ -152,19 +152,26 @@ Done:
   what's included, pricing (Founding Partner + Standard), proof line, FAQ, final CTA.
 - All editable values in `src/config/site.ts`; `<head>` meta/OG/JSON-LD built from it.
 - Theme follows system + remembers choice. "T" favicon. Share image (`scripts/og-image.html`).
-- Contact form + `api/contact.ts` without SMS/trades. Privacy + Terms rewritten (DRAFT).
+- Premium polish: three-part sticky header with scrollspy, wordmark sheen, shared
+  section/card styles, glowing Founding Partner card.
+- Final section: "What happens after you book" timeline + inline Calendly embed
+  (loads on scroll, theme colors on paid plans, falls back to a Book a call link).
+- `/contact` is "Ask a question" (name, work email, website, optional metro, question);
+  `api/contact.ts` emails it, metro included. Privacy + Terms rewritten (DRAFT).
 - Removed `/cancellation-policy`; old URLs redirect in `vercel.json`. 404 page added.
-- Lighthouse (preview, mobile): perf 96, a11y 100, best practices 100, SEO 100 apart
+- Lighthouse (preview, mobile): perf 90+, a11y 100, best practices 100, SEO 100 apart
   from the preview-only noindex.
+- Calendly link and business address set in `src/config/site.ts`.
 
 Waiting on Gabe before merging to `main`:
-- `calendlyUrl` and `address` in `src/config/site.ts` (still placeholders).
 - Legal review of Privacy + Terms drafts.
 - Explicit OK to merge.
 
 Later / optional:
 - `youtubeId` once the VSL is recorded (video section + Watch button appear automatically).
 - Real case studies in `src/components/results-section.tsx` (Founding Partners).
+- Replace `/contact` with a "Free Local Signal Snapshot" form (website + metro) once
+  the Signal Scanner is built.
 - Prerender the homepage (React Router framework mode, `ssr: false` + `prerender`) so AI
   crawlers, which don't run JS, can read the copy.
 
