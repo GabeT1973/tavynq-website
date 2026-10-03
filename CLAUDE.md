@@ -108,7 +108,7 @@ address) live in ONE config file.
 
 ## Stack
 - Framework: React 19 + TypeScript SPA, built with Vite 8. Routing via `react-router-dom` v7
-  (routes in `src/App.tsx`: `/`, `/contact`, `/privacy`, `/terms`, `/cancellation-policy`).
+  (routes in `src/App.tsx`: `/`, `/contact`, `/privacy`, `/terms`, plus a `*` 404 page).
 - Styling: Tailwind CSS v4 (via `@tailwindcss/vite`, no tailwind.config — theme lives in
   `src/index.css`), shadcn/ui components (`src/components/ui`, config in `components.json`),
   Radix UI, lucide-react icons, Geist font. Light/dark theme in `src/lib/theme.tsx`.
@@ -143,9 +143,10 @@ address) live in ONE config file.
 
 # Where we left off (2026-10-03)
 
-**Branch `revamp-leadgen`**: pushed, NOT merged. Holds the full site revamp for MSPs.
-Vercel builds a preview per push; find its URL in the GitHub commit status (no `gh` or
-`vercel` CLI installed).
+**Live on tavynq.com.** `revamp-leadgen` (the full MSP revamp) was merged into `main` on
+2026-10-03 and deployed to production. The branch is kept. For new work, branch off `main`.
+Vercel builds a preview per pushed branch; find its URL in the GitHub commit status (no `gh`
+or `vercel` CLI installed).
 
 Done:
 - One-page MSP site: hero, problem, Pipeline System (4 steps), How we're different (6),
@@ -161,11 +162,9 @@ Done:
 - Removed `/cancellation-policy`; old URLs redirect in `vercel.json`. 404 page added.
 - Lighthouse (preview, mobile): perf 90+, a11y 100, best practices 100, SEO 100 apart
   from the preview-only noindex.
-- Calendly link and business address set in `src/config/site.ts`.
-
-Waiting on Gabe before merging to `main`:
-- Legal review of Privacy + Terms drafts.
-- Explicit OK to merge.
+- Calendly link and business address set in `src/config/site.ts`; Calendly event updated
+  for the MSP offer (30 min).
+- Privacy + Terms reviewed by Gabe (code comments still say DRAFT; remove if desired).
 
 Later / optional:
 - `youtubeId` once the VSL is recorded (video section + Watch button appear automatically).
