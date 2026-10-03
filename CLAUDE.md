@@ -167,6 +167,5 @@ Later / optional:
 - Real case studies in `src/components/results-section.tsx` (Founding Partners).
 - Prerender the homepage (React Router framework mode, `ssr: false` + `prerender`) so AI
   crawlers, which don't run JS, can read the copy.
-- Global `~/.claude/CLAUDE.md` "About me" update: diff shown, not applied. Needs Gabe's OK.
 
 Next on the roadmap: #2 lead list scripts (clean, dedupe, filter, merge verification CSVs).
