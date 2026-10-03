@@ -98,7 +98,7 @@ export function FinalCta() {
           Not ready for a call?{" "}
           <Link
             to="/contact"
-            className="font-medium text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
+            className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-500 dark:hover:text-blue-300 dark:text-blue-400"
           >
             Ask a quick question.
           </Link>{" "}

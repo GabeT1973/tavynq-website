@@ -265,7 +265,7 @@ export function Contact() {
           We only use your details to answer your question. See our{" "}
           <Link
             to="/privacy"
-            className="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
+            className="text-blue-600 underline underline-offset-2 hover:text-blue-500 dark:hover:text-blue-300 dark:text-blue-400"
           >
             Privacy Policy
           </Link>
