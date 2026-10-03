@@ -51,7 +51,7 @@ const faqs: { question: string; answer: ReactNode }[] = [
   {
     question: "How long until calls start?",
     answer:
-      "Usually about 3–4 weeks. Most of that is the 14-day inbox warmup, which protects deliverability. Once campaigns go live, calls start booking as replies come in.",
+      "Usually from week 4. Week 1 is setup: sending domains, inboxes, and your target list. In weeks 2-3, the inboxes warm up while we write and approve your emails together. From week 4 onward, qualified calls start landing on your calendar.",
   },
   {
     question: "Is there a contract?",
