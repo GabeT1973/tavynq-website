@@ -1,147 +1,103 @@
-import { useState, type ChangeEvent, type ClipboardEvent, type FormEvent } from "react"
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react"
 import { Link } from "react-router-dom"
-import { Check } from "lucide-react"
+import { BookCallLink, pillPrimary } from "@/components/book-call-link"
+import { site } from "@/config/site"
 import { usePageMeta } from "@/lib/use-page-meta"
-
-const ORGANIZATION_TYPES = [
-  "HVAC",
-  "Plumbing",
-  "Roofing",
-  "Electrical",
-  "Other Home Services",
-  "Other",
-] as const
+import { cn } from "@/lib/utils"
 
 type FormState = {
   name: string
   email: string
-  phone: string
-  organizationType: string
-  organizationName: string
-  message: string
-  smsConsent: boolean
+  website: string
+  metro: string
+  question: string
 }
 
 const initialState: FormState = {
   name: "",
   email: "",
-  phone: "",
-  organizationType: "",
-  organizationName: "",
-  message: "",
-  smsConsent: false,
+  website: "",
+  metro: "",
+  question: "",
 }
 
 type FormErrors = Partial<Record<keyof FormState, string>>
 type Status = "idle" | "submitting" | "success" | "error"
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+// Accepts "acme.com", "www.acme.com", or a full https:// URL.
+const WEBSITE_PATTERN = /^(https?:\/\/)?[^\s/.]+(\.[^\s/.]+)+(\/\S*)?$/i
 
 const inputClasses =
-  "mt-2 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
+  "mt-2 w-full rounded-xl border border-black/10 bg-white px-3.5 py-2.5 text-sm text-gray-900 shadow-sm transition-[border-color,box-shadow] placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/15 aria-[invalid=true]:border-red-500 dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
 
-function formatPhoneDisplay(digits: string): string {
-  if (digits.length === 0) return ""
-  if (digits.length <= 3) return digits
-  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`
-  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`
-}
-
-function caretIndexForDigitCount(display: string, digitCount: number): number {
-  if (digitCount <= 0) return 0
-  let seen = 0
-  for (let i = 0; i < display.length; i++) {
-    if (/\d/.test(display[i])) {
-      seen++
-      if (seen === digitCount) return i + 1
-    }
-  }
-  return display.length
-}
-
-function validatePhone(digits: string): string | undefined {
-  if (!digits) return undefined
-  if (digits.length < 10) return "Please enter a 10-digit US phone number."
-
-  const areaCode = digits.slice(0, 3)
-  const exchange = digits.slice(3, 6)
-
-  if (areaCode[0] === "0" || areaCode[0] === "1") {
-    return "Please enter a valid US phone number."
-  }
-  if (exchange[0] === "0" || exchange[0] === "1") {
-    return "Please enter a valid US phone number."
-  }
-  if (areaCode === "555") return "Please enter a valid US phone number."
-  if (/^(\d)\1{9}$/.test(digits)) return "Please enter a valid US phone number."
-
-  return undefined
-}
-
-function toE164(digits: string): string {
-  return `+1${digits}`
+function Field({
+  id,
+  label,
+  required = false,
+  hint,
+  error,
+  children,
+}: {
+  id: keyof FormState
+  label: string
+  required?: boolean
+  hint?: string
+  error?: string
+  children: ReactNode
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-gray-900 dark:text-white">
+        {label}
+        {required ? (
+          <span aria-hidden="true" className="text-blue-600 dark:text-blue-400">
+            {" "}
+            *
+          </span>
+        ) : (
+          <span className="font-normal text-gray-500 dark:text-gray-400"> (optional)</span>
+        )}
+      </label>
+      {children}
+      {hint && !error && (
+        <p id={`${id}-hint`} className="mt-1.5 text-sm text-gray-600 dark:text-gray-400">
+          {hint}
+        </p>
+      )}
+      {error && (
+        <p id={`${id}-error`} className="mt-1.5 text-sm text-red-600 dark:text-red-400">
+          {error}
+        </p>
+      )}
+    </div>
+  )
 }
 
 export function Contact() {
   usePageMeta(
-    "Contact — Tavynq",
-    "Get in touch with Tavynq to set up missed-call text-back automation for your HVAC, plumbing, or roofing business.",
+    `Ask a question | ${site.name}`,
+    `Have a question before you book? Send it to ${site.name} and get a straight answer from the founder within 24-48 hours.`,
   )
 
   const [form, setForm] = useState<FormState>(initialState)
   const [errors, setErrors] = useState<FormErrors>({})
   const [status, setStatus] = useState<Status>("idle")
   const [errorMessage, setErrorMessage] = useState("")
+  const successHeadingRef = useRef<HTMLHeadingElement>(null)
+
+  useEffect(() => {
+    if (status === "success") successHeadingRef.current?.focus()
+  }, [status])
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
+    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }))
   }
 
-  function clearPhoneErrorIfNowValid(digits: string) {
-    setErrors((prev) => (prev.phone && !validatePhone(digits) ? { ...prev, phone: undefined } : prev))
-  }
-
-  function handlePhoneChange(event: ChangeEvent<HTMLInputElement>) {
-    const input = event.target
-    const raw = input.value
-    const caretRaw = input.selectionStart ?? raw.length
-    const digitsBeforeCaret = raw.slice(0, caretRaw).replace(/\D/g, "").length
-
-    const previousFormatted = formatPhoneDisplay(form.phone)
-    const rawDigits = raw.replace(/\D/g, "").slice(0, 10)
-
-    let nextDigits = rawDigits
-    let nextDigitsBeforeCaret = digitsBeforeCaret
-
-    const deleted = raw.length < previousFormatted.length
-    if (deleted && rawDigits === form.phone) {
-      nextDigits = form.phone.slice(0, -1)
-      nextDigitsBeforeCaret = Math.min(digitsBeforeCaret, nextDigits.length)
-    }
-
-    const nextDisplay = formatPhoneDisplay(nextDigits)
-    input.value = nextDisplay
-    const caretIndex = caretIndexForDigitCount(nextDisplay, nextDigitsBeforeCaret)
-    input.setSelectionRange(caretIndex, caretIndex)
-
-    update("phone", nextDigits)
-    clearPhoneErrorIfNowValid(nextDigits)
-  }
-
-  function handlePhonePaste(event: ClipboardEvent<HTMLInputElement>) {
-    event.preventDefault()
-    let digits = event.clipboardData.getData("text").replace(/\D/g, "")
-    if (digits.length === 11 && digits.startsWith("1")) {
-      digits = digits.slice(1)
-    }
-    digits = digits.slice(0, 10)
-
-    update("phone", digits)
-    clearPhoneErrorIfNowValid(digits)
-  }
-
-  function handlePhoneBlur() {
-    setErrors((prev) => ({ ...prev, phone: validatePhone(form.phone) }))
+  function describedBy(key: keyof FormState, hasHint = false) {
+    if (errors[key]) return `${key}-error`
+    return hasHint ? `${key}-hint` : undefined
   }
 
   function validate(): boolean {
@@ -149,19 +105,16 @@ export function Contact() {
 
     if (!form.name.trim()) nextErrors.name = "Please enter your name."
     if (!form.email.trim()) {
-      nextErrors.email = "Please enter your email address."
-    } else if (!EMAIL_PATTERN.test(form.email)) {
+      nextErrors.email = "Please enter your work email."
+    } else if (!EMAIL_PATTERN.test(form.email.trim())) {
       nextErrors.email = "Please enter a valid email address."
     }
-    const phoneError = validatePhone(form.phone)
-    if (phoneError) nextErrors.phone = phoneError
-    if (!form.organizationType) {
-      nextErrors.organizationType = "Please select an organization type."
+    if (!form.website.trim()) {
+      nextErrors.website = "Please enter your company website."
+    } else if (!WEBSITE_PATTERN.test(form.website.trim())) {
+      nextErrors.website = "Please enter a website like yourmsp.com."
     }
-    if (!form.organizationName.trim()) {
-      nextErrors.organizationName = "Please enter your organization name."
-    }
-    if (!form.message.trim()) nextErrors.message = "Please tell us how we can help."
+    if (!form.question.trim()) nextErrors.question = "Please type your question."
 
     setErrors(nextErrors)
     return Object.keys(nextErrors).length === 0
@@ -175,16 +128,16 @@ export function Contact() {
     setErrorMessage("")
 
     try {
-      const payload = {
-        ...form,
-        phone: form.phone ? toE164(form.phone) : "",
-        ...(form.smsConsent ? { consentTimestamp: new Date().toISOString() } : {}),
-      }
-
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          website: form.website.trim(),
+          metro: form.metro.trim(),
+          question: form.question.trim(),
+        }),
       })
 
       if (!response.ok) {
@@ -198,216 +151,139 @@ export function Contact() {
     } catch (error) {
       setStatus("error")
       setErrorMessage(
-        error instanceof Error ? error.message : "Something went wrong. Please try again."
+        error instanceof Error ? error.message : "Something went wrong. Please try again.",
       )
     }
   }
 
   if (status === "success") {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16 text-center md:px-8">
-        <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white md:text-4xl">
-          Message sent
+      <div className="mx-auto max-w-2xl px-4 py-20 text-center md:px-8 md:py-28">
+        <h1
+          ref={successHeadingRef}
+          tabIndex={-1}
+          className="text-3xl font-semibold tracking-tight text-gray-900 focus:outline-none md:text-[2.75rem] md:leading-[1.1] dark:text-white"
+        >
+          Got it.
         </h1>
-        <p className="mt-4 text-gray-600 dark:text-gray-300">
-          Thanks for reaching out — we'll get back to you shortly.
+        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 md:text-lg dark:text-gray-300">
+          You'll hear back within 24-48 hours. Rather talk it through now? Grab a time, and
+          we'll confirm your metro is still open.
         </p>
+        <BookCallLink className="mt-8" />
       </div>
     )
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-16 md:px-8">
-      <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white md:text-4xl">
-        Contact Us
+    <div className="mx-auto max-w-2xl px-4 py-20 md:px-8 md:py-28">
+      <h1 className="text-3xl font-semibold tracking-tight text-gray-900 md:text-[2.75rem] md:leading-[1.1] dark:text-white">
+        Ask a question
       </h1>
-      <p className="mt-3 text-gray-600 dark:text-gray-300">
-        Tell us about your business and we'll be in touch.
+      <p className="mt-4 text-base leading-relaxed text-gray-600 md:text-lg dark:text-gray-300">
+        Have a question before you book? Send it here. You'll get a straight answer from me,
+        the founder, within 24-48 hours.
       </p>
 
-      <form onSubmit={handleSubmit} noValidate className="mt-10 space-y-6">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-900 dark:text-white">
-            Your Name *
-          </label>
-          <input
-            id="name"
-            type="text"
-            value={form.name}
-            onChange={(e) => update("name", e.target.value)}
-            className={inputClasses}
-          />
-          {errors.name && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.name}</p>}
-        </div>
-
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-900 dark:text-white">
-            Email Address *
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={form.email}
-            onChange={(e) => update("email", e.target.value)}
-            className={inputClasses}
-          />
-          {errors.email && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.email}</p>}
-        </div>
-
-        <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-900 dark:text-white">
-            Phone Number
-            <span className="sr-only"> (US phone number with +1 country code)</span>
-          </label>
-          <div className="relative mt-2">
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 left-0 flex items-center gap-2 pl-3 text-sm text-gray-400 dark:text-gray-500"
-            >
-              <span>+1</span>
-              <span className="h-4 w-px bg-black/10 dark:bg-white/10" />
-            </span>
+      <form
+        onSubmit={handleSubmit}
+        noValidate
+        className="mt-10 space-y-6 rounded-2xl border border-black/[0.06] bg-white p-6 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_12px_32px_-16px_rgb(0_0_0/0.10)] md:p-8 dark:border-white/[0.07] dark:bg-gray-900/60 dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.04)]"
+      >
+        <div className="grid gap-6 sm:grid-cols-2">
+          <Field id="name" label="Name" required error={errors.name}>
             <input
-              id="phone"
-              type="tel"
-              inputMode="numeric"
-              autoComplete="tel-national"
-              placeholder="(813) 555-1234"
-              value={formatPhoneDisplay(form.phone)}
-              onChange={handlePhoneChange}
-              onPaste={handlePhonePaste}
-              onBlur={handlePhoneBlur}
-              aria-invalid={!!errors.phone}
-              aria-describedby={errors.phone ? "phone-error" : undefined}
-              className="w-full rounded-lg border border-black/10 bg-white py-2 pl-14 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none dark:border-white/10 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"
+              id="name"
+              type="text"
+              autoComplete="name"
+              value={form.name}
+              onChange={(e) => update("name", e.target.value)}
+              aria-required="true"
+              aria-invalid={!!errors.name}
+              aria-describedby={describedBy("name")}
+              className={inputClasses}
             />
-          </div>
-          {errors.phone && (
-            <p id="phone-error" className="mt-1 text-sm text-red-600 dark:text-red-400">
-              {errors.phone}
-            </p>
-          )}
+          </Field>
+          <Field id="email" label="Work email" required error={errors.email}>
+            <input
+              id="email"
+              type="email"
+              autoComplete="email"
+              value={form.email}
+              onChange={(e) => update("email", e.target.value)}
+              aria-required="true"
+              aria-invalid={!!errors.email}
+              aria-describedby={describedBy("email")}
+              className={inputClasses}
+            />
+          </Field>
         </div>
 
-        <div>
-          <label
-            htmlFor="organizationType"
-            className="block text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Organization Type *
-          </label>
-          <select
-            id="organizationType"
-            value={form.organizationType}
-            onChange={(e) => update("organizationType", e.target.value)}
-            className={inputClasses}
-          >
-            <option value="" disabled>
-              Select an option
-            </option>
-            {ORGANIZATION_TYPES.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-          {errors.organizationType && (
-            <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.organizationType}</p>
-          )}
+        <div className="grid gap-6 sm:grid-cols-2">
+          <Field id="website" label="Company website" required error={errors.website}>
+            <input
+              id="website"
+              type="text"
+              inputMode="url"
+              autoComplete="url"
+              placeholder="yourmsp.com"
+              value={form.website}
+              onChange={(e) => update("website", e.target.value)}
+              aria-required="true"
+              aria-invalid={!!errors.website}
+              aria-describedby={describedBy("website")}
+              className={inputClasses}
+            />
+          </Field>
+          <Field id="metro" label="Metro" hint="We'll check it's still open" error={errors.metro}>
+            <input
+              id="metro"
+              type="text"
+              autoComplete="address-level2"
+              value={form.metro}
+              onChange={(e) => update("metro", e.target.value)}
+              aria-describedby={describedBy("metro", true)}
+              className={inputClasses}
+            />
+          </Field>
         </div>
 
-        <div>
-          <label
-            htmlFor="organizationName"
-            className="block text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Organization Name *
-          </label>
-          <input
-            id="organizationName"
-            type="text"
-            value={form.organizationName}
-            onChange={(e) => update("organizationName", e.target.value)}
-            className={inputClasses}
-          />
-          {errors.organizationName && (
-            <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.organizationName}</p>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="message" className="block text-sm font-medium text-gray-900 dark:text-white">
-            How Can We Help? *
-          </label>
+        <Field id="question" label="Question" required error={errors.question}>
           <textarea
-            id="message"
+            id="question"
             rows={5}
-            value={form.message}
-            onChange={(e) => update("message", e.target.value)}
-            className={inputClasses}
+            value={form.question}
+            onChange={(e) => update("question", e.target.value)}
+            aria-required="true"
+            aria-invalid={!!errors.question}
+            aria-describedby={describedBy("question")}
+            className={cn(inputClasses, "resize-y")}
           />
-          {errors.message && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.message}</p>}
-        </div>
+        </Field>
 
-        <div>
-          <div className="flex items-start gap-3">
-            <div className="flex h-6 shrink-0 items-center">
-              <div className="relative flex h-5 w-5 items-center justify-center">
-                <input
-                  id="smsConsent"
-                  type="checkbox"
-                  checked={form.smsConsent}
-                  onChange={(e) => update("smsConsent", e.target.checked)}
-                  className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-black/10 bg-white transition-colors hover:border-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white checked:border-blue-600 checked:bg-blue-600 dark:border-white/10 dark:bg-gray-900 dark:hover:border-blue-500 dark:focus-visible:ring-offset-gray-950 dark:checked:border-blue-600 dark:checked:bg-blue-600"
-                />
-                <Check
-                  aria-hidden="true"
-                  strokeWidth={3}
-                  className="pointer-events-none absolute h-3.5 w-3.5 text-white opacity-0 peer-checked:opacity-100"
-                />
-              </div>
-            </div>
-            <label
-              htmlFor="smsConsent"
-              className="cursor-pointer select-none text-base leading-relaxed text-gray-600 dark:text-gray-300"
-            >
-              I agree to receive text messages from Tavynq Automation about my inquiry and
-              scheduled appointments. Message frequency varies. Message and data rates may
-              apply. Reply STOP to opt out or HELP for help.
-            </label>
-          </div>
-          <p className="mt-2 pl-8 text-sm text-gray-600 dark:text-gray-300">
-            See our{" "}
-            <Link
-              to="/privacy"
-              className="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
-            >
-              Privacy Policy
-            </Link>{" "}
-            and{" "}
-            <Link
-              to="/terms"
-              className="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
-            >
-              Terms of Service
-            </Link>
-            .
-          </p>
-          <p className="mt-2 pl-8 text-sm text-gray-600 dark:text-gray-300">
-            Checking this box is optional and not required to submit this form.
-          </p>
-        </div>
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          We only use your details to answer your question. See our{" "}
+          <Link
+            to="/privacy"
+            className="text-blue-600 underline underline-offset-2 hover:text-blue-500 dark:hover:text-blue-300 dark:text-blue-400"
+          >
+            Privacy Policy
+          </Link>
+          .
+        </p>
 
         {status === "error" && (
-          <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
+          <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+            {errorMessage}
+          </p>
         )}
 
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
+          className={`${pillPrimary} w-full px-6 py-3 text-sm sm:w-auto`}
         >
-          {status === "submitting" ? "Sending..." : "Send Message"}
+          {status === "submitting" ? "Sending…" : "Send question"}
         </button>
       </form>
     </div>

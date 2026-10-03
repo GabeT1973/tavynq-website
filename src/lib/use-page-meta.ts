@@ -1,27 +1,55 @@
 import { useEffect } from "react"
+import { site } from "@/config/site"
 
-function setDescription(content: string) {
-  let tag = document.querySelector<HTMLMetaElement>('meta[name="description"]')
+function setMeta(name: string, content: string | null) {
+  let tag = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`)
+  if (content === null) {
+    tag?.remove()
+    return
+  }
   if (!tag) {
     tag = document.createElement("meta")
-    tag.name = "description"
+    tag.name = name
     document.head.appendChild(tag)
   }
   tag.content = content
 }
 
-export function usePageMeta(title: string, description: string) {
+function setCanonical(href: string) {
+  let link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+  if (!link) {
+    link = document.createElement("link")
+    link.rel = "canonical"
+    document.head.appendChild(link)
+  }
+  link.href = href
+}
+
+type PageMetaOptions = {
+  // Ask search engines not to index this page (used by the 404 page).
+  noindex?: boolean
+}
+
+export function usePageMeta(title: string, description: string, options: PageMetaOptions = {}) {
+  const { noindex = false } = options
+
   useEffect(() => {
     const previousTitle = document.title
     const previousDescription =
       document.querySelector<HTMLMetaElement>('meta[name="description"]')?.content ?? ""
+    const previousCanonical =
+      document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href ?? `${site.url}/`
 
     document.title = title
-    setDescription(description)
+    setMeta("description", description)
+    setCanonical(`${site.url}${window.location.pathname}`)
+    if (noindex) setMeta("robots", "noindex")
 
     return () => {
       document.title = previousTitle
-      setDescription(previousDescription)
+      setMeta("description", previousDescription)
+      setCanonical(previousCanonical)
+      if (noindex) setMeta("robots", null)
     }
-  }, [title, description])
+  }, [title, description, noindex])
 }

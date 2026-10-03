@@ -1,32 +1,48 @@
-# React + TypeScript + Vite
+# Tavynq website
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Marketing site for **Tavynq**, a lead generation agency for managed IT service providers
+(MSPs). We use signal-based cold email to book qualified sales calls from local businesses.
+One-page site with pricing, FAQ, an optional VSL, and a "Book a call" (Calendly) call to
+action. Live at https://tavynq.com.
 
-Currently, two official plugins are available:
+## Editing content
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Almost everything you'd want to change lives in **`src/config/site.ts`**:
 
-## React Compiler
+- niche, offer/headline, hero subhead
+- pricing plans (Founding Partner and Standard) and the bad-fit window
+- the "qualified call" definition
+- Calendly URL, YouTube video ID (the video section stays hidden until it is set), contact
+  email, mailing address
+- page title, meta description, and social preview text
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+`index.html`'s `<head>` (title, meta, Open Graph, JSON-LD) is filled from that file at build
+time by a small plugin in `vite.config.ts`, so edit the config, not `index.html`.
 
-## Expanding the Oxlint configuration
+Real client results go in `src/components/results-section.tsx` (then un-comment
+`<ResultsSection />` in `src/pages/home.tsx`). Real results only.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Stack
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+React 19 + TypeScript + Vite, Tailwind CSS v4, lucide-react icons, Geist font. Hosted on
+Vercel. `api/contact.ts` is a Vercel function that emails contact-form submissions over SMTP
+(env vars: `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `CONTACT_TO_EMAIL`,
+`CONTACT_FROM_EMAIL`).
+
+## Commands
+
+```bash
+npm install
+npm run dev       # local dev server (no api/ functions; use `vercel dev` for the contact form)
+npm run build     # type-check + production build into dist/
+npm run lint      # oxlint
+npm run preview   # serve the production build
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Other files
+
+- `vercel.json`: redirects for removed pages + SPA rewrite.
+- `public/robots.txt`, `public/sitemap.xml`, `public/site.webmanifest`: SEO / install metadata.
+- `public/og-image.png`: link-preview image, generated from `scripts/og-image.html`
+  (regeneration command is at the top of that file).
+- `scripts/generate-favicons.mjs`: regenerates the favicon PNG/ICO set.

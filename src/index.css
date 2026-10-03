@@ -128,6 +128,58 @@
   html {
     @apply font-sans scroll-smooth;
     }
+  /* Anchored sections land below the sticky header instead of under it. */
+  main [id] {
+    scroll-margin-top: 4.5rem;
+    }
+  /* Visible keyboard focus everywhere, in both themes. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    }
+}
+
+/* Wordmark: a soft vertical gradient for depth plus a diagonal light band. The band rests
+   off-center and sweeps across when the surrounding link is hovered. */
+.wordmark {
+  --wordmark-base-top: #0a0a0a;
+  --wordmark-base-bottom: #3f3f46;
+  --wordmark-shine: #a1a1aa;
+  background-image:
+    linear-gradient(
+      105deg,
+      transparent 0%,
+      transparent 43%,
+      color-mix(in oklab, var(--wordmark-shine) 80%, transparent) 50%,
+      transparent 57%,
+      transparent 100%
+    ),
+    linear-gradient(180deg, var(--wordmark-base-top), var(--wordmark-base-bottom));
+  background-size: 300% 100%, 100% 100%;
+  background-position: 62% 0, 0 0;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: background-position 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dark .wordmark {
+  --wordmark-base-top: #e4e4e7;
+  --wordmark-base-bottom: #a1a1aa;
+  --wordmark-shine: #ffffff;
+}
+a:hover .wordmark,
+a:focus-visible .wordmark {
+  background-position: 0% 0, 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .wordmark {
+    transition: none;
+  }
 }
 
 @keyframes grid {

@@ -1,126 +1,151 @@
+// DRAFT - have reviewed before relying on it.
+import { LegalEmailLink, LegalPage, LegalSection } from "@/components/legal-page"
+import { site } from "@/config/site"
+import { usePageMeta } from "@/lib/use-page-meta"
+
 export function Privacy() {
+  usePageMeta(
+    `Privacy Policy | ${site.name}`,
+    `How ${site.name} collects, uses, and protects information through its website and B2B outreach.`,
+  )
+
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16 md:px-8">
-      <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white md:text-4xl">
-        Privacy Policy
-      </h1>
-      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-        Last updated: September 24, 2026
-      </p>
+    <LegalPage title="Privacy Policy" lastUpdated="October 3, 2026">
+      <LegalSection title="Overview">
+        <p>
+          {site.legalName} ("{site.name}," "we," "us") is a lead generation agency for managed
+          IT service providers (MSPs). We use email outreach to book sales calls for our own
+          business and for our clients.
+          This policy explains what information we collect through tavynq.com, our
+          outreach, and our client work, and how we use it.
+        </p>
+      </LegalSection>
 
-      <div className="mt-10 space-y-8 text-gray-700 dark:text-gray-300">
-        <section>
-          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-            Overview
-          </h2>
-          <p className="mt-3 leading-relaxed">
-            Tavynq Automation provides automation software to home service businesses. This
-            policy explains what information Tavynq collects through tavynq.com, our
-            contact form, and our own communications with prospects and customers, and how
-            we use it.
-          </p>
-        </section>
+      <LegalSection title="Information We Collect">
+        <p>
+          <strong className="font-medium text-gray-900 dark:text-white">From you directly.</strong>{" "}
+          When you use our contact form, book a call, or email us, we collect what you
+          provide, such as your name, work email, company website, metro, and question.
+        </p>
+        <p>
+          <strong className="font-medium text-gray-900 dark:text-white">
+            Booking calendar (Calendly).
+          </strong>{" "}
+          Our booking calendar is provided by Calendly and embedded on our site. It loads when
+          you scroll to it. Calendly may set cookies, and it collects the details you enter to
+          book a call (such as your name, email, chosen time, and answers to booking
+          questions), which are shared with us. Calendly's own privacy policy also applies to
+          how it handles that information.
+        </p>
+        <p>
+          <strong className="font-medium text-gray-900 dark:text-white">
+            Business contact information.
+          </strong>{" "}
+          To run outreach, we collect professional contact details (such as name, job title,
+          company, work email, and company website) from business data providers and
+          publicly available sources. We verify email addresses before sending.
+        </p>
+        <p>
+          <strong className="font-medium text-gray-900 dark:text-white">
+            Public business signals.
+          </strong>{" "}
+          We also review publicly available information about businesses, such as published
+          DNS and email security records, job postings, office announcements, and company
+          size. We only look at public information. We never scan, probe, or test anyone's
+          systems.
+        </p>
+        <p>
+          <strong className="font-medium text-gray-900 dark:text-white">
+            Website usage.
+          </strong>{" "}
+          Our hosting provider may log basic technical data (such as IP address and browser
+          type) to operate and secure the site. We don't set advertising or tracking
+          cookies ourselves; the embedded Calendly calendar may set its own cookies, as
+          described above. Your browser stores your light/dark theme choice locally on your
+          device.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-            Information We Collect
-          </h2>
-          <p className="mt-3 leading-relaxed">
-            When you submit our contact form at tavynq.com/contact, we collect the
-            information you provide: your name, email address, phone number, company name,
-            and message. If you check the SMS consent box, we also record your consent and
-            the date and time it was given.
-          </p>
-        </section>
+      <LegalSection title="How We Use Information">
+        <p>
+          We use information to reply to inquiries, schedule and hold calls, send relevant
+          business outreach, deliver services to clients, send invoices, and keep our
+          systems secure. We don't sell personal information.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-            How We Use This Information
-          </h2>
-          <p className="mt-3 leading-relaxed">
-            We use the information we collect to respond to your inquiry, schedule
-            consultations, and send product demonstrations you request.
-          </p>
-        </section>
+      <LegalSection title="Business Outreach and Opting Out">
+        <p>
+          If you received an email from us or on a client's behalf, it was sent because your
+          professional role appeared relevant to the sender's services. Every outreach email
+          includes a way to opt out. You can also email <LegalEmailLink email={site.email} />{" "}
+          at any time, and we'll stop contacting you and add you to our suppression list.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-            SMS / Text Messaging
-          </h2>
-          <p className="mt-3 leading-relaxed">
-            Tavynq Automation sends text messages only to individuals who request them,
-            either by checking the SMS consent box on our contact form at
-            tavynq.com/contact or by texting START to our number. These messages relate to
-            your inquiry, scheduled appointments, and product demonstrations you request.
-            Message frequency varies. Message and data rates may apply. Reply STOP at any
-            time to opt out, or HELP for help.
-          </p>
-          <p className="mt-3 leading-relaxed">
-            No mobile information will be shared with third parties or affiliates for
-            marketing or promotional purposes. Text messaging originator opt-in data and
-            consent will not be shared with any third parties, except service providers
-            that deliver messages on our behalf, such as our messaging carrier.
-          </p>
-        </section>
+      <LegalSection title="Client Campaigns">
+        <p>
+          When we run campaigns for a client, we process prospect information on that
+          client's behalf and under our agreement with them. We use it only to run that
+          client's campaigns. If you book a call with one of our clients, we share a short
+          brief with them before the call, including your business details, the public
+          information that led to our outreach, and your reply.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-            Services We Provide to Businesses
-          </h2>
-          <p className="mt-3 leading-relaxed">
-            Businesses that use Tavynq's services send messages from phone numbers
-            registered separately to those businesses, under their own brand and consent
-            practices. When we provide these services, we process information on that
-            business's behalf as a service provider, and that business's own privacy
-            policy governs how its customers' information is used.
-          </p>
-        </section>
+      <LegalSection title="Service Providers">
+        <p>
+          We share information only with providers that help us operate, such as website
+          hosting, email and inbox providers, our email sending platform, data and email
+          verification providers, scheduling (Calendly), video hosting (YouTube), and
+          payments (Stripe). They may use it only to provide their services to us. We may
+          also disclose information if required by law.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-            We Do Not Sell or Share Your Data
-          </h2>
-          <p className="mt-3 leading-relaxed">
-            We do not sell or share your personal information with third parties for
-            marketing purposes. Information is shared only with service providers (such as
-            our SMS carrier and hosting infrastructure) strictly as needed to operate our
-            contact form, email, and text messaging systems.
-          </p>
-        </section>
+      <LegalSection title="Retention and Security">
+        <p>
+          We keep information only as long as needed for the purposes above or as required
+          by law. We keep opt-out records so we don't contact you again. We use reasonable
+          safeguards to protect information, but no method of transmission or storage is
+          completely secure.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-            Opting Out &amp; Contact
-          </h2>
-          <p className="mt-3 leading-relaxed">
-            Reply STOP at any time to stop receiving text messages from us, or HELP for
-            help. If you have questions about this Privacy Policy or how we handle your
-            information, please contact us at{" "}
-            <a href="mailto:gabe@tavynq.com" className="underline underline-offset-2">
-              gabe@tavynq.com
-            </a>
-            .
-          </p>
-          <p className="mt-3 leading-relaxed">
-            Tavynq
-            <br />
-            20078 Stella Wy Apt. 365
-            <br />
-            Lutz, FL
-          </p>
-        </section>
+      <LegalSection title="Your Choices and Rights">
+        <p>
+          You can ask us to access, correct, or delete the personal information we hold
+          about you, or to stop contacting you, by emailing{" "}
+          <LegalEmailLink email={site.email} />. Depending on where you live (for example,
+          California), you may have additional rights under local law. We won't
+          discriminate against you for exercising them.
+        </p>
+      </LegalSection>
 
-        <section>
-          <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-            Legal Notices
-          </h2>
-          <p className="mt-3 leading-relaxed">
-            &copy; {new Date().getFullYear()} Tavynq Automation. All rights reserved. This
-            Privacy Policy and the Tavynq service are provided by Tavynq Automation "as
-            is," without warranty of any kind, express or implied.
-          </p>
-        </section>
-      </div>
-    </div>
+      <LegalSection title="Children">
+        <p>
+          Our services are for businesses and aren't directed to anyone under 16. We don't
+          knowingly collect information from children.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="Changes to This Policy">
+        <p>
+          We may update this policy from time to time. The "Last updated" date above shows
+          when it last changed.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="Contact">
+        <p>
+          Questions about this policy? Email <LegalEmailLink email={site.email} />.
+        </p>
+        <address className="not-italic">
+          {site.legalName}
+          <br />
+          {site.address}
+        </address>
+      </LegalSection>
+    </LegalPage>
   )
 }

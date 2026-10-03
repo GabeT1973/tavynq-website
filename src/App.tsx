@@ -4,7 +4,7 @@ import { Home } from "@/pages/home"
 import { Privacy } from "@/pages/privacy"
 import { Terms } from "@/pages/terms"
 import { Contact } from "@/pages/contact"
-import { CancellationPolicy } from "@/pages/cancellation-policy"
+import { NotFound } from "@/pages/not-found"
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </SiteLayout>
   )

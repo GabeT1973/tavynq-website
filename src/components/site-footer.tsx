@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom"
+import { Logo } from "@/components/logo"
+import { site } from "@/config/site"
 
 const starRows = [
   { y: 0.9, xs: [1, 2.2, 3.4, 4.6, 5.8] },
@@ -26,32 +28,39 @@ function UsaFlag() {
   )
 }
 
+const linkClasses = "hover:text-blue-600 dark:hover:text-blue-400"
+
 export function SiteFooter() {
   return (
     <footer className="border-t border-black/5 dark:border-white/5">
-      <div className="mx-auto max-w-screen-xl px-4 text-sm text-gray-500 dark:text-gray-400 md:px-8">
+      <div className="mx-auto max-w-screen-xl px-4 text-sm text-gray-600 dark:text-gray-400 md:px-8">
         <div className="flex items-center justify-center gap-2 border-b border-black/5 py-4 dark:border-white/5 md:justify-start">
           <UsaFlag />
-          <p>Proudly built and operated in the USA.</p>
+          <p>Proudly built and operated in the USA. Working with MSPs nationwide, one per metro.</p>
         </div>
-        <div className="flex flex-col items-center justify-between gap-4 py-8 md:flex-row">
-          <p>&copy; {new Date().getFullYear()} Tavynq Automation. All rights reserved.</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            <Link to="/contact" className="hover:text-blue-600 dark:hover:text-blue-400">
-              Contact
-            </Link>
-            <Link to="/privacy" className="hover:text-blue-600 dark:hover:text-blue-400">
-              Privacy Policy
-            </Link>
-            <Link to="/terms" className="hover:text-blue-600 dark:hover:text-blue-400">
-              Terms and Conditions
-            </Link>
-            <Link
-              to="/cancellation-policy"
-              className="hover:text-blue-600 dark:hover:text-blue-400"
-            >
-              Cancellation Policy
-            </Link>
+        <div className="flex flex-col items-center justify-between gap-6 py-10 text-center md:flex-row md:items-start md:text-left">
+          <div className="flex flex-col items-center gap-1 md:items-start">
+            <Logo className="text-lg" />
+            <address className="not-italic">{site.address}</address>
+            <a href={`mailto:${site.email}`} className={linkClasses}>
+              {site.email}
+            </a>
+          </div>
+          <div className="flex flex-col items-center gap-3 md:items-end">
+            <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+              <Link to="/contact" className={linkClasses}>
+                Contact
+              </Link>
+              <Link to="/privacy" className={linkClasses}>
+                Privacy Policy
+              </Link>
+              <Link to="/terms" className={linkClasses}>
+                Terms of Service
+              </Link>
+            </nav>
+            <p>
+              &copy; {new Date().getFullYear()} {site.legalName}. All rights reserved.
+            </p>
           </div>
         </div>
       </div>
