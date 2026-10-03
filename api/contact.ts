@@ -29,13 +29,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: "Invalid request." })
   }
 
-  const { name, email, phone, company, message } = body
+  const { name, email, website, metro, question } = body
 
   if (
     !isNonEmptyString(name) ||
     !isNonEmptyString(email) ||
-    !isNonEmptyString(company) ||
-    !isNonEmptyString(message)
+    !isNonEmptyString(website) ||
+    !isNonEmptyString(question)
   ) {
     return res.status(400).json({ error: "Please fill in all required fields." })
   }
@@ -61,24 +61,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     auth: { user: SMTP_USER, pass: SMTP_PASS },
   })
 
+  const metroText = isNonEmptyString(metro) ? metro : "Not provided"
+
   try {
     await transporter.sendMail({
       from: CONTACT_FROM_EMAIL || SMTP_USER,
       to: CONTACT_TO_EMAIL || "gabe@tavynq.com",
       replyTo: email,
-      subject: `New lead-gen inquiry: ${name} (${company})`,
+      subject: `New question from ${name} (${website})`,
       text: [
-        "New inquiry from the tavynq.com contact form.",
+        "New question from the tavynq.com contact page.",
         "",
         `Name: ${name}`,
         `Email: ${email}`,
-        `Phone: ${isNonEmptyString(phone) ? phone : "N/A"}`,
-        `Company: ${company}`,
+        `Website: ${website}`,
+        `Metro: ${metroText}`,
         "",
-        "Message:",
-        message,
+        "Question:",
+        question,
         "",
-        "Reply to this email to respond directly.",
+        "Reply to this email to answer directly (promised: within 24-48 hours).",
       ].join("\n"),
     })
 

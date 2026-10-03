@@ -10,7 +10,7 @@ export function Privacy() {
   )
 
   return (
-    <LegalPage title="Privacy Policy" lastUpdated="October 1, 2026">
+    <LegalPage title="Privacy Policy" lastUpdated="October 3, 2026">
       <LegalSection title="Overview">
         <p>
           {site.legalName} ("{site.name}," "we," "us") is a lead generation agency for managed
@@ -25,7 +25,17 @@ export function Privacy() {
         <p>
           <strong className="font-medium text-gray-900 dark:text-white">From you directly.</strong>{" "}
           When you use our contact form, book a call, or email us, we collect what you
-          provide, such as your name, work email, phone number, company, and message.
+          provide, such as your name, work email, company website, metro, and question.
+        </p>
+        <p>
+          <strong className="font-medium text-gray-900 dark:text-white">
+            Booking calendar (Calendly).
+          </strong>{" "}
+          Our booking calendar is provided by Calendly and embedded on our site. It loads when
+          you scroll to it. Calendly may set cookies, and it collects the details you enter to
+          book a call (such as your name, email, chosen time, and answers to booking
+          questions), which are shared with us. Calendly's own privacy policy also applies to
+          how it handles that information.
         </p>
         <p>
           <strong className="font-medium text-gray-900 dark:text-white">
@@ -49,8 +59,10 @@ export function Privacy() {
             Website usage.
           </strong>{" "}
           Our hosting provider may log basic technical data (such as IP address and browser
-          type) to operate and secure the site. We don't use advertising or tracking
-          cookies. Your browser stores your light/dark theme choice locally on your device.
+          type) to operate and secure the site. We don't set advertising or tracking
+          cookies ourselves; the embedded Calendly calendar may set its own cookies, as
+          described above. Your browser stores your light/dark theme choice locally on your
+          device.
         </p>
       </LegalSection>
 
