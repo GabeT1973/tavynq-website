@@ -65,13 +65,13 @@ export const site = {
     `You didn't flag it as a bad fit against our written criteria within ${badFitWindowHours} hours.`,
   ],
 
-  // PLACEHOLDERS: replace before going live.
-  calendlyUrl: "https://calendly.com/your-link",
+  // Booking link, video, and contact details.
+  calendlyUrl: "https://calendly.com/gabe-tavynq/tavynq-pilot-walkthrough",
   // YouTube video ID for the VSL (the part after "watch?v="). While empty, the video section
   // and the hero's "Watch" button are hidden.
   youtubeId: "",
   email: "gabe@tavynq.com",
-  address: "[Business mailing address placeholder]",
+  address: "20078 Stella Way #365, Lutz, FL 33558",
 
   seo: {
     title: "Tavynq | Qualified Sales Calls for MSPs",
