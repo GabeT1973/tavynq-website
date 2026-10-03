@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent, type ClipboardEvent, type FormEvent } from "react"
 import { Link } from "react-router-dom"
+import { pillPrimary } from "@/components/book-call-link"
 import { site } from "@/config/site"
 import { usePageMeta } from "@/lib/use-page-meta"
 
@@ -334,7 +335,7 @@ export function Contact() {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
+          className={`${pillPrimary} px-6 py-3 text-sm`}
         >
           {status === "submitting" ? "Sending..." : "Send Message"}
         </button>
