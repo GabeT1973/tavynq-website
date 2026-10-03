@@ -37,6 +37,8 @@ export function Home() {
   return (
     <>
       <HeroSection
+        // Pull the hero up under the transparent sticky header so its glow starts at the very top.
+        className="-mt-16 pt-16"
         eyebrow={site.offer.systemName}
         title={{
           regular: site.offer.headline.start,
@@ -49,10 +51,10 @@ export function Home() {
           opacity: 0.4,
           cellSize: 50,
           lightLineColor: "#4a4a4a",
-          darkLineColor: "#2a2a2a",
+          darkLineColor: "#4a4a4a",
         }}
       >
-        <div className="flex flex-col items-center justify-center gap-3 pt-2 sm:flex-row">
+        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
           <BookCallLink className="w-full sm:w-auto" />
           {hasVideo && (
             <a

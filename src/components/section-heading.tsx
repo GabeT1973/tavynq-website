@@ -15,17 +15,21 @@ export function SectionHeading({
   return (
     <Reveal className="mx-auto max-w-2xl text-center">
       {eyebrow && (
-        <p className="text-sm font-medium uppercase tracking-wider text-blue-600 dark:text-blue-400">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-600 dark:text-blue-400">
           {eyebrow}
         </p>
       )}
       <h2
         id={id}
-        className="mt-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white md:text-4xl"
+        className="mt-3 text-3xl font-semibold tracking-tight text-balance text-gray-900 md:text-[2.75rem] md:leading-[1.1] dark:text-white"
       >
         {title}
       </h2>
-      {description && <p className="mt-3 text-gray-600 dark:text-gray-300">{description}</p>}
+      {description && (
+        <p className="mt-4 text-base leading-relaxed text-gray-600 md:text-lg dark:text-gray-300">
+          {description}
+        </p>
+      )}
     </Reveal>
   )
 }

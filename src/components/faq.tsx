@@ -1,7 +1,10 @@
 import { useState, type ReactNode } from "react"
 import { ChevronDown } from "lucide-react"
+import { cardBase } from "@/components/card"
+import { Section } from "@/components/section"
 import { SectionHeading } from "@/components/section-heading"
 import { site } from "@/config/site"
+import { cn } from "@/lib/utils"
 
 const linkClasses =
   "text-blue-600 underline underline-offset-2 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
@@ -65,25 +68,25 @@ export function Faq() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <section
-      id="faq"
-      aria-labelledby="faq-heading"
-      className="mx-auto max-w-screen-xl px-4 py-20 md:px-8"
-    >
+    <Section id="faq" labelledBy="faq-heading">
       <SectionHeading
         id="faq-heading"
         eyebrow="FAQ"
         title="Questions, answered"
         description="What MSP owners usually ask before booking a call."
       />
-      <div className="mx-auto mt-12 max-w-3xl space-y-3">
+      <div className="mx-auto mt-12 max-w-3xl space-y-3 md:mt-16">
         {faqs.map((faq, index) => {
           const isOpen = openIndex === index
 
           return (
             <div
               key={faq.question}
-              className="rounded-2xl border border-black/5 bg-white shadow-sm dark:border-white/5 dark:bg-gray-900"
+              className={cn(
+                cardBase,
+                "transition-[border-color,box-shadow] duration-300 motion-reduce:transition-none",
+                isOpen && "border-blue-600/20 dark:border-blue-400/20",
+              )}
             >
               <h3>
                 <button
@@ -92,31 +95,38 @@ export function Faq() {
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${index}`}
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="flex w-full items-center justify-between gap-4 rounded-2xl px-6 py-5 text-left text-base font-medium text-gray-900 transition-colors hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
+                  className="group flex w-full items-center justify-between gap-4 rounded-2xl px-6 py-5 text-left text-base font-medium text-gray-900 transition-colors hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
                 >
                   {faq.question}
-                  <ChevronDown
+                  <span
                     aria-hidden="true"
-                    className={`h-5 w-5 shrink-0 text-blue-600 transition-transform duration-300 motion-reduce:transition-none dark:text-blue-400 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                  />
+                    className={cn(
+                      "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
+                      isOpen
+                        ? "rotate-180 border-blue-600/30 bg-blue-600/10 dark:border-blue-400/30 dark:bg-blue-400/10"
+                        : "border-black/10 dark:border-white/10",
+                    )}
+                  >
+                    <ChevronDown className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  </span>
                 </button>
               </h3>
               <div
                 id={`faq-answer-${index}`}
                 role="region"
                 aria-labelledby={`faq-question-${index}`}
-                className={`grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none ${
-                  isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                }`}
+                className={cn(
+                  "grid transition-[grid-template-rows] duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
+                  isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+                )}
               >
                 <div
-                  className={`overflow-hidden transition-[visibility] duration-300 ${
-                    isOpen ? "visible" : "invisible"
-                  }`}
+                  className={cn(
+                    "overflow-hidden transition-[opacity,visibility] duration-300 motion-reduce:transition-none",
+                    isOpen ? "visible opacity-100" : "invisible opacity-0",
+                  )}
                 >
-                  <p className="px-6 pb-5 leading-relaxed text-gray-600 dark:text-gray-300">
+                  <p className="px-6 pb-6 leading-relaxed text-gray-600 dark:text-gray-300">
                     {faq.answer}
                   </p>
                 </div>
@@ -125,6 +135,6 @@ export function Faq() {
           )
         })}
       </div>
-    </section>
+    </Section>
   )
 }

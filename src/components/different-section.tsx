@@ -1,7 +1,10 @@
 import { FileText, KeyRound, MapPin, Radar, ShieldCheck, ThumbsDown } from "lucide-react"
+import { cardBase, cardHover, iconChip } from "@/components/card"
 import { Reveal } from "@/components/reveal"
+import { Section } from "@/components/section"
 import { SectionHeading } from "@/components/section-heading"
 import { site } from "@/config/site"
+import { cn } from "@/lib/utils"
 
 const differences = [
   {
@@ -43,23 +46,19 @@ const differences = [
 
 export function DifferentSection() {
   return (
-    <section
-      id="different"
-      aria-labelledby="different-heading"
-      className="mx-auto max-w-screen-xl px-4 py-20 md:px-8"
-    >
+    <Section id="different" labelledBy="different-heading">
       <SectionHeading
         id="different-heading"
-        eyebrow="How we're different"
+        eyebrow="Why Tavynq"
         title="Built for MSPs, not bolted on"
         description="Six commitments built into every engagement."
       />
-      <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-12 grid gap-5 sm:grid-cols-2 md:mt-16 md:gap-6 lg:grid-cols-3">
         {differences.map((item, index) => (
           <li key={item.title}>
-            <Reveal delay={(index % 3) * 100} className="h-full">
-              <div className="h-full rounded-2xl border border-black/5 bg-white p-6 shadow-sm dark:border-white/5 dark:bg-gray-900">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-600/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400">
+            <Reveal delay={(index % 3) * 90} className="h-full">
+              <div className={cn(cardBase, cardHover, "h-full p-7")}>
+                <div className={iconChip}>
                   <item.icon aria-hidden="true" className="h-5 w-5" />
                 </div>
                 <h3 className="mt-5 text-lg font-medium text-gray-900 dark:text-white">
@@ -73,6 +72,6 @@ export function DifferentSection() {
           </li>
         ))}
       </ul>
-    </section>
+    </Section>
   )
 }

@@ -6,8 +6,11 @@ import {
   MessageSquareReply,
   PenLine,
 } from "lucide-react"
+import { cardBase, cardHover } from "@/components/card"
 import { Reveal } from "@/components/reveal"
+import { Section } from "@/components/section"
 import { SectionHeading } from "@/components/section-heading"
+import { cn } from "@/lib/utils"
 
 const items = [
   {
@@ -50,22 +53,18 @@ const items = [
 
 export function IncludedSection() {
   return (
-    <section
-      id="included"
-      aria-labelledby="included-heading"
-      className="mx-auto max-w-screen-xl px-4 py-20 md:px-8"
-    >
+    <Section id="included" labelledBy="included-heading">
       <SectionHeading
         id="included-heading"
         eyebrow="What's included"
         title="Done for you, start to finish"
         description="You run your MSP. We run the outbound."
       />
-      <ul className="mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2 md:mt-16 lg:grid-cols-3">
         {items.map((item, index) => (
           <li key={item.title}>
             <Reveal delay={(index % 3) * 75} className="h-full">
-              <div className="flex h-full gap-4 rounded-2xl border border-black/5 bg-white p-5 shadow-sm dark:border-white/5 dark:bg-gray-900">
+              <div className={cn(cardBase, cardHover, "flex h-full gap-4 p-6")}>
                 <item.icon
                   aria-hidden="true"
                   className="mt-0.5 h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400"
@@ -81,6 +80,6 @@ export function IncludedSection() {
           </li>
         ))}
       </ul>
-    </section>
+    </Section>
   )
 }

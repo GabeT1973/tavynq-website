@@ -38,7 +38,9 @@ export const site = {
     plans: [
       {
         name: "Founding Partner",
-        badge: "First 3 MSPs only",
+        // A plan with a badge is shown as the highlighted card.
+        badge: "Limited: 3 spots",
+        note: "For our first 3 MSP clients only.",
         setupFee: 750,
         perQualifiedCall: 250,
         terms: "In exchange for permission to publish a case study about your results.",
@@ -46,6 +48,7 @@ export const site = {
       {
         name: "Standard",
         badge: null,
+        note: null,
         setupFee: 1500,
         perQualifiedCall: 250,
         terms: "Everything included, with the same pay-per-call model.",

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Play } from "lucide-react"
 import { Reveal } from "@/components/reveal"
+import { Section } from "@/components/section"
 import { SectionHeading } from "@/components/section-heading"
 import { site } from "@/config/site"
 
@@ -57,22 +58,18 @@ function PlayBadge() {
 // Only rendered when a YouTube ID is set in src/config/site.ts (see pages/home.tsx).
 export function VslSection({ videoId }: { videoId: string }) {
   return (
-    <section
-      id="breakdown"
-      aria-labelledby="breakdown-heading"
-      className="mx-auto max-w-screen-xl px-4 py-20 md:px-8"
-    >
+    <Section id="breakdown" labelledBy="breakdown-heading">
       <SectionHeading
         id="breakdown-heading"
         eyebrow="Watch first"
         title="The 10-minute breakdown"
         description="How we find local businesses with a reason to talk, email them, and put qualified calls on your calendar."
       />
-      <Reveal className="mx-auto mt-10 max-w-4xl">
-        <div className="relative aspect-video overflow-hidden rounded-2xl border border-black/5 bg-gray-100 shadow-xl dark:border-white/10 dark:bg-gray-900">
+      <Reveal className="mx-auto mt-12 max-w-4xl md:mt-16">
+        <div className="relative aspect-video overflow-hidden rounded-2xl border border-black/[0.06] bg-gray-100 shadow-[0_24px_60px_-24px_rgb(0_0_0/0.35)] dark:border-white/[0.08] dark:bg-gray-900">
           <VideoEmbed videoId={videoId} />
         </div>
       </Reveal>
-    </section>
+    </Section>
   )
 }

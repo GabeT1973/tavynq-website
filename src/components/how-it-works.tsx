@@ -1,7 +1,10 @@
 import { CalendarCheck, ListChecks, Rocket, Search } from "lucide-react"
+import { cardBase, cardHover } from "@/components/card"
 import { Reveal } from "@/components/reveal"
+import { Section } from "@/components/section"
 import { SectionHeading } from "@/components/section-heading"
 import { site } from "@/config/site"
+import { cn } from "@/lib/utils"
 
 const steps = [
   {
@@ -32,30 +35,26 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section
-      id="how-it-works"
-      aria-labelledby="how-it-works-heading"
-      className="mx-auto max-w-screen-xl px-4 py-20 md:px-8"
-    >
+    <Section id="how-it-works" labelledBy="how-it-works-heading">
       <SectionHeading
         id="how-it-works-heading"
         eyebrow="How it works"
         title={site.offer.systemName}
         description="Four steps from kickoff to qualified sales calls on your calendar. Email only, no cold callers."
       />
-      <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <ol className="mt-12 grid gap-5 sm:grid-cols-2 md:mt-16 md:gap-6 lg:grid-cols-4">
         {steps.map((step, index) => (
           <li key={step.title}>
-            <Reveal delay={index * 100} className="h-full">
-              <div className="relative h-full rounded-2xl border border-black/5 bg-white p-6 shadow-sm dark:border-white/5 dark:bg-gray-900">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 to-blue-400 text-white">
+            <Reveal delay={index * 90} className="h-full">
+              <div className={cn(cardBase, cardHover, "relative h-full p-7")}>
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.25),0_6px_16px_-6px_rgb(37_99_235/0.6)]">
                   <step.icon aria-hidden="true" className="h-5 w-5" />
                 </div>
                 <span
                   aria-hidden="true"
-                  className="absolute right-6 top-6 text-4xl font-semibold text-gray-100 dark:text-gray-800"
+                  className="absolute right-6 top-6 text-sm font-medium tabular-nums text-gray-500 dark:text-gray-400"
                 >
-                  {index + 1}
+                  0{index + 1}
                 </span>
                 <h3 className="mt-5 text-lg font-medium text-gray-900 dark:text-white">
                   <span className="sr-only">Step {index + 1}: </span>
@@ -69,6 +68,6 @@ export function HowItWorks() {
           </li>
         ))}
       </ol>
-    </section>
+    </Section>
   )
 }
