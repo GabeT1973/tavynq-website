@@ -116,9 +116,10 @@ address) live in ONE config file.
 - Layout: `src/pages/` (one file per route), `src/components/` (sections, header/footer),
   `src/lib/` (utils, `usePageMeta` for per-page title + meta description).
 - API: Vercel serverless functions in `api/`. `api/contact.ts` handles POST `/api/contact`
-  from the contact page and emails the submission via nodemailer/SMTP.
-  Env vars: `SMTP_HOST`, `SMTP_PORT` (default 587), `SMTP_USER`, `SMTP_PASS`,
-  `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`.
+  from the contact page and emails the submission through the Resend API (plain `fetch`,
+  no SDK), from `website@notify.tavynq.com` with Reply-To set to the visitor.
+  Env vars: `RESEND_API_KEY` (required), `CONTACT_TO_EMAIL` (optional, defaults to
+  gabe@tavynq.com). `notify.tavynq.com` must stay verified in Resend.
 - SEO note: it's a client-rendered SPA — page titles/meta are set at runtime by `usePageMeta`;
   `index.html` holds the default title/meta crawlers see first.
 - Deploy: Vercel, auto-deploys from `main`. `vercel.json` rewrites every non-`/api/` path to
@@ -165,6 +166,9 @@ Done:
 - Calendly link and business address set in `src/config/site.ts`; Calendly event updated
   for the MSP offer (30 min).
 - Privacy + Terms reviewed by Gabe (code comments still say DRAFT; remove if desired).
+- Contact form fix (2026-10-03): production SMTP login failed (535 5.7.8 Authentication
+  failed), so `api/contact.ts` now sends through Resend and nodemailer/SMTP were removed.
+  Branch `fix-contact-resend`; merge after a preview test confirms delivery.
 
 Later / optional:
 - `youtubeId` once the VSL is recorded (video section + Watch button appear automatically).

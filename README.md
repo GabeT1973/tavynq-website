@@ -25,9 +25,9 @@ Real client results go in `src/components/results-section.tsx` (then un-comment
 ## Stack
 
 React 19 + TypeScript + Vite, Tailwind CSS v4, lucide-react icons, Geist font. Hosted on
-Vercel. `api/contact.ts` is a Vercel function that emails contact-form submissions over SMTP
-(env vars: `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `CONTACT_TO_EMAIL`,
-`CONTACT_FROM_EMAIL`).
+Vercel. `api/contact.ts` is a Vercel function that emails contact-form submissions through
+[Resend](https://resend.com) from `website@notify.tavynq.com` (env vars: `RESEND_API_KEY`,
+required; `CONTACT_TO_EMAIL`, optional, defaults to gabe@tavynq.com).
 
 ## Commands
 
