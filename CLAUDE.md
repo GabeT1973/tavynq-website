@@ -92,9 +92,10 @@ aesthetic and dark/light mode. All editable values
 address) live in ONE config file.
 
 ## Roadmap (what you'll help me build)
-1. Website revamp (now)
-2. Lead list scripts: clean, dedupe, filter, and
-   merge verification results for CSVs
+1. Website revamp (done, live on tavynq.com)
+2. Tavynq Signal Scanner (next): its own project
+   at C:\dev\tavynq-signal-scanner, not this repo.
+   Replaces the old "lead list scripts" step.
 3. n8n reply agent: classify replies, draft
    responses, text me hot leads, auto-send the
    VSL + Calendly link to clear "yes" replies
@@ -179,4 +180,5 @@ Later / optional:
 - Prerender the homepage (React Router framework mode, `ssr: false` + `prerender`) so AI
   crawlers, which don't run JS, can read the copy.
 
-Next on the roadmap: #2 lead list scripts (clean, dedupe, filter, merge verification CSVs).
+Next on the roadmap: #2 the Tavynq Signal Scanner, built in its own folder at
+`C:\dev\tavynq-signal-scanner` (separate from this website repo).
