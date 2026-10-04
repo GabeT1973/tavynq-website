@@ -40,7 +40,7 @@ export function SiteFooter() {
         </div>
         <div className="flex flex-col items-center justify-between gap-6 py-10 text-center md:flex-row md:items-start md:text-left">
           <div className="flex flex-col items-center gap-1 md:items-start">
-            <Logo className="text-lg" />
+            <Logo className="text-lg" markClassName="h-6" />
             <address className="not-italic">{site.address}</address>
             <a href={`mailto:${site.email}`} className={linkClasses}>
               {site.email}
