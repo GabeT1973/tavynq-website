@@ -142,7 +142,7 @@ address) live in ONE config file.
 - Never commit `My workflow.json` (n8n export, may contain private webhook URLs). It's gitignored.
   Stage files by name; don't use `git add -A`.
 
-# Where we left off (2026-10-03)
+# Where we left off (2026-10-04)
 
 **Live on tavynq.com.** `revamp-leadgen` (the full MSP revamp) was merged into `main` on
 2026-10-03 and deployed to production. The branch is kept. For new work, branch off `main`.
@@ -168,7 +168,8 @@ Done:
 - Privacy + Terms reviewed by Gabe (code comments still say DRAFT; remove if desired).
 - Contact form fix (2026-10-03): production SMTP login failed (535 5.7.8 Authentication
   failed), so `api/contact.ts` now sends through Resend and nodemailer/SMTP were removed.
-  Branch `fix-contact-resend`; merge after a preview test confirms delivery.
+  Preview delivery confirmed; merged to `main` and live on 2026-10-04. Old SMTP_* and
+  CONTACT_FROM_EMAIL env vars in Vercel are no longer used.
 
 Later / optional:
 - `youtubeId` once the VSL is recorded (video section + Watch button appear automatically).
