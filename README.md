@@ -45,4 +45,6 @@ npm run preview   # serve the production build
 - `public/robots.txt`, `public/sitemap.xml`, `public/site.webmanifest`: SEO / install metadata.
 - `public/og-image.png`: link-preview image, generated from `scripts/og-image.html`
   (regeneration command is at the top of that file).
-- `scripts/generate-favicons.mjs`: regenerates the favicon PNG/ICO set.
+- `scripts/generate-brand-assets.mjs`: regenerates the header logo mark, favicons, and app
+  icons from `src/assets/brand/tavynq-logo-master.png` (run `npm i --no-save sharp potrace`
+  first; see the script header).

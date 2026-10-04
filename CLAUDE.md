@@ -132,7 +132,8 @@ address) live in ONE config file.
 - Build: `npm run build` (`tsc -b && vite build`, output in `dist/`)  <- run this before saying you're done
 - Lint: `npm run lint` (oxlint)
 - Preview prod build: `npm run preview`
-- Regenerate favicons: `node scripts/generate-favicons.mjs`
+- Regenerate logo mark + favicons + app icons from the master logo:
+  `npm i --no-save sharp potrace && node scripts/generate-brand-assets.mjs`
 
 ## Rules for this repo
 - Mobile-first. Check layouts at phone width.
@@ -154,7 +155,10 @@ Done:
 - One-page MSP site: hero, problem, Pipeline System (4 steps), How we're different (6),
   what's included, pricing (Founding Partner + Standard), proof line, FAQ, final CTA.
 - All editable values in `src/config/site.ts`; `<head>` meta/OG/JSON-LD built from it.
-- Theme follows system + remembers choice. "T" favicon. Share image (`scripts/og-image.html`).
+- Theme follows system + remembers choice. Share image (`scripts/og-image.html`).
+- Logo mark (2026-10-04): master at `src/assets/brand/tavynq-logo-master.png` (real alpha).
+  Header mark 28px tall (1x/2x/3x WebP + PNG), brightened + blue glow in dark mode only.
+  Favicons are a flat traced silhouette; home-screen icons are the full mark on #0a0a0a.
 - Premium polish: three-part sticky header with scrollspy, wordmark sheen, shared
   section/card styles, glowing Founding Partner card.
 - Final section: "What happens after you book" timeline + inline Calendly embed
