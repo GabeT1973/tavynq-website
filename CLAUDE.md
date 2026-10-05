@@ -149,16 +149,29 @@ address) live in ONE config file.
 **Live on tavynq.com.** `revamp-leadgen` (the full MSP revamp) was merged into `main` on
 2026-10-03 and deployed to production. The branch is kept. For new work, branch off `main`.
 Vercel builds a preview per pushed branch; find its URL in the GitHub commit status (no `gh`
-or `vercel` CLI installed).
+or `vercel` CLI installed). If a push shows no Vercel status after ~5 minutes, Vercel missed
+it: push an empty commit (`git commit --allow-empty`) to retrigger. This happened once on
+`main` (2026-10-04).
 
 Done:
 - One-page MSP site: hero, problem, Pipeline System (4 steps), How we're different (6),
   what's included, pricing (Founding Partner + Standard), proof line, FAQ, final CTA.
 - All editable values in `src/config/site.ts`; `<head>` meta/OG/JSON-LD built from it.
 - Theme follows system + remembers choice. Share image (`scripts/og-image.html`).
-- Logo mark (2026-10-04): master at `src/assets/brand/tavynq-logo-master.png` (real alpha).
-  Header mark 28px tall (1x/2x/3x WebP + PNG), brightened + blue glow in dark mode only.
-  Favicons are a flat traced silhouette; home-screen icons are the full mark on #0a0a0a.
+- Logo mark (live 2026-10-04, branch `add-logo-mark`):
+  - Master: `src/assets/brand/tavynq-logo-master.png` (1408x768 PNG with real alpha). Never
+    edit it; regenerate everything with `scripts/generate-brand-assets.mjs`. The earlier
+    `tavynq-logo.jpeg` had a baked-in checkerboard and must not be used.
+  - Header/footer: `src/components/logo.tsx`, mark 33x28 (1x/2x/3x WebP + PNG fallback),
+    decorative alt, 8px gap, wordmark sheen kept. Dark mode only: brightness(1.35) + soft
+    blue drop-shadow so the dark metal reads on the near-black header. Footer uses h-6.
+  - Tab icons: flat #3b82f6 traced silhouette (favicon.svg, 16/32 PNG, ICO 16/32/48).
+    Home-screen: full mark + glow on #0a0a0a (apple-touch 180, 192, 512, maskable 512).
+  - Icon URLs in `index.html` and the manifest carry `?v=2`; bump it when icons change.
+  - The share image (`scripts/og-image.html`) shows the mark next to the name.
+- Hero grid (2026-10-04): loops seamlessly (moves exactly 10 cells per 6s cycle) and,
+  by Gabe's decision, animates even with prefers-reduced-motion. Everything else still
+  respects reduced motion.
 - Premium polish: three-part sticky header with scrollspy, wordmark sheen, shared
   section/card styles, glowing Founding Partner card.
 - Final section: "What happens after you book" timeline + inline Calendly embed
