@@ -1,9 +1,9 @@
-# Tavynq website
+# SignalFill website
 
-Marketing site for **Tavynq**, a lead generation agency for managed IT service providers
+Marketing site for **SignalFill**, a lead generation agency for managed IT service providers
 (MSPs). We use signal-based cold email to book qualified sales calls from local businesses.
 One-page site with pricing, FAQ, an optional VSL, and a "Book a call" (Calendly) call to
-action. Live at https://tavynq.com.
+action. Live at https://www.signalfill.com.
 
 ## Editing content
 
@@ -26,8 +26,8 @@ Real client results go in `src/components/results-section.tsx` (then un-comment
 
 React 19 + TypeScript + Vite, Tailwind CSS v4, lucide-react icons, Geist font. Hosted on
 Vercel. `api/contact.ts` is a Vercel function that emails contact-form submissions through
-[Resend](https://resend.com) from `website@notify.tavynq.com` (env vars: `RESEND_API_KEY`,
-required; `CONTACT_TO_EMAIL`, optional, defaults to gabe@tavynq.com).
+[Resend](https://resend.com) from `website@notify.signalfill.com` (env vars: `RESEND_API_KEY`,
+required; `CONTACT_TO_EMAIL`, optional, defaults to gabe@signalfill.com).
 
 ## Commands
 
@@ -46,5 +46,5 @@ npm run preview   # serve the production build
 - `public/og-image.png`: link-preview image, generated from `scripts/og-image.html`
   (regeneration command is at the top of that file).
 - `scripts/generate-brand-assets.mjs`: regenerates the header logo mark, favicons, and app
-  icons from `src/assets/brand/tavynq-logo-master.png` (run `npm i --no-save sharp potrace`
+  icons from `src/assets/brand/signalfill-logo-master.png` (run `npm i --no-save sharp potrace`
   first; see the script header).

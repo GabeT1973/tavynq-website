@@ -3,6 +3,7 @@ import { CalendlyEmbed } from "@/components/calendly-embed"
 import { cardBase } from "@/components/card"
 import { Reveal } from "@/components/reveal"
 import { Section } from "@/components/section"
+import { site } from "@/config/site"
 import { cn } from "@/lib/utils"
 
 const afterBooking = [
@@ -64,7 +65,7 @@ export function FinalCta() {
           </h2>
           <p className="mt-4 text-base leading-relaxed text-gray-600 md:text-lg dark:text-gray-300">
             Book a 30-minute walkthrough. We'll map who you want to reach in your metro, show
-            you how the Tavynq Pipeline System would work for you, and lay out your first 90
+            you how {site.offer.systemName} would work for you, and lay out your first 90
             days. If it's not a fit, you'll still leave with a clear plan.
           </p>
         </Reveal>

@@ -49,7 +49,7 @@ export function DifferentSection() {
     <Section id="different" labelledBy="different-heading">
       <SectionHeading
         id="different-heading"
-        eyebrow="Why Tavynq"
+        eyebrow={`Why ${site.name}`}
         title="Built for MSPs, not bolted on"
         description="Six commitments built into every engagement."
       />

@@ -4,13 +4,14 @@ import { Menu, X } from "lucide-react"
 import { BookCallLink } from "@/components/book-call-link"
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { site } from "@/config/site"
 import { scrollToId } from "@/lib/scroll"
 import { useActiveSection, useScrolled } from "@/lib/use-active-section"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
   { id: "how-it-works", label: "How it works" },
-  { id: "different", label: "Why Tavynq" },
+  { id: "different", label: `Why ${site.name}` },
   { id: "pricing", label: "Pricing" },
   { id: "faq", label: "FAQ" },
 ] as const
@@ -61,7 +62,7 @@ export function SiteHeader() {
           to="/"
           onClick={() => setMenuOpen(false)}
           className="justify-self-start rounded-md"
-          aria-label="Tavynq home"
+          aria-label={`${site.name} home`}
         >
           <Logo />
         </Link>

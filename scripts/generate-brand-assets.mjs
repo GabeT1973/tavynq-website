@@ -1,11 +1,11 @@
-// Generates every logo/icon asset from the master mark (src/assets/brand/tavynq-logo-master.png).
+// Generates every logo/icon asset from the master mark (src/assets/brand/signalfill-logo-master.png).
 //
 // sharp and potrace are NOT project dependencies. Install them temporarily, then run:
 //   npm i --no-save sharp potrace
 //   node scripts/generate-brand-assets.mjs
 //
 // Outputs:
-//   src/assets/brand/tavynq-mark-{28,56,84}.{webp,png}  header mark at 1x/2x/3x (28px tall)
+//   src/assets/brand/signalfill-mark-{28,56,84}.{webp,png}  header mark at 1x/2x/3x (28px tall)
 //   public/favicon.svg                                  traced, simplified silhouette
 //   public/favicon-16x16.png, favicon-32x32.png, favicon.ico (16/32/48)  simplified silhouette
 //   public/apple-touch-icon.png (180)                   full mark + glow on #0a0a0a
@@ -16,7 +16,7 @@ import { promisify } from "node:util"
 import sharp from "sharp"
 import potrace from "potrace"
 
-const MASTER = "src/assets/brand/tavynq-logo-master.png"
+const MASTER = "src/assets/brand/signalfill-logo-master.png"
 const BRAND_DIR = "src/assets/brand"
 const PUBLIC_DIR = "public"
 const BG = "#0a0a0a"
@@ -24,13 +24,15 @@ const ICON_BLUE = "#3b82f6" // flat favicon fill: reads on light and dark browse
 const GLOW_BLUE = { r: 59, g: 130, b: 246 }
 const HEADER_HEIGHT = 28
 
-// Tight crop around every non-transparent pixel of the master.
+// Tight crop around every non-transparent pixel of the master. Threshold is 16, not 0: some
+// exports carry a handful of near-invisible stray pixels (alpha 1-10) scattered out near the
+// canvas edges (compression noise), which would otherwise blow the bbox out to the full canvas.
 async function trimmedMark() {
   const { data, info } = await sharp(MASTER).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
   let x0 = info.width, y0 = info.height, x1 = 0, y1 = 0
   for (let y = 0; y < info.height; y++) {
     for (let x = 0; x < info.width; x++) {
-      if (data[(y * info.width + x) * 4 + 3] > 0) {
+      if (data[(y * info.width + x) * 4 + 3] > 16) {
         if (x < x0) x0 = x
         if (x > x1) x1 = x
         if (y < y0) y0 = y
@@ -123,8 +125,8 @@ console.log(`trimmed mark: ${meta.width}x${meta.height}`)
 for (const scale of [1, 2, 3]) {
   const height = HEADER_HEIGHT * scale
   const resized = sharp(mark).resize({ height })
-  await resized.clone().webp({ quality: 90, alphaQuality: 100 }).toFile(`${BRAND_DIR}/tavynq-mark-${height}.webp`)
-  await resized.clone().png({ compressionLevel: 9 }).toFile(`${BRAND_DIR}/tavynq-mark-${height}.png`)
+  await resized.clone().webp({ quality: 90, alphaQuality: 100 }).toFile(`${BRAND_DIR}/signalfill-mark-${height}.webp`)
+  await resized.clone().png({ compressionLevel: 9 }).toFile(`${BRAND_DIR}/signalfill-mark-${height}.png`)
 }
 const headerMeta = await sharp(mark).resize({ height: HEADER_HEIGHT }).toBuffer({ resolveWithObject: true })
 console.log(`header mark 1x: ${headerMeta.info.width}x${headerMeta.info.height}`)
@@ -143,7 +145,7 @@ writeFileSync(`${PUBLIC_DIR}/favicon.ico`, buildIco(tabIcons))
 const trace = promisify(potrace.trace)
 const tracePng = await sharp(flat).resize({ height: 512 }).flatten({ background: "#ffffff" }).png().toBuffer()
 const traced = await trace(tracePng, { color: ICON_BLUE, background: "transparent", threshold: 180, turdSize: 20 })
-writeFileSync(`${PUBLIC_DIR}/favicon.svg`, traced.replace("<svg ", '<svg role="img" aria-label="Tavynq" '))
+writeFileSync(`${PUBLIC_DIR}/favicon.svg`, traced.replace("<svg ", '<svg role="img" aria-label="SignalFill" '))
 
 // Home-screen icons: full mark with glow on a solid background.
 const bg = hexToRgb(BG)
