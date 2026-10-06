@@ -3,10 +3,10 @@ import type { VercelRequest, VercelResponse } from "@vercel/node"
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 // Sent through Resend (https://resend.com/docs/api-reference/emails/send-email).
-// notify.tavynq.com must be a verified domain in Resend.
+// notify.signalfill.com must be a verified domain in Resend.
 const RESEND_ENDPOINT = "https://api.resend.com/emails"
-const FROM_ADDRESS = "Tavynq Website <website@notify.tavynq.com>"
-const DEFAULT_TO = "gabe@tavynq.com"
+const FROM_ADDRESS = "SignalFill Website <website@notify.signalfill.com>"
+const DEFAULT_TO = "gabe@signalfill.com"
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0
@@ -71,7 +71,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         reply_to: email,
         subject: `New question from ${name} (${website})`,
         text: [
-          "New question from the tavynq.com contact page.",
+          "New question from the signalfill.com contact page.",
           "",
           `Name: ${name}`,
           `Email: ${email}`,

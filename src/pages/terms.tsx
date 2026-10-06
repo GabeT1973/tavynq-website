@@ -13,7 +13,7 @@ export function Terms() {
     <LegalPage title="Terms of Service" lastUpdated="October 1, 2026">
       <LegalSection title="Agreement to These Terms">
         <p>
-          These Terms of Service ("Terms") apply to your use of tavynq.com and to services
+          These Terms of Service ("Terms") apply to your use of signalfill.com and to services
           provided by {site.legalName} ("{site.name}," "we," "us"). By using the site or
           our services, you agree to these Terms.
         </p>

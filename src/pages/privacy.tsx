@@ -16,7 +16,7 @@ export function Privacy() {
           {site.legalName} ("{site.name}," "we," "us") is a lead generation agency for managed
           IT service providers (MSPs). We use email outreach to book sales calls for our own
           business and for our clients.
-          This policy explains what information we collect through tavynq.com, our
+          This policy explains what information we collect through signalfill.com, our
           outreach, and our client work, and how we use it.
         </p>
       </LegalSection>

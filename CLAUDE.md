@@ -1,4 +1,9 @@
-# Tavynq - Project Context
+# SignalFill - Project Context
+
+**Rebranded 2026-10-05: Tavynq -> SignalFill.** If you see "Tavynq" anywhere below this
+line, it's historical narrative describing what was true at the time it was written (old
+branch names, old file names). The live brand, domain, and email are SignalFill /
+signalfill.com / gabe@signalfill.com. See "Where we left off" for the rebrand details.
 
 ## Who I am
 Gabriel, solo founder. I work a 9-5 and want this
@@ -21,7 +26,7 @@ you're doing in plain English.
 - Offer: "Qualified sales calls for MSPs, without
   relying on referrals." We email local
   businesses with a real reason to talk.
-  Delivered via the Tavynq Pipeline System.
+  Delivered via the SignalFill Pipeline System.
 - Contract: month-to-month, 14 days' written
   notice either side. Setup fee non-refundable
   once campaigns launch. Calls billed monthly.
@@ -66,7 +71,7 @@ the client.
   YouTube for the VSL
 
 ## Rules
-- Never send cold email from tavynq.com. Burner
+- Never send cold email from signalfill.com. Burner
   lookalike domains only.
 - No fake testimonials, stats, client logos,
   reviews, or case studies. Real results only.
@@ -92,9 +97,9 @@ aesthetic and dark/light mode. All editable values
 address) live in ONE config file.
 
 ## Roadmap (what you'll help me build)
-1. Website revamp (done, live on tavynq.com)
-2. Tavynq Signal Scanner (next): its own project
-   at C:\dev\tavynq-signal-scanner, not this repo.
+1. Website revamp (done, live on www.signalfill.com as of the rebrand)
+2. SignalFill Signal Scanner (next): its own project
+   at C:\dev\signalfill-signal-scanner, not this repo.
    Replaces the old "lead list scripts" step.
 3. n8n reply agent: classify replies, draft
    responses, text me hot leads, auto-send the
@@ -118,9 +123,10 @@ address) live in ONE config file.
   `src/lib/` (utils, `usePageMeta` for per-page title + meta description).
 - API: Vercel serverless functions in `api/`. `api/contact.ts` handles POST `/api/contact`
   from the contact page and emails the submission through the Resend API (plain `fetch`,
-  no SDK), from `website@notify.tavynq.com` with Reply-To set to the visitor.
+  no SDK), from `website@notify.signalfill.com` with Reply-To set to the visitor.
   Env vars: `RESEND_API_KEY` (required), `CONTACT_TO_EMAIL` (optional, defaults to
-  gabe@tavynq.com). `notify.tavynq.com` must stay verified in Resend.
+  gabe@signalfill.com; not currently set in Vercel, so the code default is what counts).
+  `notify.signalfill.com` must stay verified in Resend.
 - SEO note: it's a client-rendered SPA — page titles/meta are set at runtime by `usePageMeta`;
   `index.html` holds the default title/meta crawlers see first.
 - Deploy: Vercel, auto-deploys from `main`. `vercel.json` rewrites every non-`/api/` path to
@@ -197,5 +203,45 @@ Later / optional:
 - Prerender the homepage (React Router framework mode, `ssr: false` + `prerender`) so AI
   crawlers, which don't run JS, can read the copy.
 
-Next on the roadmap: #2 the Tavynq Signal Scanner, built in its own folder at
-`C:\dev\tavynq-signal-scanner` (separate from this website repo).
+Next on the roadmap: #2 the SignalFill Signal Scanner, built in its own folder at
+`C:\dev\signalfill-signal-scanner` (separate from this website repo).
+
+# Where we left off (2026-10-05)
+
+**Rebrand in progress: Tavynq -> SignalFill, branch `rebrand-signalfill`, not yet merged.**
+Gabe already added signalfill.com + www to the Vercel project (verified, redirects to www),
+set up gabe@signalfill.com in Zoho Mail, and verified notify.signalfill.com in Resend with
+a RESEND_API_KEY that works for both notify domains.
+
+Done on the branch:
+- Name/domain/email swapped everywhere: `src/config/site.ts` (name, legalName, url ->
+  https://www.signalfill.com, email -> gabe@signalfill.com), the couple of hardcoded strings
+  outside config (`final-cta.tsx`, `different-section.tsx`), static files the config plugin
+  doesn't reach (`site.webmanifest`, `sitemap.xml`, `robots.txt`, `og-image.html`, `README.md`,
+  `package.json` name), legal pages' literal `tavynq.com` mentions, and `api/contact.ts`
+  (`FROM_ADDRESS` -> website@notify.signalfill.com, `DEFAULT_TO` -> gabe@signalfill.com).
+  Kept as-is: the Calendly URL slug (`gabe-tavynq`, an external service, needs Gabe to
+  rename it there if he wants) and the GitHub repo name (`GabeT1973/tavynq-website`,
+  a separate account-level rename).
+- New logo: Gabe's first export had a baked-in checkerboard + baked-in glow (no real alpha),
+  so it was rejected per his own rule and not shipped. His second export
+  (`src/assets/brand/signalfill-logo-master.png`) is clean: real alpha, sharp anti-aliased
+  edges, no baked glow (confirmed with a pixel-level alpha-profile check, not just eyeballing).
+  Old `tavynq-logo-master.png` and `tavynq-mark-*` files removed.
+  `scripts/generate-brand-assets.mjs` updated: new master path, `signalfill-mark-*` output
+  names, SignalFill favicon aria-label, and the trim-bbox alpha threshold raised from >0 to
+  >16 (the new export had a few stray near-invisible alpha pixels out near the canvas corners
+  that would otherwise blow the crop out to the full canvas).
+- Glow redone as CSS only (`src/components/logo.tsx`), never baked into the shipped image:
+  `drop-shadow` behind the mark, a gentle blue halo in dark mode and a much fainter one in
+  light mode, tight enough it doesn't reach the wordmark. A `size="small"` variant scales it
+  down for the footer. No glow on the flat tab favicons (unchanged, those were always a flat
+  silhouette); the static home-screen icons (apple-touch, 192, 512, maskable) keep a baked
+  glow since there's no CSS available for OS-rendered icons.
+  Icon `?v=` bumped 2 -> 3 in `index.html` and `site.webmanifest` since the icons changed.
+- `npm run build` passes. Screenshots and Lighthouse: see the branch's PR/preview notes.
+
+Not done yet: merge to `main`, confirm the `www.signalfill.com` production deploy, one real
+test through the live contact form, and the `tavynq.com` -> `www.signalfill.com` 308 redirect
+(Gabe does this one in Vercel once he's ready to retire the old domain). All blocked on
+Gabe reviewing the preview and saying go.

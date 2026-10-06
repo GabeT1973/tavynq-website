@@ -8,10 +8,10 @@ const badFitWindowHours = 24
 const cancellationNoticeDays = 14
 
 export const site = {
-  name: "Tavynq",
+  name: "SignalFill",
   // Registered business name used in the legal pages. Update if it differs from the brand.
-  legalName: "Tavynq",
-  url: "https://tavynq.com",
+  legalName: "SignalFill",
+  url: "https://www.signalfill.com",
 
   niche: {
     full: "managed IT service providers",
@@ -20,7 +20,7 @@ export const site = {
   },
 
   offer: {
-    systemName: "The Tavynq Pipeline System",
+    systemName: "The SignalFill Pipeline System",
     // Rendered as: start + highlighted part (blue gradient) + end. Any part can be empty.
     headline: {
       start: "",
@@ -70,15 +70,15 @@ export const site = {
   // YouTube video ID for the VSL (the part after "watch?v="). While empty, the video section
   // and the hero's "Watch" button are hidden.
   youtubeId: "",
-  email: "gabe@tavynq.com",
+  email: "gabe@signalfill.com",
   address: "20078 Stella Way #365, Lutz, FL 33558",
 
   seo: {
-    title: "Tavynq | Qualified Sales Calls for MSPs",
+    title: "SignalFill | Qualified Sales Calls for MSPs",
     description:
-      "Tavynq books qualified sales calls for managed IT service providers with signal-based cold email. One setup fee, then pay only for calls that happen.",
+      "SignalFill books qualified sales calls for managed IT service providers with signal-based cold email. One setup fee, then pay only for calls that happen.",
     ogImage: "/og-image.png",
-    ogImageAlt: "Tavynq: qualified sales calls for MSPs, booked with signal-based cold email.",
+    ogImageAlt: "SignalFill: qualified sales calls for MSPs, booked with signal-based cold email.",
   },
 } as const
 
