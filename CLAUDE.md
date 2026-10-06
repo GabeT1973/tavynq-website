@@ -208,10 +208,10 @@ Next on the roadmap: #2 the SignalFill Signal Scanner, built in its own folder a
 
 # Where we left off (2026-10-05)
 
-**Rebrand in progress: Tavynq -> SignalFill, branch `rebrand-signalfill`, not yet merged.**
-Gabe already added signalfill.com + www to the Vercel project (verified, redirects to www),
-set up gabe@signalfill.com in Zoho Mail, and verified notify.signalfill.com in Resend with
-a RESEND_API_KEY that works for both notify domains.
+**Rebrand complete and live: Tavynq -> SignalFill.** `rebrand-signalfill` merged to `main`
+2026-10-06 and deployed to production. Gabe added signalfill.com + www to the Vercel project
+(verified, redirects to www), set up gabe@signalfill.com in Zoho Mail, and verified
+notify.signalfill.com in Resend with a RESEND_API_KEY that works for both notify domains.
 
 Done on the branch:
 - Name/domain/email swapped everywhere: `src/config/site.ts` (name, legalName, url ->
@@ -239,9 +239,18 @@ Done on the branch:
   silhouette); the static home-screen icons (apple-touch, 192, 512, maskable) keep a baked
   glow since there's no CSS available for OS-rendered icons.
   Icon `?v=` bumped 2 -> 3 in `index.html` and `site.webmanifest` since the icons changed.
-- `npm run build` passes. Screenshots and Lighthouse: see the branch's PR/preview notes.
+- `npm run build` passes. Mobile Lighthouse on the preview: performance 98, accessibility 100,
+  best practices 100, SEO 100.
 
-Not done yet: merge to `main`, confirm the `www.signalfill.com` production deploy, one real
-test through the live contact form, and the `tavynq.com` -> `www.signalfill.com` 308 redirect
-(Gabe does this one in Vercel once he's ready to retire the old domain). All blocked on
-Gabe reviewing the preview and saying go.
+Merged and verified live (2026-10-06):
+- `www.signalfill.com` confirmed serving the new build (title, meta, `?v=3` icons all correct).
+- Sent one real POST to `/api/contact` on production; API returned `{"success":true}`.
+- `tavynq.com` (apex) -> `www.signalfill.com` redirect set up by Gabe in Vercel and verified:
+  `/`, `/contact`, and `/privacy` all return 308 with the path preserved on the target.
+
+Open issue, not yet fixed: `www.tavynq.com` (the www subdomain of the OLD domain) is broken.
+Its TLS cert only covers `tavynq.com` (cert error on `www.tavynq.com` before any redirect
+even happens), and underneath that it's still a 307 to the old `tavynq.com` rather than
+straight to `www.signalfill.com` - a leftover from before the rebrand that the apex-only fix
+didn't touch. Needs the same redirect-to-another-domain fix in Vercel, applied to the
+`www.tavynq.com` domain entry specifically.
