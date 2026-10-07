@@ -254,3 +254,59 @@ even happens), and underneath that it's still a 307 to the old `tavynq.com` rath
 straight to `www.signalfill.com` - a leftover from before the rebrand that the apex-only fix
 didn't touch. Needs the same redirect-to-another-domain fix in Vercel, applied to the
 `www.tavynq.com` domain entry specifically.
+
+# Where we left off (2026-10-06)
+
+**Pipeline flow diagram + mobile-overflow tooling, merged and live.** Two branches
+(`flow-diagram`, `check-overflow-script`) merged to `main` and confirmed deployed to
+`www.signalfill.com`.
+
+Pipeline flow diagram (`src/components/pipeline-flow-diagram.tsx`, in the How It Works
+section): an animated SVG-and-CSS flow diagram (4 boxes, 5 labelled dashed arrows, one
+desktop layout + one mobile vertical-stack layout) sitting above the original 4-step cards,
+which are kept unchanged as the detailed onboarding breakdown beneath it (the diagram tells
+a different story - the ongoing campaign cycle - so nothing is duplicated). No new runtime
+dependency. Box/arrow coordinates are all plain 0-100 percentages
+(`viewBox="0 0 100 100"` + `preserveAspectRatio="none"`) so boxes and the arrows connecting
+them can't drift apart at any width - a pixel-based first attempt did drift and caused a
+real overlap bug, documented below. Dashes animate continuously even with
+`prefers-reduced-motion` (owner exception, same as the hero grid); the per-box pulse glow is
+decorative only and does respect it.
+
+**Mobile-overflow tooling methodology correction (important for future sessions):** a plain
+headless-browser CLI screenshot (`msedge.exe --headless --window-size=W,H --screenshot=...`)
+does NOT reliably emulate a narrow CSS viewport for layout/media-query purposes - it has been
+observed consistently rendering pages as if laid out wider than requested, then cropping the
+capture at the requested size. This looks exactly like a horizontal-overflow bug but isn't
+one, and re-testing the same flawed method multiple ways (fresh browser profile, legacy vs.
+new headless mode, longer wait times) just re-confirms the same measurement error rather than
+independently verifying anything. **Use `puppeteer-core`'s `page.setViewport()` instead**
+(real CDP-based viewport emulation, driving the already-installed Edge/Chrome, no browser
+download) for any layout screenshot or overflow check from now on. `npm run check:overflow`
+(new, `scripts/check-overflow.mjs`, `puppeteer-core` is now a real devDependency) does this
+properly: walks every page across 6 widths (320-768px) x both themes, checks
+`document.documentElement.scrollWidth` against the viewport, and reports the root offending
+element(s) if it fails. Re-run against production after this merge: **48/48 checks pass,
+confirmed clean on `www.signalfill.com`.**
+
+Two real bugs this surfaced and fixed in the diagram itself (not phantom ones - found via the
+trusted Puppeteer method, each confirmed by precise DOM measurement, not just screenshots):
+- Mobile (320-414px): an arrow label spilled up to 59px past the viewport edge because the
+  box-stack width was a fixed px value while the gutter beside it (where the label sits)
+  scaled with the viewport - at narrow widths the gutter shrank below what the label needed.
+  Fixed by making both the box-stack width and the label/curve positions percentages of the
+  same container, and letting the two side labels wrap onto 2 lines.
+- Desktop at exactly 768px (narrowest width before this layout applies): a box's description
+  wrapped onto an extra line at that narrower box width and grew taller than the
+  fixed-percentage layout assumed, overlapping the label below it. Fixed by giving the
+  desktop diagram more vertical headroom (`aspect-ratio` 1000/460 -> 1000/560).
+
+Not done: `polish-dynamics` (back-to-top button, logo-goes-home, hero product visual,
+spotlight-glow cards) and `trust-tools` (security section, comparison table, ROI calculator,
+founder section) were both planned in detail earlier but never approved/started - no
+branches exist for either. `prerender-seo` (prerendering, FAQ JSON-LD, Vercel Web Analytics
+recommendation) was also planned in detail (researched against official docs: a lightweight
+`vite build --ssr` + `StaticRouter` + `renderToString` script, not a React Router
+framework-mode migration) but not started either. All three are just sitting as plans in
+conversation history, not in this file - pick back up by asking Gabe which (if any) he still
+wants.
