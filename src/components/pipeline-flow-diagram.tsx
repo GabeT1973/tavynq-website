@@ -122,11 +122,23 @@ function FlowBox({
   )
 }
 
-function ArrowLabel({ className, children }: { className: string; children: string }) {
+// `wrap`: the two mobile side-curve labels ("Ready now", "Results sharpen targeting") sit in a
+// narrow gutter beside the box stack, with no room for a single nowrap line at small widths -
+// they wrap onto up to 2 lines instead. Every other label has room to stay on one line.
+function ArrowLabel({
+  className,
+  children,
+  wrap = false,
+}: {
+  className: string
+  children: string
+  wrap?: boolean
+}) {
   return (
     <span
       className={cn(
-        "absolute z-10 whitespace-nowrap rounded-full border border-black/[0.06] bg-white/95 px-2 py-0.5 text-[11px] font-medium text-gray-500 shadow-sm backdrop-blur-sm dark:border-white/[0.08] dark:bg-gray-950/90 dark:text-gray-400",
+        "absolute z-10 rounded-full border border-black/[0.06] bg-white/95 px-2 py-0.5 text-center text-[11px] font-medium leading-tight text-gray-500 shadow-sm backdrop-blur-sm dark:border-white/[0.08] dark:bg-gray-950/90 dark:text-gray-400",
+        wrap ? "w-[60px]" : "whitespace-nowrap",
         className,
       )}
     >
@@ -146,7 +158,7 @@ export function PipelineFlowDiagram() {
           against; the SVG below is authored in plain 0-100 percentage coordinates
           (preserveAspectRatio="none") so it always lines up with the percentage-positioned
           boxes regardless of the wrapper's actual rendered width. */}
-      <div className="relative hidden md:block" style={{ aspectRatio: "1000 / 460" }}>
+      <div className="relative hidden md:block" style={{ aspectRatio: "1000 / 560" }}>
         <svg
           aria-hidden="true"
           viewBox="0 0 100 100"
@@ -182,9 +194,12 @@ export function PipelineFlowDiagram() {
 
       {/* Mobile: a plain vertical stack (real flex flow, so box heights are never guessed),
           with "e" curving back up the right side and "c" bypassing down the left, drawn as a
-          decorative overlay sized to whatever height the stack actually ends up being. */}
+          decorative overlay sized to whatever height the stack actually ends up being. The
+          stack width and the curve/label positions are both percentages of the SAME outer
+          container, so the gutter they share stays proportionally correct at every width
+          instead of a fixed-px stack width leaving a gutter too narrow at small screens. */}
       <div className="relative md:hidden">
-        <div className="mx-auto flex max-w-[280px] flex-col items-stretch px-9">
+        <div className="mx-auto flex w-[58%] min-w-[168px] flex-col items-stretch">
           <FlowBox node={n("1")} pulseDelay="0s" />
           <MobileConnector label={arrowLabels.a} />
           <FlowBox node={n("2")} pulseDelay="1.5s" />
@@ -204,13 +219,17 @@ export function PipelineFlowDiagram() {
             <ArrowheadDef id="flow-arrow-mobile" />
           </defs>
           {/* c: 2 -> 4, curved bypass down the left side (box2 starts ~26%, box4 ends ~100%) */}
-          <FlowPath markerId="flow-arrow-mobile" d="M 10,30 C 0,55 0,78 10,92" dashArray="2 2.6" />
+          <FlowPath markerId="flow-arrow-mobile" d="M 10.5,30 C 2,55 2,78 10.5,92" dashArray="2 2.6" />
           {/* e: 4 -> 1, curved return up the right side */}
-          <FlowPath markerId="flow-arrow-mobile" d="M 90,92 C 100,55 100,22 90,6" />
+          <FlowPath markerId="flow-arrow-mobile" d="M 89.5,92 C 98,55 98,22 89.5,6" />
         </svg>
 
-        <ArrowLabel className="left-0 top-[58%] -translate-x-1/2">{arrowLabels.c}</ArrowLabel>
-        <ArrowLabel className="right-0 top-[50%] translate-x-1/2">{arrowLabels.e}</ArrowLabel>
+        <ArrowLabel wrap className="left-[10.5%] top-[58%] -translate-x-1/2 -translate-y-1/2">
+          {arrowLabels.c}
+        </ArrowLabel>
+        <ArrowLabel wrap className="left-[89.5%] top-[50%] -translate-x-1/2 -translate-y-1/2">
+          {arrowLabels.e}
+        </ArrowLabel>
       </div>
     </section>
   )
