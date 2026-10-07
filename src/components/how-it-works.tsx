@@ -1,5 +1,6 @@
 import { CalendarCheck, ListChecks, Rocket, Search } from "lucide-react"
 import { cardBase, cardHover } from "@/components/card"
+import { PipelineFlowDiagram } from "@/components/pipeline-flow-diagram"
 import { Reveal } from "@/components/reveal"
 import { Section } from "@/components/section"
 import { SectionHeading } from "@/components/section-heading"
@@ -42,7 +43,13 @@ export function HowItWorks() {
         title={site.offer.systemName}
         description="Four steps from kickoff to qualified sales calls on your calendar. Email only, no cold callers."
       />
-      <ol className="mt-12 grid gap-5 sm:grid-cols-2 md:mt-16 md:gap-6 lg:grid-cols-4">
+      <Reveal className="mt-14 md:mt-20">
+        <PipelineFlowDiagram />
+      </Reveal>
+      <p className="mx-auto mt-14 max-w-2xl text-center text-sm font-medium text-gray-500 md:mt-20 dark:text-gray-400">
+        Here's how onboarding breaks down, step by step:
+      </p>
+      <ol className="mt-6 grid gap-5 sm:grid-cols-2 md:mt-10 md:gap-6 lg:grid-cols-4">
         {steps.map((step, index) => (
           <li key={step.title}>
             <Reveal delay={index * 90} className="h-full">
