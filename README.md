@@ -33,10 +33,11 @@ required; `CONTACT_TO_EMAIL`, optional, defaults to gabe@signalfill.com).
 
 ```bash
 npm install
-npm run dev       # local dev server (no api/ functions; use `vercel dev` for the contact form)
-npm run build     # type-check + production build into dist/
-npm run lint      # oxlint
-npm run preview   # serve the production build
+npm run dev             # local dev server (no api/ functions; use `vercel dev` for the contact form)
+npm run build           # type-check + production build into dist/
+npm run lint            # oxlint
+npm run preview         # serve the production build
+npm run check:overflow  # horizontal-overflow check across widths/themes/pages (dev server must be running)
 ```
 
 ## Other files
