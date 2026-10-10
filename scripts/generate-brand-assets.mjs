@@ -11,6 +11,17 @@
 //   public/apple-touch-icon.png (180)                   full mark + glow on #0a0a0a
 //   public/icon-192.png, icon-512.png                   full mark + glow on #0a0a0a
 //   public/icon-maskable-512.png                        same, kept inside the maskable safe zone
+//
+// AS OF 2026-10-10: this script still WRITES every favicon/icon output above (lines below
+// unchanged), but ALL of them were replaced afterward in public/ with a separately designed
+// favicon pack (a signal-pulse mark, blue glow outline, #08122a background) - see git history
+// around 2026-10-10 for the source zip. favicon.svg was dropped entirely (no vector master for
+// the new mark); favicon-16x16.png/favicon-32x32.png were renamed favicon-16.png/favicon-32.png
+// to match that pack's own naming. Re-running this script will silently recreate the OLD
+// glossy-mark files under their OLD names alongside the new ones, not update them in place -
+// you'd end up with both sets referenced nowhere consistently. If you want this script to be
+// the source of truth again, update BG to #08122a, swap in the new mark art as MASTER, and
+// rename its favicon-16x16.png/favicon-32x32.png outputs (or update index.html back) to match.
 import { writeFileSync } from "node:fs"
 import { promisify } from "node:util"
 import sharp from "sharp"
