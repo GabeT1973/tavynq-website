@@ -396,17 +396,21 @@ asked this time instead of pushing back again:
   specified, in both `index.html` and `site.webmanifest` - applied this time since he gave the
   same exact hex twice unprompted; still worth knowing it won't exactly match the page's real
   `#0a0a0a` background if that ever becomes visible as a seam on mobile.
-- Added back `apple-mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style`
-  (`black-translucent`), `mobile-web-app-capable`, and the two `msapplication-Tile*` tags,
-  since Gabe's checklist listed them again verbatim after I'd explained why I dropped them.
-  The Windows tile tags are still inert (Microsoft's own docs: tiles are gone) but harmless.
-  `black-translucent` is the one with real teeth: it only does anything if the site is ever
-  opened in standalone/home-screen mode, and when it does, it draws page content underneath
-  the iOS status bar - worth knowing if the sticky header ever looks like it's covered by the
-  clock/battery icons on an iPhone after "Add to Home Screen."
+- Added back `apple-mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style`,
+  `mobile-web-app-capable`, and the two `msapplication-Tile*` tags, since Gabe's checklist
+  listed them again verbatim after I'd explained why I dropped them. The Windows tile tags are
+  still inert (Microsoft's own docs: tiles are gone) but harmless.
 - `?v=` bumped 4 -> 5 everywhere (every icon link in `index.html`, every icon `src` in
   `site.webmanifest`). Updated `generate-brand-assets.mjs`'s header-comment warning to match
   the new state (now the WHOLE favicon set is manually overridden, not just the four large
   icons, and `favicon.svg` no longer exists at all).
 
-Still not done: merge/push. Still sitting on `add-new-favicon` for Gabe's go-ahead.
+**Update, same day again: fixed the status-bar risk flagged above.** Gabe chose between
+reverting to the default status bar or adding safe-area padding; went with the default
+(`apple-mobile-web-app-status-bar-style` is now `default`, not `black-translucent`). Picked
+that over safe-area padding because the padding fix needs `viewport-fit=cover` on the viewport
+meta tag, which changes how regular (non-home-screen) Safari renders the page too - extends
+content under the notch/Dynamic Island everywhere, not just in standalone mode - for an edge
+case (someone actually adding this marketing site to their home screen) that's rare to begin
+with. Default status bar removes the risk with a one-line change and no new rendering surface.
+Pushed to `add-new-favicon` (still not merged to `main`).
