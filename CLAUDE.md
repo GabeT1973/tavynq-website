@@ -367,3 +367,46 @@ this manual override.
 
 **Not done:** merge/push - this is sitting on `add-new-favicon` for Gabe to look at the actual
 icons (not just read about them) before it goes anywhere near `main`.
+
+**Update, same day: Gabe sent a second, different favicon pack and overrode both flags
+above.** New zip (`signalfill-favicon (2).zip`), still on `add-new-favicon`, not pushed.
+
+The new pack is a different mark entirely (a flag/pennant shape with a signal-pulse/heartbeat
+line through it, not the "S") on the same `#08122a` navy with a blue glow outline. Gabe
+re-sent the exact same instructions as before, unprompted, with one line added at the end:
+"Use the transparent favicon-*.png files for small browser tabs" - explicitly re-asserting the
+exact point flagged above. Re-ran the same dark/light tab-bar composite test on the new pack's
+small sizes first: this one's glow is visibly brighter relative to the shape, so on a dark tab
+it actually reads now (not as crisp as the current flat blue, but genuinely visible, unlike the
+first pack). Given that plus Gabe repeating the instruction a second time, implemented it as
+asked this time instead of pushing back again:
+
+- Replaced every favicon file, not just the four home-screen ones: `favicon-16.png`,
+  `favicon-32.png`, `favicon-48.png`, `favicon-64.png` (new, transparent, matching the pack's
+  own naming), `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` (new, solid `#08122a`
+  background). Deleted the old `favicon-16x16.png`, `favicon-32x32.png`, and `favicon.svg`
+  (no vector master for the new mark, so no SVG this round) rather than leaving them orphaned.
+  Rebuilt `favicon.ico` from the new 16/32/48 PNGs (not in Gabe's list, kept for old browsers/
+  Windows, which still check it first) and `icon-maskable-512.png` the same way as before -
+  composited the new pack's transparent `favicon-512.png` onto a solid opaque `#08122a` square
+  at the same 0.56 safe-zone scale (also not in Gabe's list; his sample manifest only had two
+  `any` icons, no `maskable` - added it anyway since it's a real Android correctness gap with
+  no downside, verified the mark's bbox is still well inside the safe circle on the new mark).
+- `theme-color` and the manifest's `theme_color`/`background_color` are now `#08122A` as Gabe
+  specified, in both `index.html` and `site.webmanifest` - applied this time since he gave the
+  same exact hex twice unprompted; still worth knowing it won't exactly match the page's real
+  `#0a0a0a` background if that ever becomes visible as a seam on mobile.
+- Added back `apple-mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style`
+  (`black-translucent`), `mobile-web-app-capable`, and the two `msapplication-Tile*` tags,
+  since Gabe's checklist listed them again verbatim after I'd explained why I dropped them.
+  The Windows tile tags are still inert (Microsoft's own docs: tiles are gone) but harmless.
+  `black-translucent` is the one with real teeth: it only does anything if the site is ever
+  opened in standalone/home-screen mode, and when it does, it draws page content underneath
+  the iOS status bar - worth knowing if the sticky header ever looks like it's covered by the
+  clock/battery icons on an iPhone after "Add to Home Screen."
+- `?v=` bumped 4 -> 5 everywhere (every icon link in `index.html`, every icon `src` in
+  `site.webmanifest`). Updated `generate-brand-assets.mjs`'s header-comment warning to match
+  the new state (now the WHOLE favicon set is manually overridden, not just the four large
+  icons, and `favicon.svg` no longer exists at all).
+
+Still not done: merge/push. Still sitting on `add-new-favicon` for Gabe's go-ahead.
