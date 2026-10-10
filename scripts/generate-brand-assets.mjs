@@ -11,6 +11,14 @@
 //   public/apple-touch-icon.png (180)                   full mark + glow on #0a0a0a
 //   public/icon-192.png, icon-512.png                   full mark + glow on #0a0a0a
 //   public/icon-maskable-512.png                        same, kept inside the maskable safe zone
+//
+// AS OF 2026-10-10: this script still WRITES the four home-screen icons above (lines below
+// unchanged), but those four files in public/ were manually overridden afterward with a
+// separately designed favicon pack (flat navy + blue glow mark on a #08122a background,
+// instead of this script's glossy mark on #0a0a0a) - see git history around 2026-10-10 for
+// the source. Re-running this script will silently clobber that override back to the old
+// look. If you want this script to be the source of truth again, either revert that
+// override first or update BG here to #08122a and swap in the new mark art as MASTER.
 import { writeFileSync } from "node:fs"
 import { promisify } from "node:util"
 import sharp from "sharp"

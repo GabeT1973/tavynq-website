@@ -310,3 +310,60 @@ recommendation) was also planned in detail (researched against official docs: a 
 framework-mode migration) but not started either. All three are just sitting as plans in
 conversation history, not in this file - pick back up by asking Gabe which (if any) he still
 wants.
+
+# Where we left off (2026-10-10)
+
+**New home-screen icon set, on branch `add-new-favicon` (not merged/pushed - Gabe needs to
+review and say go-ahead before it touches `main`).**
+
+Gabe supplied a separately-designed favicon pack (`signalfill-favicon.zip`, extracted to
+`C:\Users\gabez\Downloads\signalfill-favicon.zip\signalfill-favicon` as Explorer shows it):
+a flatter "S" mark - dark navy fill (`#08122a`) with a thin blue glow outline - in two styles:
+a transparent-background version (`favicon-*.png`) and a version pre-composited onto a solid
+`#08122a` rounded-square backdrop (`icon-*.png` / `apple-touch-icon.png`). This is a different
+design from the glossy chrome-style mark in `src/assets/brand/signalfill-logo-master.png`
+that the header/footer logo and the existing auto-generated icons use.
+
+**What changed:** only the four home-screen/app icons -
+`public/apple-touch-icon.png` (180), `public/icon-192.png`, `public/icon-512.png` (all three
+copied straight from the zip's solid-background versions), and `public/icon-maskable-512.png`
+(rebuilt from the zip's transparent `favicon-512.png`, composited onto a plain opaque
+`#08122a` square at the project's usual 0.56 safe-zone scale - Android's maskable spec needs
+a fully opaque square with no pre-rounded corners, and the zip's own `icon-512.png` had
+transparent rounded corners, so it couldn't be used as-is for that one file; verified the
+mark's own bounding box sits inside the 80% safe-zone circle before and after). `?v=` bumped
+3 -> 4 on every icon link in `index.html` and in `site.webmanifest`. Added
+`generate-brand-assets.mjs` a header-comment warning that re-running it will silently
+overwrite these four files back to the old glossy look, since the script doesn't know about
+this manual override.
+
+**Deliberately did NOT change, with reasoning:**
+- The tiny browser-tab favicons (`favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`,
+  `favicon.svg`) stay the existing flat **blue** silhouette. Composited the zip's small
+  navy favicons (16/32/48/64, transparent background) onto a dark tab-bar-grey swatch and a
+  white swatch to check: on dark, the new navy mark was nearly invisible (only the thin glow
+  line showed at all), while the current blue one read instantly - confirming the "flat blue,
+  not navy: reads on light and dark tabs" reasoning already documented in
+  `generate-brand-assets.mjs` is still correct. The zip had no design built for tiny dark-tab
+  legibility (its small sizes are the same navy-on-transparent mark, and its "icon-*" rounded
+  badges at small sizes are solid-background, meant for a different context, not a tab icon).
+- Didn't touch `src/components/logo.tsx` (header/footer logo), the OG share image, or the
+  master logo file - Gabe's ask was specifically "the favicon," and swapping the live header
+  logo to match this new style is a separate, bigger decision he didn't make here.
+- `theme-color` (both in `index.html` and `site.webmanifest`) stays `#0a0a0a`, not the `#08122a`
+  the new icons use as their own canvas fill. `theme-color` is supposed to match the actual
+  page background so the mobile browser chrome blends with scrolled content - the site's real
+  background is `#0a0a0a`, so matching the icon artwork's internal padding color instead would
+  create a visible seam at the top of the page on mobile instead of fixing one.
+- Did not add `apple-mobile-web-app-capable`, `mobile-web-app-capable`,
+  `apple-mobile-web-app-status-bar-style`, or the `msapplication-Tile*` tags Gabe's pasted
+  checklist suggested. Checked against official docs first: Windows no longer supports pinned
+  tiles at all (Microsoft's own Windows 11 spec page: "Live Tiles are no longer available"),
+  and iOS 26 now opens every home-screen-added site in app mode by default regardless of these
+  tags, so they'd add nothing today and the status-bar-style tag specifically risks the page
+  content drawing under the status bar if iOS ever needs it. Did keep
+  `apple-mobile-web-app-title` (harmless, gives a clean fixed "SignalFill" label for the
+  home-screen icon instead of whichever page's `<title>` happened to be live when it was added).
+
+**Not done:** merge/push - this is sitting on `add-new-favicon` for Gabe to look at the actual
+icons (not just read about them) before it goes anywhere near `main`.
