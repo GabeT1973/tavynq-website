@@ -239,3 +239,62 @@ a:focus-visible .wordmark {
 .flow-pulse {
   animation: flow-pulse 6s ease-in-out infinite;
 }
+
+/* Logo mark (src/components/logo.tsx). Two animations, ignoring prefers-reduced-motion by
+   owner decision (same exception as the hero grid and flow diagram above): a brighter blue
+   light travels around each of the mark's two shapes' own outline, each sized to its own
+   path length so the loop is mathematically seamless (no jump) - the ribbon and panel don't
+   touch, so one shared dash animation across both would have to jump across that gap; two
+   independent loops avoid it entirely. A slower breathing pulse sits underneath. The
+   heartbeat line gets a dark sweep (variant B from the live comparison: solid dark core +
+   a thin pale highlight edge, chosen for being both legible and the most "finished"-looking
+   on dark mode's brightened navy). All of it is paused via a "paused" class toggled from
+   JS on tab visibility change (logo.tsx), not by this CSS alone. */
+@keyframes logo-ring-ribbon {
+  to {
+    stroke-dashoffset: -719.4;
+  }
+}
+@keyframes logo-ring-panel {
+  to {
+    stroke-dashoffset: -870.1;
+  }
+}
+@keyframes logo-glow-breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+@keyframes logo-heartbeat-sweep {
+  0% {
+    stroke-dashoffset: 55;
+  }
+  100% {
+    stroke-dashoffset: -295.2;
+  }
+}
+
+.logo-ring-ribbon {
+  animation: logo-ring-ribbon 3.6s linear infinite;
+}
+.logo-ring-panel {
+  animation: logo-ring-panel 3.6s linear infinite;
+}
+.logo-glow-breathe {
+  animation: logo-glow-breathe 5s ease-in-out infinite;
+}
+.logo-heartbeat-edge,
+.logo-heartbeat-core {
+  animation: logo-heartbeat-sweep 2.4s linear infinite;
+}
+.logo-anim-paused .logo-ring-ribbon,
+.logo-anim-paused .logo-ring-panel,
+.logo-anim-paused .logo-glow-breathe,
+.logo-anim-paused .logo-heartbeat-edge,
+.logo-anim-paused .logo-heartbeat-core {
+  animation-play-state: paused;
+}

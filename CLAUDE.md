@@ -414,3 +414,81 @@ content under the notch/Dynamic Island everywhere, not just in standalone mode -
 case (someone actually adding this marketing site to their home screen) that's rare to begin
 with. Default status bar removes the risk with a one-line change and no new rendering surface.
 Pushed to `add-new-favicon` (still not merged to `main`).
+
+# Where we left off (2026-10-10, continued)
+
+**New logo mark, on branch `new-logo` (not merged - Gabe needs to say go-ahead).** Replaces
+the old "S" with Gabe's new signal-pulse mark (the same shape family as the `add-new-favicon`
+branch's icon pack, but recreated as real vector paths and now driving the live header/footer
+logo, not just static favicon files).
+
+Source: `C:\Users\gabez\Downloads\logo\anJ2Z.png`, the only file in that folder. 512x512,
+genuinely transparent (not baked-white), but DID have a baked-in soft blur glow - stripped for
+the clean recreation per Gabe's instruction, since all glow is now done in code/CSS instead.
+
+**No vector source existed anywhere** - the two outer shapes were reconstructed via potrace on
+an alpha-threshold mask (with the heartbeat line's hole filled in first via flood-fill from the
+canvas border, otherwise potrace traced its thin diagonal edges in painstaking stair-step
+detail), and the heartbeat line's vertices were measured directly from pixel data (isolating it
+by color was messy - the glow halo bleeds into the gap between the two shapes with a similar
+pale tint to the line itself, so had to spatially exclude that area and gate on the red channel).
+Shown side-by-side with the original on dark/white before Gabe approved it.
+
+Confirmed via flood-fill: the ribbon and panel are two genuinely separate shapes (a real gap
+between them, like the old "S"), not one connected silhouette - this mattered for the outline
+glow animation below.
+
+**Animations (`src/index.css`, applied in `src/components/logo.tsx`):**
+- A brighter blue light travels around each shape's own outline independently (two separate
+  `stroke-dasharray`/`dashoffset` loops, each sized to its own measured path length - ribbon
+  719.4, panel 870.1 - so each loop is mathematically seamless). Two independent loops instead
+  of one shared path specifically because the shapes don't touch; one path would have to jump
+  across that gap every lap, which Gabe's brief explicitly ruled out ("no jump").
+- A slower breathing opacity pulse sits underneath (separate blurred stroke copies).
+- The heartbeat line gets a dark sweep, left to right, repeating. Built 3 variants (flat black,
+  black + pale highlight edge, soft blurred shadow + edge) and rendered all 3 via Puppeteer at
+  3 points in the sweep, with the dark-mode cells actually filtered through
+  `brightness(1.3) saturate(1.1)` (not just a different page background) since that's the real
+  mechanism in the existing CSS that could wash out black-on-navy - the SVG itself always sits
+  on the same navy panel in both themes, so a page-background swap alone would've tested the
+  wrong thing. Variant C (soft shadow) read noticeably weaker in dark mode; Gabe picked B
+  (black + highlight edge).
+- Both animations ignore `prefers-reduced-motion` by owner decision (same exception as the hero
+  grid and pipeline diagram - not listed in that media-query block).
+- Pausing on a hidden tab is a real `visibilitychange` listener in `logo.tsx` (toggles a
+  `logo-anim-paused` class that sets `animation-play-state: paused`), not reliance on browser
+  throttling - confirmed via Puppeteer that the dash offsets actually freeze (not just slow
+  down) when `document.hidden` is true.
+- Verified via Puppeteer that `stroke-dashoffset` on the ring/heartbeat paths is actually
+  changing frame to frame (the animations are really running, not just defined).
+
+**Placement:** header and footer already had a `<Logo />` slot (unchanged call sites - the
+component's props stayed the same shape, so `site-header.tsx`/`site-footer.tsx` needed zero
+edits). Confirmed with Gabe there's no separate logo inside the mobile dropdown - the header's
+mark already stays visible when it opens, screenshotted to confirm it still looks right at
+390px. Click-to-home behavior untouched (still the same `<Link to="/">` wrapper in
+`site-header.tsx`).
+
+**Icons regenerated** (`scripts/generate-brand-assets.mjs`, rewritten - no potrace step
+anymore since we now have real vector paths, not a raster to trace): flat blue silhouette for
+tiny tab icons (16/32/48, no heartbeat detail, no glow - matches the long-standing
+"blue-not-navy reads on dark tabs" reasoning), full mark + baked static glow on `#0a0a0a` for
+apple-touch/192/512/maskable (a static PNG can't run the live CSS animation, so a baked
+approximation of the same glow intent is the equivalent for icon files specifically).
+`?v=` bumped 5 -> 6. Also reverted `index.html`'s icon `<link>` block and `site.webmanifest`'s
+colors back to the plain, well-reasoned set from before the interim zip-based favicon
+detour (`#0a0a0a` theme-color matching the real page background, no Windows tile tags, no
+app-mode-only Apple tags beyond `apple-mobile-web-app-title`) - the filenames in `index.html`
+had drifted to the old zip pack's naming (`favicon-16.png` etc.) which this rewritten script
+no longer produces, so that block needed rewriting anyway; took the opportunity to clean it up
+rather than reintroduce the dead tags. Deleted the now-unused `public/favicon-16.png/-32/-48/-64`
+from that interim pack.
+
+Removed the old raster-based header/footer pipeline entirely - no more
+`signalfill-mark-{28,56,84}.{webp,png}` exports, since the mark is inline SVG in `logo.tsx`
+now and never needs a raster export for the live site (only for the static icon files above).
+
+**Checks:** `npm run check:overflow` - 48/48 pass. Lighthouse (local preview build, mobile
+emulation): performance 100, accessibility 100, best practices 100, SEO 100.
+
+Not done: merge/push - sitting on `new-logo` for Gabe's go-ahead, same as `add-new-favicon`.
