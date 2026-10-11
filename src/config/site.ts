@@ -66,7 +66,7 @@ export const site = {
   ],
 
   // Booking link, video, and contact details.
-  calendlyUrl: "https://calendly.com/gabe-tavynq/tavynq-pilot-walkthrough",
+  calendlyUrl: "https://calendly.com/signalfill/msp-walkthrough",
   // YouTube video ID for the VSL (the part after "watch?v="). While empty, the video section
   // and the hero's "Watch" button are hidden.
   youtubeId: "",

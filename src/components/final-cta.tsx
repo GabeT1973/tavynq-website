@@ -76,7 +76,12 @@ export function FinalCta() {
           <AfterBookingTimeline />
         </Reveal>
         <Reveal delay={100}>
-          <div className={cn(cardBase, "overflow-hidden")}>
+          {/* Calendly's plan here doesn't honor the embed's color params (confirmed live - the
+              iframe always renders its own white card), so this frame doesn't fight it with
+              cardBase's dark background. Instead it stays a deliberate light panel in both
+              themes, framed with a soft blue glow in dark mode so it reads as "a bright card
+              on a dark page" rather than an unstyled white box. */}
+          <div className="overflow-hidden rounded-2xl border border-black/[0.06] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_12px_32px_-16px_rgb(0_0_0/0.10)] dark:border-blue-400/20 dark:shadow-[0_0_0_1px_rgb(255_255_255/0.05),0_0_48px_-12px_rgba(59,130,246,0.45),0_20px_48px_-16px_rgb(0_0_0/0.7)]">
             <CalendlyEmbed />
           </div>
         </Reveal>

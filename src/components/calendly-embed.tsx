@@ -60,6 +60,7 @@ function embedUrl(theme: "light" | "dark") {
       : { background_color: "ffffff", text_color: "111827", primary_color: "2563eb" }
   const url = new URL(site.calendlyUrl)
   url.searchParams.set("hide_event_type_details", "1")
+  url.searchParams.set("hide_gdpr_banner", "1")
   for (const [key, value] of Object.entries(colors)) url.searchParams.set(key, value)
   return url.toString()
 }
@@ -112,11 +113,17 @@ export function CalendlyEmbed() {
     }
   }, [inView, theme])
 
+  // Calendly's inline widget is a cross-origin iframe, so the site can't force its internal
+  // colors - the background_color/text_color params above only take effect on Calendly plans
+  // that support embed branding. On plans that don't, the iframe always renders its own white
+  // card regardless of theme, so this wrapper and its loading/failed states are deliberately
+  // fixed to light colors that match THAT white card (not the app's dark/light theme), so the
+  // panel reads as one consistent light surface rather than a broken dark-text-on-white flash.
   if (status === "failed") {
     return (
-      <div className="flex min-h-[420px] flex-col items-center justify-center gap-4 p-8 text-center">
-        <CalendarDays aria-hidden="true" className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-        <p className="max-w-sm text-sm text-gray-600 dark:text-gray-300">
+      <div className="flex min-h-[420px] flex-col items-center justify-center gap-4 bg-white p-8 text-center">
+        <CalendarDays aria-hidden="true" className="h-8 w-8 text-blue-600" />
+        <p className="max-w-sm text-sm text-gray-600">
           The calendar couldn't load here. You can still pick a time on Calendly.
         </p>
         <BookCallLink />
@@ -125,13 +132,13 @@ export function CalendlyEmbed() {
   }
 
   return (
-    <div ref={wrapperRef} className="relative min-h-[540px]">
+    <div ref={wrapperRef} className="relative min-h-[540px] bg-white">
       {status !== "ready" && (
         <div
           aria-hidden="true"
-          className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-sm text-gray-500 dark:text-gray-400"
+          className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-sm text-gray-500"
         >
-          <CalendarDays className="h-7 w-7 animate-pulse text-blue-600/70 motion-reduce:animate-none dark:text-blue-400/70" />
+          <CalendarDays className="h-7 w-7 animate-pulse text-blue-600/70 motion-reduce:animate-none" />
           Loading calendar…
         </div>
       )}

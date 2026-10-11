@@ -492,3 +492,31 @@ now and never needs a raster export for the live site (only for the static icon 
 emulation): performance 100, accessibility 100, best practices 100, SEO 100.
 
 Not done: merge/push - sitting on `new-logo` for Gabe's go-ahead, same as `add-new-favicon`.
+
+# Where we left off (2026-10-11)
+
+**Urgent hotfix, direct to `main`: Calendly link was 404ing live.** `calendlyUrl` in
+`src/config/site.ts` updated to `https://calendly.com/signalfill/msp-walkthrough` (old slug
+`gabe-tavynq/tavynq-pilot-walkthrough` was the only place it appeared in code - confirmed via
+repo-wide grep - so every "Book a call" button and the inline embed updated from this one
+change). Added `hide_gdpr_banner=1` to the embed URL.
+
+**Confirmed live (via Puppeteer, inspecting the actual iframe): the Calendly plan on this
+account does NOT honor the embed's `background_color`/`text_color`/`primary_color` params** -
+dark mode rendered a stark white Calendly card despite the correct params being in the iframe
+src. That's a paid-tier Calendly feature, not something fixable from this side. Per Gabe's own
+fallback instruction, stopped trying to force the iframe's internal colors and instead made the
+surrounding container blend on purpose: the card frame (`final-cta.tsx`) no longer fights the
+inevitable white iframe with a dark background - it's a light panel in both themes, with a
+soft blue-glow border in dark mode so it reads as "a bright card on a dark page" rather than a
+bug. The loading/failed states inside `calendly-embed.tsx` were also switched from
+theme-dependent colors to fixed light-panel colors to match, for the same reason. Light mode
+needed no change - the iframe's own fixed white/dark-text/blue-accent look already matched
+light mode's card by coincidence.
+
+Checked: `npm run check:overflow` 48/48 pass, Lighthouse (local build, mobile) 100/100/100/100,
+all 4 "Book a call" links verified in the live DOM pointing at the new URL, and the new booking
+page itself loads without a 404/error (checked the iframe's own text content, not just a
+screenshot).
+
+Next: merge this same fix onto `new-logo` so it isn't lost when that branch eventually merges.
