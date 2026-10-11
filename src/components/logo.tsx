@@ -122,9 +122,9 @@ export function Logo({
   size?: "default" | "small"
 }) {
   return (
-    <span className="inline-flex items-center gap-2">
-      <Mark className={cn(size === "default" ? "h-7" : "h-6", markClassName)} />
-      <span className={cn("wordmark text-xl font-semibold tracking-tight", className)}>
+    <span className="inline-flex items-center gap-2.5">
+      <Mark className={cn(size === "default" ? "h-[34px] md:h-10" : "h-[34px]", markClassName)} />
+      <span className={cn("wordmark text-2xl font-semibold tracking-tight", className)}>
         {site.name}
       </span>
     </span>
