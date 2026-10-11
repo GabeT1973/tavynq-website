@@ -71,7 +71,9 @@ export const site = {
   // and the hero's "Watch" button are hidden.
   youtubeId: "",
   email: "gabe@signalfill.com",
-  address: "20078 Stella Way #365, Lutz, FL 33558",
+  // The street address lives outside this repo entirely (it's public on GitHub) - this is
+  // what the public site shows instead (footer, Privacy, Terms).
+  displayLocation: "Tampa Bay, Florida",
 
   seo: {
     title: "SignalFill | Qualified Sales Calls for MSPs",

@@ -119,7 +119,7 @@ export function Terms() {
         <address className="not-italic">
           {site.legalName}
           <br />
-          {site.address}
+          {site.displayLocation}
         </address>
       </LegalSection>
     </LegalPage>
