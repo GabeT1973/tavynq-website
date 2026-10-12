@@ -10,10 +10,11 @@ action. Live at https://www.signalfill.com.
 Almost everything you'd want to change lives in **`src/config/site.ts`**:
 
 - niche, offer/headline, hero subhead
-- pricing plans (Founding Partner and Standard) and the bad-fit window
+- pricing plans (Founding Partner and Standard monthly rates), the `foundingSpotsFilled` flag,
+  what every plan includes, the tailored-plans note, and the bad-fit window
 - the "qualified call" definition
 - Calendly URL, YouTube video ID (the video section stays hidden until it is set), contact
-  email, mailing address
+  email, public display location (city/region only)
 - page title, meta description, and social preview text
 
 `index.html`'s `<head>` (title, meta, Open Graph, JSON-LD) is filled from that file at build
