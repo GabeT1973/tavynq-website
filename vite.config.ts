@@ -34,6 +34,26 @@ function siteMetaPlugin(): Plugin {
         provider: { '@id': `${site.url}/#organization` },
         areaServed: { '@type': 'Country', name: 'United States' },
         audience: { '@type': 'BusinessAudience', name: site.niche.full },
+        // One Offer per plan, priced per month (UN/CEFACT unit code MON).
+        offers: site.pricing.plans.map((plan) => ({
+          '@type': 'Offer',
+          name: plan.name,
+          url: `${site.url}/#pricing`,
+          price: plan.monthlyPrice,
+          priceCurrency: 'USD',
+          priceSpecification: {
+            '@type': 'UnitPriceSpecification',
+            price: plan.monthlyPrice,
+            priceCurrency: 'USD',
+            referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'MON' },
+          },
+          availability:
+            plan.founding && site.pricing.foundingSpotsFilled
+              ? 'https://schema.org/SoldOut'
+              : plan.founding
+                ? 'https://schema.org/LimitedAvailability'
+                : 'https://schema.org/InStock',
+        })),
       },
     ],
   }

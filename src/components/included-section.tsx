@@ -29,7 +29,7 @@ const items = [
     icon: Inbox,
     title: "Inbox setup + warmup",
     description:
-      "Separate sending domains and inboxes, warmed up for 14 days. You own them, so your main domain is never at risk.",
+      "Separate sending domains and inboxes, warmed up for 14 days. You own the domains, and your main domain is never at risk.",
   },
   {
     icon: MessageSquareReply,

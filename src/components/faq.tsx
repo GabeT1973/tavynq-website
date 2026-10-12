@@ -41,7 +41,7 @@ const faqs: { question: string; answer: ReactNode }[] = [
   },
   {
     question: "What happens if a call is a bad fit?",
-    answer: `You have ${site.badFitWindowHours} hours after the call to flag it as a bad fit against our written criteria. Flagged calls aren't billed, and neither are no-shows. We also use the feedback to tighten targeting.`,
+    answer: `You have ${site.badFitWindowHours} hours after the call to flag it as a bad fit against our written criteria. We replace flagged calls and no-shows at no extra cost, and use the feedback to tighten targeting.`,
   },
   {
     question: "Do you work with other MSPs in my area?",
@@ -55,7 +55,12 @@ const faqs: { question: string; answer: ReactNode }[] = [
   },
   {
     question: "Is there a contract?",
-    answer: `No long-term contract. It's month-to-month, and either side can cancel with ${site.cancellationNoticeDays} days' written notice. The setup fee covers domains, inboxes, and campaign setup, so it's non-refundable once campaigns launch. Calls are billed monthly.`,
+    answer: `A short one. There's a ${site.initialTermDays}-day initial term, then it's month-to-month and either side can cancel with ${site.cancellationNoticeDays} days' written notice. There's no setup fee, and sending domains and inboxes are included in your monthly rate.`,
+  },
+  {
+    question: `Why a ${site.initialTermDays}-day initial term?`,
+    answer:
+      "The first few weeks are setup: sending domains, inboxes, and warmup, with calls usually starting from week 4. Ninety days gives your campaign about two months of live sending, which is enough time to judge it fairly.",
   },
   {
     question: "Will anyone cold call prospects in my name?",
