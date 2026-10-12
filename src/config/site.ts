@@ -61,7 +61,7 @@ export const site = {
         founding: false,
         highlight: false,
         badge: null,
-        note: null,
+        note: "Available in any open metro.",
         monthlyPrice: 2000,
         perks: [],
         terms: "Everything included, at one flat monthly rate.",
