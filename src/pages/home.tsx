@@ -68,7 +68,7 @@ export function Home() {
           )}
         </div>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          Email only, no cold callers. No-shows and bad-fit calls are never billed.
+          Email only, no cold callers. No setup fee. Bad-fit calls and no-shows replaced.
         </p>
       </HeroSection>
       {hasVideo && <VslSection videoId={site.youtubeId} />}

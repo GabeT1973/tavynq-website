@@ -27,18 +27,32 @@ you're doing in plain English.
   relying on referrals." We email local
   businesses with a real reason to talk.
   Delivered via the SignalFill Pipeline System.
-- Contract: month-to-month, 14 days' written
-  notice either side. Setup fee non-refundable
-  once campaigns launch. Calls billed monthly.
+- Pricing model (changed 2026-10-11): flat
+  monthly retainer. NOT pay-per-call - never
+  write setup fees, per-call billing, or "only
+  pay for calls that happen" anywhere.
+- Contract: 90-day initial term, then
+  month-to-month with 14 days' written notice
+  either side. Billed monthly in advance, due on
+  receipt, non-refundable once a period starts.
+  No setup fee. Sending domains + inboxes
+  included.
 - Pricing: Founding Partner (first 3 MSPs only):
-  $750 setup + $250 per qualified call, in
-  exchange for permission to publish a case
-  study. Standard: $1,500 setup + $250 per
-  qualified call. "Qualified call" is defined in
-  writing. No-shows are never billed.
+  $1,000/month, rate locked 12 months while
+  subscribed, in exchange for case study
+  permission (`foundingSpotsFilled` flag in
+  config swaps the badge to "Founding spots
+  filled"). Standard: $2,000/month. Multi-metro,
+  longer terms, or quarterly/annual billing are
+  tailored on the strategy call. "Qualified
+  call" is defined in writing as what we target;
+  bad-fit calls and no-shows are replaced at no
+  extra cost (a replacement, not a call quota -
+  no guaranteed number of calls).
 - Edge: signal-based targeting (public signals
-  only, never scan anyone's systems), Bad-Fit Free
-  (24h to flag a call; flagged calls not billed),
+  only, never scan anyone's systems), Bad-Fit
+  Replacement (24h to flag a call; flagged calls
+  and no-shows replaced at no extra cost),
   a one-page Meeting Brief before every call,
   email only with client approval of every
   message, client owns domains/lists/copy, one
@@ -520,3 +534,41 @@ page itself loads without a 404/error (checked the iframe's own text content, no
 screenshot).
 
 Next: merge this same fix onto `new-logo` so it isn't lost when that branch eventually merges.
+
+# Where we left off (2026-10-11, retainer pricing)
+
+**Pricing model switched from pay-per-call to a flat monthly retainer, on branch
+`retainer-pricing` (pushed, NOT merged - Gabe needs to say go-ahead).** See "The business"
+above for the new terms; every number lives in `src/config/site.ts` (`pricing.plans`,
+`pricing.included`, `pricing.tailoredNote`, `pricing.foundingSpotsFilled`, `initialTermDays`).
+
+- Pricing cards: big $X/month, founding perk + shared included list, terms line. Founding card
+  is the highlighted one (`highlight: true`). Setting `foundingSpotsFilled: true` swaps its badge
+  for a grey "Founding spots filled" pill, drops the glow, and flips the JSON-LD offer to
+  `SoldOut` (verified both states with screenshots + built HTML).
+- Standard got a note ("Available in any open metro.") so both cards' prices and checklists line
+  up side by side on desktop - without it the Founding card's note line pushed its price lower.
+- Qualified-call box reframed as what we target; the bad-fit rule moved to a footer line: misses
+  or flags within 24h are replaced at no extra cost. Kept the `#qualified-call` anchor (FAQ links
+  to it).
+- JSON-LD: `Service.offers` = one `Offer` per plan with a `UnitPriceSpecification`
+  (`referenceQuantity` 1 `MON`), built in `vite.config.ts` from the config.
+- Terms fully rewritten, Privacy updated (both still DRAFT). Terms say replacement is "work to
+  book another call", explicitly not a call quota, to stay consistent with No Guarantee. Privacy
+  names Vercel/Resend/Zoho/Calendly/Smartlead/Microsoft and also keeps data/verification
+  providers, Stripe, and YouTube since the funnel really uses them. Opt-outs: "within 10 business
+  days" (FTC CAN-SPAM guide).
+- "What's included" inbox card now says "You own the domains" (M365 inboxes are licenses
+  SignalFill pays for under the retainer, not something a client keeps).
+- **Font fallback fix (`src/index.css`):** the new Terms copy exposed a font-swap layout shift
+  (CLS 0.242 on /terms; first paint in Arial, which is ~2.4% narrower than Geist, so the first
+  paragraph re-wrapped when Geist loaded). Added a metric-matched `'Geist Fallback'` @font-face
+  (local Arial, size-adjust 102.45%, ascent/descent overrides from Geist's 1.005/0.295 em) in
+  the `--font-sans` stack. CLS now 0-0.001 on every page (was 0.015 on /privacy on main too).
+  If the font ever changes, re-measure these numbers.
+- Checks: `npm run build` + lint clean (2 pre-existing warnings), overflow 48/48, Lighthouse
+  mobile (local build) 98/100/100/100 on home, terms, privacy, contact. Note: main's home
+  scores the same 97-98 on this machine today, so the old "100" was run-to-run variance.
+
+Lighthouse is available via `npx --no-install lighthouse` (v13.5, set `CHROME_PATH` to Edge).
+In Git Bash, don't pass `/path` style args to node scripts - MSYS rewrites them to Windows paths.

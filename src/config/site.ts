@@ -2,10 +2,12 @@
 // index.html's <head> (title, meta, Open Graph, JSON-LD) is filled from this file at build time
 // by the plugin in vite.config.ts, so change things here and rebuild.
 
-// Hours a client has after each call to flag it as a bad fit (Bad-Fit Free).
+// Hours a client has after each call to flag it as a bad fit (Bad-Fit Replacement).
 const badFitWindowHours = 24
-// Days of written notice either side gives to cancel (FAQ + Terms).
+// Days of written notice either side gives to cancel after the initial term (FAQ + Terms).
 const cancellationNoticeDays = 14
+// Length of the initial term before plans go month-to-month (pricing, FAQ, Terms).
+const initialTermDays = 90
 
 export const site = {
   name: "SignalFill",
@@ -28,41 +30,63 @@ export const site = {
       end: "for MSPs, without relying on referrals.",
     },
     subhead:
-      "We email local businesses with a real reason to talk. One setup fee, then you only pay for qualified calls that actually happen.",
+      "We email local businesses with a real reason to talk and book qualified sales calls on your calendar. One flat monthly rate. No long-term lock-in.",
   },
 
   badFitWindowHours,
   cancellationNoticeDays,
+  initialTermDays,
 
   pricing: {
+    // Flip to true once all 3 Founding Partner spots are taken: that card then shows
+    // "Founding spots filled" instead of its badge, drops its highlight, and its JSON-LD
+    // offer is marked SoldOut.
+    foundingSpotsFilled: false,
     plans: [
       {
         name: "Founding Partner",
-        // A plan with a badge is shown as the highlighted card.
+        // Only the founding plan is affected by foundingSpotsFilled.
+        founding: true,
+        // The highlighted plan gets the glowing card.
+        highlight: true,
         badge: "Limited: 3 spots",
         note: "For our first 3 MSP clients only.",
-        setupFee: 750,
-        perQualifiedCall: 250,
+        monthlyPrice: 1000,
+        // Listed first on this card, before the shared `included` list below.
+        perks: ["Rate locked for 12 months while subscribed"],
         terms: "In exchange for permission to publish a case study about your results.",
       },
       {
         name: "Standard",
+        founding: false,
+        highlight: false,
         badge: null,
-        note: null,
-        setupFee: 1500,
-        perQualifiedCall: 250,
-        terms: "Everything included, with the same pay-per-call model.",
+        note: "Available in any open metro.",
+        monthlyPrice: 2000,
+        perks: [],
+        terms: "Everything included, at one flat monthly rate.",
       },
     ],
+    // Shown on every plan card.
+    included: [
+      `${initialTermDays}-day initial term, then month-to-month with ${cancellationNoticeDays} days' written notice`,
+      "No setup fee",
+      "Sending domains and inboxes included",
+      "Bad-fit calls and no-shows replaced at no extra cost",
+    ],
+    // Shown below the plan cards.
+    tailoredNote:
+      "Covering multiple metros, committing to a longer term, or prefer quarterly or annual billing? We'll tailor your rate on the strategy call.",
   },
 
-  // What counts as a billable "qualified call". Mirror whatever goes in the written agreement.
+  // What we target on every call. A call that misses any of these, or that the client flags
+  // as a bad fit within badFitWindowHours, is replaced at no extra cost. Mirror whatever goes
+  // in the written agreement.
   qualifiedCall: [
     "The business fits the ideal client profile we agree on in writing before launch (location in your metro, company size, and industry).",
     "The person on the call is a decision-maker, or brings one.",
     "They booked the call themselves after replying to our outreach.",
     "They show up to the scheduled call.",
-    `You didn't flag it as a bad fit against our written criteria within ${badFitWindowHours} hours.`,
   ],
 
   // Booking link, video, and contact details.
@@ -78,7 +102,7 @@ export const site = {
   seo: {
     title: "SignalFill | Qualified Sales Calls for MSPs",
     description:
-      "SignalFill books qualified sales calls for managed IT service providers with signal-based cold email. One setup fee, then pay only for calls that happen.",
+      "SignalFill books qualified sales calls for managed IT service providers with signal-based cold email. One flat monthly rate, no setup fee.",
     ogImage: "/og-image.png",
     ogImageAlt: "SignalFill: qualified sales calls for MSPs, booked with signal-based cold email.",
   },

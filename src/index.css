@@ -5,9 +5,24 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Metric-matched stand-in for Geist while its web font loads (font-display: swap). Without it
+   the first paint uses plain Arial, which sets ~2.4% narrower than Geist, so paragraphs re-wrap
+   when Geist arrives and everything below jumps (measured CLS 0.24 on /terms). size-adjust is
+   the measured Geist/Arial width ratio at regular weight; the overrides are Geist's own
+   ascent/descent (1.005 / 0.295 em) divided by that ratio. All four sources are
+   Arial-metric-compatible. */
+@font-face {
+    font-family: 'Geist Fallback';
+    src: local('Arial'), local('Helvetica'), local('Liberation Sans'), local('Arimo');
+    size-adjust: 102.45%;
+    ascent-override: 98.1%;
+    descent-override: 28.8%;
+    line-gap-override: 0%;
+}
+
 @theme inline {
     --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
+    --font-sans: 'Geist Variable', 'Geist Fallback', sans-serif;
     --animate-grid: grid 6s linear infinite;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);

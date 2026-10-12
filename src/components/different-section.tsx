@@ -1,4 +1,4 @@
-import { FileText, KeyRound, MapPin, Radar, ShieldCheck, ThumbsDown } from "lucide-react"
+import { FileText, KeyRound, MapPin, Radar, RefreshCw, ShieldCheck } from "lucide-react"
 import { cardBase, cardHover, iconChip } from "@/components/card"
 import { Reveal } from "@/components/reveal"
 import { Section } from "@/components/section"
@@ -14,9 +14,9 @@ const differences = [
       "We only email local businesses showing a public reason to talk: gaps in their public email security records, hiring for in-house IT, new offices, or headcount growth.",
   },
   {
-    icon: ThumbsDown,
-    title: "Bad-Fit Free",
-    description: `After each call, you have ${site.badFitWindowHours} hours to flag it as a bad fit against our written criteria. Flagged calls and no-shows are never billed.`,
+    icon: RefreshCw,
+    title: "Bad-Fit Replacement",
+    description: `After each call, you have ${site.badFitWindowHours} hours to flag it as a bad fit against our written criteria. Flagged calls and no-shows are replaced at no extra cost.`,
   },
   {
     icon: FileText,
