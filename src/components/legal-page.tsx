@@ -29,6 +29,10 @@ export function LegalSection({ title, children }: { title: string; children: Rea
   )
 }
 
+export function LegalList({ children }: { children: ReactNode }) {
+  return <ul className="list-disc space-y-2 pl-5 marker:text-gray-400">{children}</ul>
+}
+
 export function LegalEmailLink({ email }: { email: string }) {
   return (
     <a href={`mailto:${email}`} className="underline underline-offset-2">
